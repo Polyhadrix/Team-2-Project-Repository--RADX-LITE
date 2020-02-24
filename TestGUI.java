@@ -1,16 +1,19 @@
 import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.JComboBox;
-import javax.swing.JCheckBox;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class TestGUI {
 
@@ -547,9 +550,56 @@ public class TestGUI {
 		JButton btnRegisterPatient = new JButton("Register Patient");
 		btnRegisterPatient.setVisible(false);
 		btnRegisterPatient.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent buttonPressed) 
 			{
-				
+				Connection conn=null;
+
+				try {
+					conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/", "root", ""); //This part here created the connection to My SQL
+					if(conn != null) 
+					System.out.println("Connection Established.");
+					
+					
+					String firstName = firstNameInput.getText();
+					String middleInitial = middleInitialInput.getText();
+					String lastName = lastNameInput.getText();
+					String birthMonth = birthMonthInput.getText();
+					String birthYear = birthYearInput.getText();
+					String birthDay = birthDayInput.getText();
+					String City = cityInput.getText();
+					String address = addressInput.getText();
+					String zipCode = zipCodeInput.getText();
+					String employerName = employerNameInput.getText();
+					String workPhoneNumber = workPhoneNumberInput.getText();
+					String homePhoneNumber = homePhoneNumberInput.getText();
+					String socSecNum = socSecNumInput.getText();
+					String ResponsibleName = ResponsibleNameInput.getText();
+					String responsibleRelationship = responsibleRelationshipInput.getText();
+					String responsibleAddressInput = responsibleAddress.getText();
+					String responsibleCity = responsibleCityInput.getText();
+					String responsibleZipCode = responsibleZipCodeInput.getText();
+					String responsibleWorkNumber = responsibleWorkNumberInput.getText();
+					String responsibleHomeNumber = responsibleHomeNumberInput.getText();
+					String responsibleSSN = responsibleSSNInput.getText();
+					String employerAddress = employerAddressInput.getText();
+					String employerCity = employerCityInput.getText();
+					String employerZip = employerZipInput.getText();
+					
+					String query = "INSERT INTO patient.patient_information (First_Name, Middle_initial, Last_Name) VALUES (?,?,?)";
+					PreparedStatement stmt = conn.prepareStatement(query);
+					
+					stmt.setString( 1, firstName);
+					stmt.setString( 2, middleInitial);
+					stmt.setString( 3, lastName);
+					
+					stmt.execute();
+				}
+				 catch (SQLException e) {
+						// TODO Auto-generated catch block
+						System.out.println("Connection Failure.");
+						e.printStackTrace();
+					}
 			}
 		});
 		btnRegisterPatient.setBounds(590, 330, 140, 21);
