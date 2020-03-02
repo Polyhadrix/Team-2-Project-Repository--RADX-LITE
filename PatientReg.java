@@ -163,7 +163,7 @@ public class PatientReg
 		
 		
 		JPanel registerPatientPanel = new JPanel();
-		layeredPane.setLayer(registerPatientPanel, 2);
+		layeredPane.setLayer(registerPatientPanel, 0);
 		registerPatientPanel.setBounds(0, 0, 824, 427);
 		layeredPane.add(registerPatientPanel);
 		registerPatientPanel.setLayout(null);
