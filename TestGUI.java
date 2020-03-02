@@ -14,8 +14,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JLayeredPane;
+import javax.swing.SwingConstants;
+import java.awt.Color;
+import javax.swing.JTextPane;
 
-public class TestGUI {
+public class PatientReg
+{
 
 	private JFrame frame;
 	private JTextField firstNameInput;
@@ -23,7 +28,6 @@ public class TestGUI {
 	private JLabel lblLastName;
 	private JTextField lastNameInput;
 	private JLabel lblSex;
-	private JLabel lblDateOfBirth;
 	private JTextField birthMonthInput;
 	private JTextField birthYearInput;
 	private JTextField birthDayInput;
@@ -45,11 +49,11 @@ public class TestGUI {
 	private JLabel lblSSN;
 	private JTextField socSecNumInput;
 	private JLabel lblResponsibleName;
-	private JTextField ResponsibleNameInput;
+	private JTextField responsibleNameInput;
 	private JLabel lblResponsibleRelationship;
 	private JTextField responsibleRelationshipInput;
 	private JLabel lblAddressIfDifferent;
-	private JTextField responsibleAddress;
+	private JTextField responsibleAddressInput;
 	private JTextField responsibleCityInput;
 	private JTextField responsibleZipCodeInput;
 	private JTextField responsibleWorkNumberInput;
@@ -57,20 +61,36 @@ public class TestGUI {
 	private JTextField responsibleSSNInput;
 	private JLabel lblEmployerAddress;
 	private JTextField employerAddressInput;
-	private JLabel lblCity_1;
+	private JLabel lblEmployerCity;
 	private JTextField employerCityInput;
 	private JLabel lblEmployerState;
 	private JComboBox employerStateDropdown;
 	private JLabel lblEmployerZipCode;
 	private JTextField employerZipInput;
+	private JLabel lblDateOfBirth;
+	private JPanel referringPhysicianMainMenu;
+	private JPanel confirmCancelPanel;
+	private JButton btnNo;
+	private JLabel lblPleaseConfirm;
+	private JTextPane txtpnWelcomeBack;
+	private JTextPane txtpnDoctor;
+	private JButton btnRegisterNewPatient;
+	private JButton btnEditPatientInfo;
+	private JButton btnSendImagingRequest;
+	private JLabel lblPatient;
+	private JTextField textField;
+	private JLabel lblCondition;
+	private JComboBox conditionDropDown;
+	private JPanel editPatientInfoPanel;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-			public void run() {
+			public void run() 
+			{
 				try {
-					TestGUI window = new TestGUI();
+					PatientReg window = new PatientReg();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -82,7 +102,8 @@ public class TestGUI {
 	/**
 	 * Create the application.
 	 */
-	public TestGUI() {
+	public PatientReg() 
+	{
 		initialize();
 	}
 
@@ -91,110 +112,162 @@ public class TestGUI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 754, 398);
+		frame.setBounds(100, 100, 840, 460);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		JLayeredPane layeredPane = new JLayeredPane();
+		layeredPane.setBounds(0, 0, 826, 423);
+		frame.getContentPane().add(layeredPane);
+		
+		editPatientInfoPanel = new JPanel();
+		layeredPane.setLayer(editPatientInfoPanel, -2);
+		editPatientInfoPanel.setBounds(0, 0, 826, 423);
+		layeredPane.add(editPatientInfoPanel);
+		
+		JPanel sendImagingRequest = new JPanel();
+		layeredPane.setLayer(sendImagingRequest, -1);
+		sendImagingRequest.setBounds(0, 0, 826, 427);
+		layeredPane.add(sendImagingRequest);
+		sendImagingRequest.setLayout(null);
+		
+		lblPatient = new JLabel("Patient:");
+		lblPatient.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblPatient.setBounds(10, 10, 62, 15);
+		sendImagingRequest.add(lblPatient);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		textField.setBounds(569, 9, 96, 19);
+		sendImagingRequest.add(textField);
+		
+		JComboBox patientDropDown = new JComboBox();
+		patientDropDown.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		patientDropDown.setToolTipText("");
+		patientDropDown.setBounds(58, 7, 109, 21);
+		sendImagingRequest.add(patientDropDown);
+		patientDropDown.addItem("SELECT");
+		
+		lblCondition = new JLabel("Condition:");
+		lblCondition.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblCondition.setBounds(177, 10, 62, 15);
+		sendImagingRequest.add(lblCondition);
+		
+		conditionDropDown = new JComboBox();
+		conditionDropDown.setToolTipText("");
+		conditionDropDown.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		conditionDropDown.setBounds(240, 7, 127, 21);
+		sendImagingRequest.add(conditionDropDown);
+		conditionDropDown.addItem("SELECT");
+		
+		
+		
+		JPanel registerPatientPanel = new JPanel();
+		layeredPane.setLayer(registerPatientPanel, 2);
+		registerPatientPanel.setBounds(0, 0, 824, 427);
+		layeredPane.add(registerPatientPanel);
+		registerPatientPanel.setLayout(null);
+		
 		JLabel lblFirstName = new JLabel("First Name:");
+		lblFirstName.setBounds(10, 10, 62, 15);
+		registerPatientPanel.add(lblFirstName);
 		lblFirstName.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblFirstName.setBounds(10, 6, 65, 24);
-		frame.getContentPane().add(lblFirstName);
 		
 		firstNameInput = new JTextField();
 		firstNameInput.setBounds(75, 10, 96, 19);
-		frame.getContentPane().add(firstNameInput);
+		registerPatientPanel.add(firstNameInput);
 		firstNameInput.setColumns(10);
 		
 		JLabel lblMiddleInitial = new JLabel("Middle Initial:");
+		lblMiddleInitial.setBounds(179, 10, 77, 15);
+		registerPatientPanel.add(lblMiddleInitial);
 		lblMiddleInitial.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblMiddleInitial.setBounds(181, 6, 79, 24);
-		frame.getContentPane().add(lblMiddleInitial);
 		
 		middleInitialInput = new JTextField();
+		middleInitialInput.setBounds(259, 9, 23, 19);
+		registerPatientPanel.add(middleInitialInput);
 		middleInitialInput.setColumns(10);
-		middleInitialInput.setBounds(258, 10, 27, 19);
-		frame.getContentPane().add(middleInitialInput);
 		
 		lblLastName = new JLabel("Last Name:");
+		lblLastName.setBounds(292, 11, 65, 15);
+		registerPatientPanel.add(lblLastName);
 		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblLastName.setBounds(297, 6, 65, 24);
-		frame.getContentPane().add(lblLastName);
 		
 		lastNameInput = new JTextField();
+		lastNameInput.setBounds(356, 10, 96, 19);
+		registerPatientPanel.add(lastNameInput);
 		lastNameInput.setColumns(10);
-		lastNameInput.setBounds(363, 10, 96, 19);
-		frame.getContentPane().add(lastNameInput);
 		
 		lblSex = new JLabel("Sex:");
+		lblSex.setBounds(648, 11, 22, 15);
+		registerPatientPanel.add(lblSex);
 		lblSex.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblSex.setBounds(10, 36, 27, 24);
-		frame.getContentPane().add(lblSex);
 		
 		JComboBox sexDropdown = new JComboBox();
-		sexDropdown.setBounds(40, 39, 79, 21);
-		frame.getContentPane().add(sexDropdown);
+		sexDropdown.setBounds(680, 11, 85, 19);
+		registerPatientPanel.add(sexDropdown);
 		sexDropdown.addItem("SELECT");
 		sexDropdown.addItem("Male");
 		sexDropdown.addItem("Female");
 		
 		lblDateOfBirth = new JLabel("Date of Birth:");
 		lblDateOfBirth.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblDateOfBirth.setBounds(469, 6, 71, 24);
-		frame.getContentPane().add(lblDateOfBirth);
+		lblDateOfBirth.setBounds(462, 11, 71, 15);
+		registerPatientPanel.add(lblDateOfBirth);
 		
 		birthMonthInput = new JTextField();
+		birthMonthInput.setBounds(543, 11, 22, 19);
+		registerPatientPanel.add(birthMonthInput);
 		birthMonthInput.setColumns(10);
-		birthMonthInput.setBounds(546, 10, 27, 19);
-		frame.getContentPane().add(birthMonthInput);
 		
 		lblSlashDelimiter = new JLabel("/");
+		lblSlashDelimiter.setBounds(569, 12, 5, 15);
+		registerPatientPanel.add(lblSlashDelimiter);
 		lblSlashDelimiter.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblSlashDelimiter.setBounds(578, 6, 11, 24);
-		frame.getContentPane().add(lblSlashDelimiter);
 		
 		birthDayInput = new JTextField();
+		birthDayInput.setBounds(578, 11, 22, 19);
+		registerPatientPanel.add(birthDayInput);
 		birthDayInput.setColumns(10);
-		birthDayInput.setBounds(586, 10, 27, 19);
-		frame.getContentPane().add(birthDayInput);
 		
 		lblSlashDelimiter1 = new JLabel("/");
+		lblSlashDelimiter1.setBounds(603, 12, 5, 15);
+		registerPatientPanel.add(lblSlashDelimiter1);
 		lblSlashDelimiter1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblSlashDelimiter1.setBounds(616, 6, 11, 24);
-		frame.getContentPane().add(lblSlashDelimiter1);
 		
 		birthYearInput = new JTextField();
+		birthYearInput.setBounds(610, 10, 35, 19);
+		registerPatientPanel.add(birthYearInput);
 		birthYearInput.setColumns(10);
-		birthYearInput.setBounds(626, 10, 37, 19);
-		frame.getContentPane().add(birthYearInput);
 		
 		lblStreetAddress = new JLabel("Address:");
+		lblStreetAddress.setBounds(10, 35, 46, 15);
+		registerPatientPanel.add(lblStreetAddress);
 		lblStreetAddress.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblStreetAddress.setBounds(129, 36, 46, 24);
-		frame.getContentPane().add(lblStreetAddress);
 		
 		addressInput = new JTextField();
+		addressInput.setBounds(64, 35, 140, 19);
+		registerPatientPanel.add(addressInput);
 		addressInput.setColumns(10);
-		addressInput.setBounds(181, 40, 140, 19);
-		frame.getContentPane().add(addressInput);
 		
 		lblCity = new JLabel("City:");
+		lblCity.setBounds(214, 36, 23, 15);
+		registerPatientPanel.add(lblCity);
 		lblCity.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblCity.setBounds(331, 36, 27, 24);
-		frame.getContentPane().add(lblCity);
 		
 		cityInput = new JTextField();
+		cityInput.setBounds(243, 36, 96, 19);
+		registerPatientPanel.add(cityInput);
 		cityInput.setColumns(10);
-		cityInput.setBounds(363, 40, 140, 19);
-		frame.getContentPane().add(cityInput);
 		
 		lblState = new JLabel("State:");
+		lblState.setBounds(349, 36, 31, 15);
+		registerPatientPanel.add(lblState);
 		lblState.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblState.setBounds(513, 36, 32, 24);
-		frame.getContentPane().add(lblState);
 		
 		stateDropdown = new JComboBox();
-		stateDropdown.setBounds(551, 39, 112, 21);
-		frame.getContentPane().add(stateDropdown);
+		stateDropdown.setBounds(391, 35, 99, 19);
+		registerPatientPanel.add(stateDropdown);
 		stateDropdown.addItem("SELECT");
 		stateDropdown.addItem("Alabama");
 		stateDropdown.addItem("Alaska");
@@ -247,83 +320,83 @@ public class TestGUI {
 		stateDropdown.addItem("Wyoming");
 		
 		lblZipCode = new JLabel("Zip:");
+		lblZipCode.setBounds(497, 36, 19, 15);
+		registerPatientPanel.add(lblZipCode);
 		lblZipCode.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblZipCode.setBounds(666, 36, 27, 24);
-		frame.getContentPane().add(lblZipCode);
 		
 		zipCodeInput = new JTextField();
+		zipCodeInput.setBounds(526, 35, 46, 19);
+		registerPatientPanel.add(zipCodeInput);
 		zipCodeInput.setColumns(10);
-		zipCodeInput.setBounds(690, 40, 40, 19);
-		frame.getContentPane().add(zipCodeInput);
 		
 		lblWorkPhone = new JLabel("Work Phone Number:");
+		lblWorkPhone.setBounds(582, 36, 119, 15);
+		registerPatientPanel.add(lblWorkPhone);
 		lblWorkPhone.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblWorkPhone.setBounds(10, 70, 119, 24);
-		frame.getContentPane().add(lblWorkPhone);
 		
 		workPhoneNumberInput = new JTextField();
+		workPhoneNumberInput.setBounds(711, 35, 77, 19);
+		registerPatientPanel.add(workPhoneNumberInput);
 		workPhoneNumberInput.setColumns(10);
-		workPhoneNumberInput.setBounds(134, 72, 79, 19);
-		frame.getContentPane().add(workPhoneNumberInput);
 		
 		JLabel lblHomePhone = new JLabel("Home Phone Number:");
+		lblHomePhone.setBounds(10, 66, 117, 15);
+		registerPatientPanel.add(lblHomePhone);
 		lblHomePhone.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblHomePhone.setBounds(226, 70, 119, 24);
-		frame.getContentPane().add(lblHomePhone);
 		
 		homePhoneNumberInput = new JTextField();
+		homePhoneNumberInput.setBounds(138, 66, 77, 19);
+		registerPatientPanel.add(homePhoneNumberInput);
 		homePhoneNumberInput.setColumns(10);
-		homePhoneNumberInput.setBounds(352, 72, 79, 19);
-		frame.getContentPane().add(homePhoneNumberInput);
 		
 		lblSSN = new JLabel("Social Security Number:");
+		lblSSN.setBounds(224, 69, 129, 15);
+		registerPatientPanel.add(lblSSN);
 		lblSSN.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblSSN.setBounds(443, 70, 131, 24);
-		frame.getContentPane().add(lblSSN);
 		
 		socSecNumInput = new JTextField();
+		socSecNumInput.setBounds(359, 67, 96, 19);
+		registerPatientPanel.add(socSecNumInput);
 		socSecNumInput.setColumns(10);
-		socSecNumInput.setBounds(577, 72, 65, 19);
-		frame.getContentPane().add(socSecNumInput);
 		
 		lblEmployerName = new JLabel("Name of Employer:");
+		lblEmployerName.setBounds(469, 69, 102, 15);
+		registerPatientPanel.add(lblEmployerName);
 		lblEmployerName.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblEmployerName.setBounds(10, 104, 109, 24);
-		frame.getContentPane().add(lblEmployerName);
 		
 		employerNameInput = new JTextField();
+		employerNameInput.setBounds(581, 69, 96, 19);
+		registerPatientPanel.add(employerNameInput);
 		employerNameInput.setColumns(10);
-		employerNameInput.setBounds(116, 108, 180, 19);
-		frame.getContentPane().add(employerNameInput);
 		
 		lblEmployerAddress = new JLabel("Street Address of Workplace:");
+		lblEmployerAddress.setBounds(10, 91, 160, 24);
+		registerPatientPanel.add(lblEmployerAddress);
 		lblEmployerAddress.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblEmployerAddress.setBounds(306, 104, 160, 24);
-		frame.getContentPane().add(lblEmployerAddress);
 		
 		employerAddressInput = new JTextField();
+		employerAddressInput.setBounds(172, 96, 119, 19);
+		registerPatientPanel.add(employerAddressInput);
 		employerAddressInput.setColumns(10);
-		employerAddressInput.setBounds(469, 108, 180, 19);
-		frame.getContentPane().add(employerAddressInput);
 		
-		lblCity_1 = new JLabel("City:");
-		lblCity_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblCity_1.setBounds(10, 138, 27, 24);
-		frame.getContentPane().add(lblCity_1);
+		lblEmployerCity = new JLabel("City:");
+		lblEmployerCity.setBounds(300, 95, 31, 19);
+		registerPatientPanel.add(lblEmployerCity);
+		lblEmployerCity.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		employerCityInput = new JTextField();
+		employerCityInput.setBounds(330, 95, 96, 19);
+		registerPatientPanel.add(employerCityInput);
 		employerCityInput.setColumns(10);
-		employerCityInput.setBounds(40, 142, 140, 19);
-		frame.getContentPane().add(employerCityInput);
 		
 		lblEmployerState = new JLabel("State:");
+		lblEmployerState.setBounds(437, 98, 31, 15);
+		registerPatientPanel.add(lblEmployerState);
 		lblEmployerState.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblEmployerState.setBounds(190, 137, 32, 24);
-		frame.getContentPane().add(lblEmployerState);
 		
 		employerStateDropdown = new JComboBox();
-		employerStateDropdown.setBounds(226, 141, 112, 21);
-		frame.getContentPane().add(employerStateDropdown);
+		employerStateDropdown.setBounds(476, 97, 99, 19);
+		registerPatientPanel.add(employerStateDropdown);
 		employerStateDropdown.addItem("SELECT");
 		employerStateDropdown.addItem("Alabama");
 		employerStateDropdown.addItem("Alaska");
@@ -375,30 +448,50 @@ public class TestGUI {
 		employerStateDropdown.addItem("Wisconsin");
 		employerStateDropdown.addItem("Wyoming");	
 		lblEmployerZipCode = new JLabel("Zip:");
+		lblEmployerZipCode.setBounds(582, 99, 19, 15);
+		registerPatientPanel.add(lblEmployerZipCode);
 		lblEmployerZipCode.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblEmployerZipCode.setBounds(352, 138, 27, 24);
-		frame.getContentPane().add(lblEmployerZipCode);
 		
 		employerZipInput = new JTextField();
+		employerZipInput.setBounds(612, 98, 96, 19);
+		registerPatientPanel.add(employerZipInput);
 		employerZipInput.setColumns(10);
-		employerZipInput.setBounds(380, 142, 40, 19);
-		frame.getContentPane().add(employerZipInput);
 		
 		lblResponsibleName = new JLabel("Person Responsible for Balance:");
+		lblResponsibleName.setBounds(10, 125, 178, 15);
+		registerPatientPanel.add(lblResponsibleName);
 		lblResponsibleName.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblResponsibleName.setBounds(10, 172, 184, 24);
-		frame.getContentPane().add(lblResponsibleName);
 		
-		ResponsibleNameInput = new JTextField();
-		ResponsibleNameInput.setColumns(10);
-		ResponsibleNameInput.setBounds(191, 176, 171, 19);
-		frame.getContentPane().add(ResponsibleNameInput);
+		responsibleNameInput = new JTextField();
+		responsibleNameInput.setBounds(189, 125, 96, 19);
+		registerPatientPanel.add(responsibleNameInput);
+		responsibleNameInput.setColumns(10);
 		
 		JPanel responsiblePanel = new JPanel();
-		responsiblePanel.setBounds(0, 206, 740, 104);
-		frame.getContentPane().add(responsiblePanel);
+		responsiblePanel.setBounds(10, 151, 740, 104);
+		registerPatientPanel.add(responsiblePanel);
 		responsiblePanel.setLayout(null);
 		responsiblePanel.setVisible(false);
+		
+		JCheckBox chckbxDifferentThanPatient = new JCheckBox("Different than Patient?");
+		chckbxDifferentThanPatient.setBounds(294, 123, 148, 21);
+		registerPatientPanel.add(chckbxDifferentThanPatient);
+		chckbxDifferentThanPatient.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent checkboxClicked) 
+			{
+				if (chckbxDifferentThanPatient.isSelected())
+				{
+					responsiblePanel.setVisible(true);
+				}
+				if (chckbxDifferentThanPatient.isSelected()==false)
+				{
+					responsiblePanel.setVisible(false);
+				}
+			}
+		});
+		chckbxDifferentThanPatient.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		
+		
 		
 		lblResponsibleRelationship = new JLabel("Relationship of Individual:");
 		lblResponsibleRelationship.setBounds(10, 11, 142, 15);
@@ -415,10 +508,10 @@ public class TestGUI {
 		responsiblePanel.add(lblAddressIfDifferent);
 		lblAddressIfDifferent.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		responsibleAddress = new JTextField();
-		responsibleAddress.setBounds(139, 41, 96, 19);
-		responsiblePanel.add(responsibleAddress);
-		responsibleAddress.setColumns(10);
+		responsibleAddressInput = new JTextField();
+		responsibleAddressInput.setBounds(139, 41, 96, 19);
+		responsiblePanel.add(responsibleAddressInput);
+		responsibleAddressInput.setColumns(10);
 		
 		JLabel lblResponsibleCity = new JLabel("City:");
 		lblResponsibleCity.setBounds(246, 42, 23, 15);
@@ -529,25 +622,9 @@ public class TestGUI {
 		responsiblePanel.add(responsibleSSNInput);
 		responsibleSSNInput.setColumns(10);
 		
-		JCheckBox chckbxDifferentThanPatient = new JCheckBox("Different than Patient?");
-		chckbxDifferentThanPatient.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent checkboxClicked) 
-			{
-				if (chckbxDifferentThanPatient.isSelected())
-				{
-					responsiblePanel.setVisible(true);
-				}
-				if (chckbxDifferentThanPatient.isSelected()==false)
-				{
-					responsiblePanel.setVisible(false);
-				}
-			}
-		});
-		chckbxDifferentThanPatient.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		chckbxDifferentThanPatient.setBounds(372, 175, 148, 21);
-		frame.getContentPane().add(chckbxDifferentThanPatient);
-		
 		JButton btnRegisterPatient = new JButton("Register Patient");
+		btnRegisterPatient.setBounds(599, 272, 140, 21);
+		registerPatientPanel.add(btnRegisterPatient);
 		btnRegisterPatient.setVisible(false);
 		btnRegisterPatient.addActionListener(new ActionListener() {
 			
@@ -564,26 +641,30 @@ public class TestGUI {
 					String firstName = firstNameInput.getText();
 					String middleInitial = middleInitialInput.getText();
 					String lastName = lastNameInput.getText();
+					String sex = (String) sexDropdown.getSelectedItem();
 					String birthMonth = birthMonthInput.getText();
 					String birthYear = birthYearInput.getText();
 					String birthDay = birthDayInput.getText();
 					String City = cityInput.getText();
 					String address = addressInput.getText();
+					String state = (String) stateDropdown.getSelectedItem();
 					String zipCode = zipCodeInput.getText();
 					String employerName = employerNameInput.getText();
 					String workPhoneNumber = workPhoneNumberInput.getText();
 					String homePhoneNumber = homePhoneNumberInput.getText();
 					String socSecNum = socSecNumInput.getText();
-					String ResponsibleName = ResponsibleNameInput.getText();
+					String ResponsibleName = responsibleNameInput.getText();
 					String responsibleRelationship = responsibleRelationshipInput.getText();
-					String responsibleAddressInput = responsibleAddress.getText();
+					String responsibleAddress = responsibleAddressInput.getText();
 					String responsibleCity = responsibleCityInput.getText();
+					String responsibleState = (String) responsibleStateDropdown.getSelectedItem();
 					String responsibleZipCode = responsibleZipCodeInput.getText();
 					String responsibleWorkNumber = responsibleWorkNumberInput.getText();
 					String responsibleHomeNumber = responsibleHomeNumberInput.getText();
 					String responsibleSSN = responsibleSSNInput.getText();
 					String employerAddress = employerAddressInput.getText();
 					String employerCity = employerCityInput.getText();
+					String employerState = (String) employerStateDropdown.getSelectedItem();
 					String employerZip = employerZipInput.getText();
 					
 					String query = "INSERT INTO patient.patient_information (First_Name, Middle_initial, Last_Name) VALUES (?,?,?)";
@@ -602,11 +683,15 @@ public class TestGUI {
 					}
 			}
 		});
-		btnRegisterPatient.setBounds(590, 330, 140, 21);
-		frame.getContentPane().add(btnRegisterPatient);
+		
 		
 		JCheckBox chckbxConfirmWithPatient = new JCheckBox("CONFIRM WITH PATIENT");
-		chckbxConfirmWithPatient.addActionListener(new ActionListener() {
+		chckbxConfirmWithPatient.setBounds(425, 270, 170, 21);
+		registerPatientPanel.add(chckbxConfirmWithPatient);
+		chckbxConfirmWithPatient.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		
+		chckbxConfirmWithPatient.addActionListener(new ActionListener() 
+		{
 			public void actionPerformed(ActionEvent confirmed) 
 			{
 				if (chckbxConfirmWithPatient.isSelected())
@@ -619,8 +704,128 @@ public class TestGUI {
 				}
 			}
 		});
-		chckbxConfirmWithPatient.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		chckbxConfirmWithPatient.setBounds(403, 329, 170, 21);
-		frame.getContentPane().add(chckbxConfirmWithPatient);
+		
+		confirmCancelPanel = new JPanel();
+		confirmCancelPanel.setBounds(106, 258, 249, 35);
+		registerPatientPanel.add(confirmCancelPanel);
+		confirmCancelPanel.setLayout(null);
+		confirmCancelPanel.setVisible(false);
+		
+		JButton btnYes = new JButton("YES");
+		btnYes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent confirmedCancelSequence) 
+			{
+				firstNameInput.setText(null);
+				middleInitialInput.setText(null);
+				lastNameInput.setText(null);
+				birthMonthInput.setText(null);
+				birthDayInput.setText(null);
+				birthYearInput.setText(null);
+				sexDropdown.setSelectedIndex(0);
+				addressInput.setText(null);
+				cityInput.setText(null);
+				stateDropdown.setSelectedIndex(0);
+				zipCodeInput.setText(null);
+				workPhoneNumberInput.setText(null);
+				homePhoneNumberInput.setText(null);
+				socSecNumInput.setText(null);
+				employerNameInput.setText(null);
+				employerAddressInput.setText(null);
+				employerCityInput.setText(null);
+				employerStateDropdown.setSelectedIndex(0);
+				employerZipInput.setText(null);
+				responsibleNameInput.setText(null);
+				responsibleRelationshipInput.setText(null);
+				responsibleAddressInput.setText(null);
+				responsibleCityInput.setText(null);
+				responsibleStateDropdown.setSelectedIndex(0);
+				responsibleZipCodeInput.setText(null);
+				responsibleWorkNumberInput.setText(null);
+				responsibleHomeNumberInput.setText(null);
+				responsibleSSNInput.setText(null);
+				layeredPane.setLayer(registerPatientPanel, 0);
+				layeredPane.setLayer(referringPhysicianMainMenu, 1);
+			}
+		});
+		btnYes.setBounds(105, 9, 59, 21);
+		confirmCancelPanel.add(btnYes);
+		
+		btnNo = new JButton("NO");
+		btnNo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent cancelledCancelSequence) 
+			{
+				confirmCancelPanel.setVisible(false);
+			}
+		});
+		btnNo.setBounds(174, 9, 65, 21);
+		confirmCancelPanel.add(btnNo);
+		
+		lblPleaseConfirm = new JLabel("Please Confirm:");
+		lblPleaseConfirm.setForeground(Color.RED);
+		lblPleaseConfirm.setBounds(10, 10, 95, 17);
+		confirmCancelPanel.add(lblPleaseConfirm);
+		lblPleaseConfirm.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent cancelButtonClicked) 
+			{
+				confirmCancelPanel.setVisible(true);
+			}
+		});
+		btnCancel.setBounds(10, 265, 85, 21);
+		registerPatientPanel.add(btnCancel);
+		
+		referringPhysicianMainMenu = new JPanel();
+		layeredPane.setLayer(referringPhysicianMainMenu, 1);
+		referringPhysicianMainMenu.setBounds(0, 0, 824, 423);
+		layeredPane.add(referringPhysicianMainMenu);
+		referringPhysicianMainMenu.setLayout(null);
+		
+		btnEditPatientInfo = new JButton("Edit an Existing Patient's Profile");
+		btnEditPatientInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent goToEditRegistrationInfo) 
+			{
+				
+			}
+		});
+		btnEditPatientInfo.setToolTipText("");
+		btnEditPatientInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnEditPatientInfo.setBounds(579, 181, 235, 50);
+		referringPhysicianMainMenu.add(btnEditPatientInfo);
+		
+		btnSendImagingRequest = new JButton("Send an Imaging Request");
+		btnSendImagingRequest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent goToImagingRequest) 
+			{
+				layeredPane.setLayer(sendImagingRequest, 1);
+				layeredPane.setLayer(referringPhysicianMainMenu, 0);
+				layeredPane.setLayer(registerPatientPanel, -1);
+			}
+		});
+		btnSendImagingRequest.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnSendImagingRequest.setBounds(296, 181, 235, 50);
+		referringPhysicianMainMenu.add(btnSendImagingRequest);
+		
+		txtpnWelcomeBack = new JTextPane();
+		txtpnWelcomeBack.setBounds(10, 10, 111, 19);
+		txtpnWelcomeBack.setText("Welcome Back, Doctor");
+		referringPhysicianMainMenu.add(txtpnWelcomeBack);
+		
+		txtpnDoctor = new JTextPane();
+		txtpnDoctor.setBounds(114, 10, 77, 19);
+		referringPhysicianMainMenu.add(txtpnDoctor);
+		
+		btnRegisterNewPatient = new JButton("Register a New Patient");
+		btnRegisterNewPatient.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent goToRegisterPatientPanel) 
+			{
+				layeredPane.setLayer(referringPhysicianMainMenu, 0);
+				layeredPane.setLayer(registerPatientPanel, 1);
+			}
+		});
+		btnRegisterNewPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnRegisterNewPatient.setBounds(10, 181, 235, 50);
+		referringPhysicianMainMenu.add(btnRegisterNewPatient);
 	}
 }
