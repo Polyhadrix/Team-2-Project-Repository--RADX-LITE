@@ -18,6 +18,11 @@ import javax.swing.JLayeredPane;
 import javax.swing.SwingConstants;
 import java.awt.Color;
 import javax.swing.JTextPane;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.border.BevelBorder;
+import javax.swing.JList;
+import javax.swing.JTabbedPane;
 
 public class PatientReg
 {
@@ -40,7 +45,7 @@ public class PatientReg
 	private JLabel lblZipCode;
 	private JTextField zipCodeInput;
 	private JLabel lblState;
-	private JComboBox stateDropdown;
+	private JComboBox REG_stateDropdown;
 	private JLabel lblEmployerName;
 	private JTextField employerNameInput;
 	private JLabel lblWorkPhone;
@@ -64,24 +69,27 @@ public class PatientReg
 	private JLabel lblEmployerCity;
 	private JTextField employerCityInput;
 	private JLabel lblEmployerState;
-	private JComboBox employerStateDropdown;
+	private JComboBox REG_employerStateDropdown;
 	private JLabel lblEmployerZipCode;
 	private JTextField employerZipInput;
 	private JLabel lblDateOfBirth;
 	private JPanel referringPhysicianMainMenu;
 	private JPanel confirmCancelPanel;
-	private JButton btnNo;
+	private JButton REG_btnNo;
 	private JLabel lblPleaseConfirm;
 	private JTextPane txtpnWelcomeBack;
 	private JTextPane txtpnDoctor;
-	private JButton btnRegisterNewPatient;
-	private JButton btnEditPatientInfo;
-	private JButton btnSendImagingRequest;
+	private JButton MAIN_btnRegisterNewPatient;
+	private JButton MAIN_btnEditPatientInfo;
+	private JButton MAIN_btnSendImagingRequest;
 	private JLabel lblPatient;
-	private JTextField textField;
 	private JLabel lblCondition;
-	private JComboBox conditionDropDown;
+	private JComboBox IMG_conditionDropdown;
 	private JPanel editPatientInfoPanel;
+	private JLabel lblModality;
+	private JComboBox IMG_modalityDropdown;
+	private JButton IMG_btnYes2;
+	private JButton IMG_btnNo2;
 	/**
 	 * Launch the application.
 	 */
@@ -120,52 +128,11 @@ public class PatientReg
 		layeredPane.setBounds(0, 0, 826, 423);
 		frame.getContentPane().add(layeredPane);
 		
-		editPatientInfoPanel = new JPanel();
-		layeredPane.setLayer(editPatientInfoPanel, -2);
-		editPatientInfoPanel.setBounds(0, 0, 826, 423);
-		layeredPane.add(editPatientInfoPanel);
-		
-		JPanel sendImagingRequest = new JPanel();
-		layeredPane.setLayer(sendImagingRequest, -1);
-		sendImagingRequest.setBounds(0, 0, 826, 427);
-		layeredPane.add(sendImagingRequest);
-		sendImagingRequest.setLayout(null);
-		
-		lblPatient = new JLabel("Patient:");
-		lblPatient.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblPatient.setBounds(10, 10, 62, 15);
-		sendImagingRequest.add(lblPatient);
-		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(569, 9, 96, 19);
-		sendImagingRequest.add(textField);
-		
-		JComboBox patientDropDown = new JComboBox();
-		patientDropDown.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		patientDropDown.setToolTipText("");
-		patientDropDown.setBounds(58, 7, 109, 21);
-		sendImagingRequest.add(patientDropDown);
-		patientDropDown.addItem("SELECT");
-		
-		lblCondition = new JLabel("Condition:");
-		lblCondition.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblCondition.setBounds(177, 10, 62, 15);
-		sendImagingRequest.add(lblCondition);
-		
-		conditionDropDown = new JComboBox();
-		conditionDropDown.setToolTipText("");
-		conditionDropDown.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		conditionDropDown.setBounds(240, 7, 127, 21);
-		sendImagingRequest.add(conditionDropDown);
-		conditionDropDown.addItem("SELECT");
-		
-		
 		
 		JPanel registerPatientPanel = new JPanel();
-		layeredPane.setLayer(registerPatientPanel, 0);
-		registerPatientPanel.setBounds(0, 0, 824, 427);
+		registerPatientPanel.setBounds(0, 0, 821, 396);
 		layeredPane.add(registerPatientPanel);
+		layeredPane.setLayer(registerPatientPanel, 0);
 		registerPatientPanel.setLayout(null);
 		
 		JLabel lblFirstName = new JLabel("First Name:");
@@ -203,12 +170,12 @@ public class PatientReg
 		registerPatientPanel.add(lblSex);
 		lblSex.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		JComboBox sexDropdown = new JComboBox();
-		sexDropdown.setBounds(680, 11, 85, 19);
-		registerPatientPanel.add(sexDropdown);
-		sexDropdown.addItem("SELECT");
-		sexDropdown.addItem("Male");
-		sexDropdown.addItem("Female");
+		JComboBox REG_sexDropdown = new JComboBox();
+		REG_sexDropdown.setBounds(680, 11, 85, 19);
+		registerPatientPanel.add(REG_sexDropdown);
+		REG_sexDropdown.addItem("SELECT");
+		REG_sexDropdown.addItem("Male");
+		REG_sexDropdown.addItem("Female");
 		
 		lblDateOfBirth = new JLabel("Date of Birth:");
 		lblDateOfBirth.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -265,59 +232,59 @@ public class PatientReg
 		registerPatientPanel.add(lblState);
 		lblState.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		stateDropdown = new JComboBox();
-		stateDropdown.setBounds(391, 35, 99, 19);
-		registerPatientPanel.add(stateDropdown);
-		stateDropdown.addItem("SELECT");
-		stateDropdown.addItem("Alabama");
-		stateDropdown.addItem("Alaska");
-		stateDropdown.addItem("Arkansas");
-		stateDropdown.addItem("California");
-		stateDropdown.addItem("Colorado");
-		stateDropdown.addItem("Connecticut");
-		stateDropdown.addItem("Delaware");
-		stateDropdown.addItem("Florida");
-		stateDropdown.addItem("Georgia");
-		stateDropdown.addItem("Hawaii");
-		stateDropdown.addItem("Idaho");
-		stateDropdown.addItem("Illinois");
-		stateDropdown.addItem("Indiana");
-		stateDropdown.addItem("Iowa");
-		stateDropdown.addItem("Kansas");
-		stateDropdown.addItem("Kentucky");
-		stateDropdown.addItem("Louisiana");
-		stateDropdown.addItem("Maine");
-		stateDropdown.addItem("Maryland");
-		stateDropdown.addItem("Massachusetts");
-		stateDropdown.addItem("Michigan");
-		stateDropdown.addItem("Minnesota");
-		stateDropdown.addItem("Mississippi");
-		stateDropdown.addItem("Missouri");
-		stateDropdown.addItem("Montana");
-		stateDropdown.addItem("Nebraska");
-		stateDropdown.addItem("Nevada");
-		stateDropdown.addItem("New Hampshire");
-		stateDropdown.addItem("New Jersey");
-		stateDropdown.addItem("New Mexico");
-		stateDropdown.addItem("New York");
-		stateDropdown.addItem("North Carolina");
-		stateDropdown.addItem("North Dakota");
-		stateDropdown.addItem("Ohio");
-		stateDropdown.addItem("Oklahoma");
-		stateDropdown.addItem("Oregon");
-		stateDropdown.addItem("Pennsylvania");
-		stateDropdown.addItem("Rhode Island");
-		stateDropdown.addItem("South Carolina");
-		stateDropdown.addItem("South Dakota");
-		stateDropdown.addItem("Tennessee");
-		stateDropdown.addItem("Texas");
-		stateDropdown.addItem("Utah");
-		stateDropdown.addItem("Vermont");
-		stateDropdown.addItem("Virginia");
-		stateDropdown.addItem("Washington");
-		stateDropdown.addItem("West Virginia");
-		stateDropdown.addItem("Wisconsin");
-		stateDropdown.addItem("Wyoming");
+		REG_stateDropdown = new JComboBox();
+		REG_stateDropdown.setBounds(391, 35, 99, 19);
+		registerPatientPanel.add(REG_stateDropdown);
+		REG_stateDropdown.addItem("SELECT");
+		REG_stateDropdown.addItem("Alabama");
+		REG_stateDropdown.addItem("Alaska");
+		REG_stateDropdown.addItem("Arkansas");
+		REG_stateDropdown.addItem("California");
+		REG_stateDropdown.addItem("Colorado");
+		REG_stateDropdown.addItem("Connecticut");
+		REG_stateDropdown.addItem("Delaware");
+		REG_stateDropdown.addItem("Florida");
+		REG_stateDropdown.addItem("Georgia");
+		REG_stateDropdown.addItem("Hawaii");
+		REG_stateDropdown.addItem("Idaho");
+		REG_stateDropdown.addItem("Illinois");
+		REG_stateDropdown.addItem("Indiana");
+		REG_stateDropdown.addItem("Iowa");
+		REG_stateDropdown.addItem("Kansas");
+		REG_stateDropdown.addItem("Kentucky");
+		REG_stateDropdown.addItem("Louisiana");
+		REG_stateDropdown.addItem("Maine");
+		REG_stateDropdown.addItem("Maryland");
+		REG_stateDropdown.addItem("Massachusetts");
+		REG_stateDropdown.addItem("Michigan");
+		REG_stateDropdown.addItem("Minnesota");
+		REG_stateDropdown.addItem("Mississippi");
+		REG_stateDropdown.addItem("Missouri");
+		REG_stateDropdown.addItem("Montana");
+		REG_stateDropdown.addItem("Nebraska");
+		REG_stateDropdown.addItem("Nevada");
+		REG_stateDropdown.addItem("New Hampshire");
+		REG_stateDropdown.addItem("New Jersey");
+		REG_stateDropdown.addItem("New Mexico");
+		REG_stateDropdown.addItem("New York");
+		REG_stateDropdown.addItem("North Carolina");
+		REG_stateDropdown.addItem("North Dakota");
+		REG_stateDropdown.addItem("Ohio");
+		REG_stateDropdown.addItem("Oklahoma");
+		REG_stateDropdown.addItem("Oregon");
+		REG_stateDropdown.addItem("Pennsylvania");
+		REG_stateDropdown.addItem("Rhode Island");
+		REG_stateDropdown.addItem("South Carolina");
+		REG_stateDropdown.addItem("South Dakota");
+		REG_stateDropdown.addItem("Tennessee");
+		REG_stateDropdown.addItem("Texas");
+		REG_stateDropdown.addItem("Utah");
+		REG_stateDropdown.addItem("Vermont");
+		REG_stateDropdown.addItem("Virginia");
+		REG_stateDropdown.addItem("Washington");
+		REG_stateDropdown.addItem("West Virginia");
+		REG_stateDropdown.addItem("Wisconsin");
+		REG_stateDropdown.addItem("Wyoming");
 		
 		lblZipCode = new JLabel("Zip:");
 		lblZipCode.setBounds(497, 36, 19, 15);
@@ -394,59 +361,59 @@ public class PatientReg
 		registerPatientPanel.add(lblEmployerState);
 		lblEmployerState.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		employerStateDropdown = new JComboBox();
-		employerStateDropdown.setBounds(476, 97, 99, 19);
-		registerPatientPanel.add(employerStateDropdown);
-		employerStateDropdown.addItem("SELECT");
-		employerStateDropdown.addItem("Alabama");
-		employerStateDropdown.addItem("Alaska");
-		employerStateDropdown.addItem("Arkansas");
-		employerStateDropdown.addItem("California");
-		employerStateDropdown.addItem("Colorado");
-		employerStateDropdown.addItem("Connecticut");
-		employerStateDropdown.addItem("Delaware");
-		employerStateDropdown.addItem("Florida");
-		employerStateDropdown.addItem("Georgia");
-		employerStateDropdown.addItem("Hawaii");
-		employerStateDropdown.addItem("Idaho");
-		employerStateDropdown.addItem("Illinois");
-		employerStateDropdown.addItem("Indiana");
-		employerStateDropdown.addItem("Iowa");
-		employerStateDropdown.addItem("Kansas");
-		employerStateDropdown.addItem("Kentucky");
-		employerStateDropdown.addItem("Louisiana");
-		employerStateDropdown.addItem("Maine");
-		employerStateDropdown.addItem("Maryland");
-		employerStateDropdown.addItem("Massachusetts");
-		employerStateDropdown.addItem("Michigan");
-		employerStateDropdown.addItem("Minnesota");
-		employerStateDropdown.addItem("Mississippi");
-		employerStateDropdown.addItem("Missouri");
-		employerStateDropdown.addItem("Montana");
-		employerStateDropdown.addItem("Nebraska");
-		employerStateDropdown.addItem("Nevada");
-		employerStateDropdown.addItem("New Hampshire");
-		employerStateDropdown.addItem("New Jersey");
-		employerStateDropdown.addItem("New Mexico");
-		employerStateDropdown.addItem("New York");
-		employerStateDropdown.addItem("North Carolina");
-		employerStateDropdown.addItem("North Dakota");
-		employerStateDropdown.addItem("Ohio");
-		employerStateDropdown.addItem("Oklahoma");
-		employerStateDropdown.addItem("Oregon");
-		employerStateDropdown.addItem("Pennsylvania");
-		employerStateDropdown.addItem("Rhode Island");
-		employerStateDropdown.addItem("South Carolina");
-		employerStateDropdown.addItem("South Dakota");
-		employerStateDropdown.addItem("Tennessee");
-		employerStateDropdown.addItem("Texas");
-		employerStateDropdown.addItem("Utah");
-		employerStateDropdown.addItem("Vermont");
-		employerStateDropdown.addItem("Virginia");
-		employerStateDropdown.addItem("Washington");
-		employerStateDropdown.addItem("West Virginia");
-		employerStateDropdown.addItem("Wisconsin");
-		employerStateDropdown.addItem("Wyoming");	
+		REG_employerStateDropdown = new JComboBox();
+		REG_employerStateDropdown.setBounds(476, 97, 99, 19);
+		registerPatientPanel.add(REG_employerStateDropdown);
+		REG_employerStateDropdown.addItem("SELECT");
+		REG_employerStateDropdown.addItem("Alabama");
+		REG_employerStateDropdown.addItem("Alaska");
+		REG_employerStateDropdown.addItem("Arkansas");
+		REG_employerStateDropdown.addItem("California");
+		REG_employerStateDropdown.addItem("Colorado");
+		REG_employerStateDropdown.addItem("Connecticut");
+		REG_employerStateDropdown.addItem("Delaware");
+		REG_employerStateDropdown.addItem("Florida");
+		REG_employerStateDropdown.addItem("Georgia");
+		REG_employerStateDropdown.addItem("Hawaii");
+		REG_employerStateDropdown.addItem("Idaho");
+		REG_employerStateDropdown.addItem("Illinois");
+		REG_employerStateDropdown.addItem("Indiana");
+		REG_employerStateDropdown.addItem("Iowa");
+		REG_employerStateDropdown.addItem("Kansas");
+		REG_employerStateDropdown.addItem("Kentucky");
+		REG_employerStateDropdown.addItem("Louisiana");
+		REG_employerStateDropdown.addItem("Maine");
+		REG_employerStateDropdown.addItem("Maryland");
+		REG_employerStateDropdown.addItem("Massachusetts");
+		REG_employerStateDropdown.addItem("Michigan");
+		REG_employerStateDropdown.addItem("Minnesota");
+		REG_employerStateDropdown.addItem("Mississippi");
+		REG_employerStateDropdown.addItem("Missouri");
+		REG_employerStateDropdown.addItem("Montana");
+		REG_employerStateDropdown.addItem("Nebraska");
+		REG_employerStateDropdown.addItem("Nevada");
+		REG_employerStateDropdown.addItem("New Hampshire");
+		REG_employerStateDropdown.addItem("New Jersey");
+		REG_employerStateDropdown.addItem("New Mexico");
+		REG_employerStateDropdown.addItem("New York");
+		REG_employerStateDropdown.addItem("North Carolina");
+		REG_employerStateDropdown.addItem("North Dakota");
+		REG_employerStateDropdown.addItem("Ohio");
+		REG_employerStateDropdown.addItem("Oklahoma");
+		REG_employerStateDropdown.addItem("Oregon");
+		REG_employerStateDropdown.addItem("Pennsylvania");
+		REG_employerStateDropdown.addItem("Rhode Island");
+		REG_employerStateDropdown.addItem("South Carolina");
+		REG_employerStateDropdown.addItem("South Dakota");
+		REG_employerStateDropdown.addItem("Tennessee");
+		REG_employerStateDropdown.addItem("Texas");
+		REG_employerStateDropdown.addItem("Utah");
+		REG_employerStateDropdown.addItem("Vermont");
+		REG_employerStateDropdown.addItem("Virginia");
+		REG_employerStateDropdown.addItem("Washington");
+		REG_employerStateDropdown.addItem("West Virginia");
+		REG_employerStateDropdown.addItem("Wisconsin");
+		REG_employerStateDropdown.addItem("Wyoming");	
 		lblEmployerZipCode = new JLabel("Zip:");
 		lblEmployerZipCode.setBounds(582, 99, 19, 15);
 		registerPatientPanel.add(lblEmployerZipCode);
@@ -473,23 +440,23 @@ public class PatientReg
 		responsiblePanel.setLayout(null);
 		responsiblePanel.setVisible(false);
 		
-		JCheckBox chckbxDifferentThanPatient = new JCheckBox("Different than Patient?");
-		chckbxDifferentThanPatient.setBounds(294, 123, 148, 21);
-		registerPatientPanel.add(chckbxDifferentThanPatient);
-		chckbxDifferentThanPatient.addActionListener(new ActionListener() {
+		JCheckBox REG_chckbxDifferentThanPatient = new JCheckBox("Different than Patient?");
+		REG_chckbxDifferentThanPatient.setBounds(294, 123, 148, 21);
+		registerPatientPanel.add(REG_chckbxDifferentThanPatient);
+		REG_chckbxDifferentThanPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent checkboxClicked) 
 			{
-				if (chckbxDifferentThanPatient.isSelected())
+				if (REG_chckbxDifferentThanPatient.isSelected())
 				{
 					responsiblePanel.setVisible(true);
 				}
-				if (chckbxDifferentThanPatient.isSelected()==false)
+				if (REG_chckbxDifferentThanPatient.isSelected()==false)
 				{
 					responsiblePanel.setVisible(false);
 				}
 			}
 		});
-		chckbxDifferentThanPatient.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		REG_chckbxDifferentThanPatient.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		
 		
@@ -528,59 +495,59 @@ public class PatientReg
 		responsiblePanel.add(lblResponsibleState);
 		lblResponsibleState.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		JComboBox responsibleStateDropdown = new JComboBox();
-		responsibleStateDropdown.setBounds(418, 41, 99, 19);
-		responsiblePanel.add(responsibleStateDropdown);
-		responsibleStateDropdown.addItem("SELECT");
-		responsibleStateDropdown.addItem("Alabama");
-		responsibleStateDropdown.addItem("Alaska");
-		responsibleStateDropdown.addItem("Arkansas");
-		responsibleStateDropdown.addItem("California");
-		responsibleStateDropdown.addItem("Colorado");
-		responsibleStateDropdown.addItem("Connecticut");
-		responsibleStateDropdown.addItem("Delaware");
-		responsibleStateDropdown.addItem("Florida");
-		responsibleStateDropdown.addItem("Georgia");
-		responsibleStateDropdown.addItem("Hawaii");
-		responsibleStateDropdown.addItem("Idaho");
-		responsibleStateDropdown.addItem("Illinois");
-		responsibleStateDropdown.addItem("Indiana");
-		responsibleStateDropdown.addItem("Iowa");
-		responsibleStateDropdown.addItem("Kansas");
-		responsibleStateDropdown.addItem("Kentucky");
-		responsibleStateDropdown.addItem("Louisiana");
-		responsibleStateDropdown.addItem("Maine");
-		responsibleStateDropdown.addItem("Maryland");
-		responsibleStateDropdown.addItem("Massachusetts");
-		responsibleStateDropdown.addItem("Michigan");
-		responsibleStateDropdown.addItem("Minnesota");
-		responsibleStateDropdown.addItem("Mississippi");
-		responsibleStateDropdown.addItem("Missouri");
-		responsibleStateDropdown.addItem("Montana");
-		responsibleStateDropdown.addItem("Nebraska");
-		responsibleStateDropdown.addItem("Nevada");
-		responsibleStateDropdown.addItem("New Hampshire");
-		responsibleStateDropdown.addItem("New Jersey");
-		responsibleStateDropdown.addItem("New Mexico");
-		responsibleStateDropdown.addItem("New York");
-		responsibleStateDropdown.addItem("North Carolina");
-		responsibleStateDropdown.addItem("North Dakota");
-		responsibleStateDropdown.addItem("Ohio");
-		responsibleStateDropdown.addItem("Oklahoma");
-		responsibleStateDropdown.addItem("Oregon");
-		responsibleStateDropdown.addItem("Pennsylvania");
-		responsibleStateDropdown.addItem("Rhode Island");
-		responsibleStateDropdown.addItem("South Carolina");
-		responsibleStateDropdown.addItem("South Dakota");
-		responsibleStateDropdown.addItem("Tennessee");
-		responsibleStateDropdown.addItem("Texas");
-		responsibleStateDropdown.addItem("Utah");
-		responsibleStateDropdown.addItem("Vermont");
-		responsibleStateDropdown.addItem("Virginia");
-		responsibleStateDropdown.addItem("Washington");
-		responsibleStateDropdown.addItem("West Virginia");
-		responsibleStateDropdown.addItem("Wisconsin");
-		responsibleStateDropdown.addItem("Wyoming");
+		JComboBox REG_responsibleStateDropdown = new JComboBox();
+		REG_responsibleStateDropdown.setBounds(418, 41, 99, 19);
+		responsiblePanel.add(REG_responsibleStateDropdown);
+		REG_responsibleStateDropdown.addItem("SELECT");
+		REG_responsibleStateDropdown.addItem("Alabama");
+		REG_responsibleStateDropdown.addItem("Alaska");
+		REG_responsibleStateDropdown.addItem("Arkansas");
+		REG_responsibleStateDropdown.addItem("California");
+		REG_responsibleStateDropdown.addItem("Colorado");
+		REG_responsibleStateDropdown.addItem("Connecticut");
+		REG_responsibleStateDropdown.addItem("Delaware");
+		REG_responsibleStateDropdown.addItem("Florida");
+		REG_responsibleStateDropdown.addItem("Georgia");
+		REG_responsibleStateDropdown.addItem("Hawaii");
+		REG_responsibleStateDropdown.addItem("Idaho");
+		REG_responsibleStateDropdown.addItem("Illinois");
+		REG_responsibleStateDropdown.addItem("Indiana");
+		REG_responsibleStateDropdown.addItem("Iowa");
+		REG_responsibleStateDropdown.addItem("Kansas");
+		REG_responsibleStateDropdown.addItem("Kentucky");
+		REG_responsibleStateDropdown.addItem("Louisiana");
+		REG_responsibleStateDropdown.addItem("Maine");
+		REG_responsibleStateDropdown.addItem("Maryland");
+		REG_responsibleStateDropdown.addItem("Massachusetts");
+		REG_responsibleStateDropdown.addItem("Michigan");
+		REG_responsibleStateDropdown.addItem("Minnesota");
+		REG_responsibleStateDropdown.addItem("Mississippi");
+		REG_responsibleStateDropdown.addItem("Missouri");
+		REG_responsibleStateDropdown.addItem("Montana");
+		REG_responsibleStateDropdown.addItem("Nebraska");
+		REG_responsibleStateDropdown.addItem("Nevada");
+		REG_responsibleStateDropdown.addItem("New Hampshire");
+		REG_responsibleStateDropdown.addItem("New Jersey");
+		REG_responsibleStateDropdown.addItem("New Mexico");
+		REG_responsibleStateDropdown.addItem("New York");
+		REG_responsibleStateDropdown.addItem("North Carolina");
+		REG_responsibleStateDropdown.addItem("North Dakota");
+		REG_responsibleStateDropdown.addItem("Ohio");
+		REG_responsibleStateDropdown.addItem("Oklahoma");
+		REG_responsibleStateDropdown.addItem("Oregon");
+		REG_responsibleStateDropdown.addItem("Pennsylvania");
+		REG_responsibleStateDropdown.addItem("Rhode Island");
+		REG_responsibleStateDropdown.addItem("South Carolina");
+		REG_responsibleStateDropdown.addItem("South Dakota");
+		REG_responsibleStateDropdown.addItem("Tennessee");
+		REG_responsibleStateDropdown.addItem("Texas");
+		REG_responsibleStateDropdown.addItem("Utah");
+		REG_responsibleStateDropdown.addItem("Vermont");
+		REG_responsibleStateDropdown.addItem("Virginia");
+		REG_responsibleStateDropdown.addItem("Washington");
+		REG_responsibleStateDropdown.addItem("West Virginia");
+		REG_responsibleStateDropdown.addItem("Wisconsin");
+		REG_responsibleStateDropdown.addItem("Wyoming");
 		
 		JLabel lblResponsibleZipCode = new JLabel("Zip:");
 		lblResponsibleZipCode.setBounds(527, 43, 19, 15);
@@ -622,11 +589,11 @@ public class PatientReg
 		responsiblePanel.add(responsibleSSNInput);
 		responsibleSSNInput.setColumns(10);
 		
-		JButton btnRegisterPatient = new JButton("Register Patient");
-		btnRegisterPatient.setBounds(599, 272, 140, 21);
-		registerPatientPanel.add(btnRegisterPatient);
-		btnRegisterPatient.setVisible(false);
-		btnRegisterPatient.addActionListener(new ActionListener() {
+		JButton REG_btnRegisterPatient = new JButton("Register Patient");
+		REG_btnRegisterPatient.setBounds(599, 272, 140, 21);
+		registerPatientPanel.add(REG_btnRegisterPatient);
+		REG_btnRegisterPatient.setVisible(false);
+		REG_btnRegisterPatient.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent buttonPressed) 
 			{
@@ -641,13 +608,13 @@ public class PatientReg
 					String firstName = firstNameInput.getText();
 					String middleInitial = middleInitialInput.getText();
 					String lastName = lastNameInput.getText();
-					String sex = (String) sexDropdown.getSelectedItem();
+					String sex = (String) REG_sexDropdown.getSelectedItem();
 					String birthMonth = birthMonthInput.getText();
 					String birthYear = birthYearInput.getText();
 					String birthDay = birthDayInput.getText();
 					String City = cityInput.getText();
 					String address = addressInput.getText();
-					String state = (String) stateDropdown.getSelectedItem();
+					String state = (String) REG_stateDropdown.getSelectedItem();
 					String zipCode = zipCodeInput.getText();
 					String employerName = employerNameInput.getText();
 					String workPhoneNumber = workPhoneNumberInput.getText();
@@ -657,14 +624,14 @@ public class PatientReg
 					String responsibleRelationship = responsibleRelationshipInput.getText();
 					String responsibleAddress = responsibleAddressInput.getText();
 					String responsibleCity = responsibleCityInput.getText();
-					String responsibleState = (String) responsibleStateDropdown.getSelectedItem();
+					String responsibleState = (String) REG_responsibleStateDropdown.getSelectedItem();
 					String responsibleZipCode = responsibleZipCodeInput.getText();
 					String responsibleWorkNumber = responsibleWorkNumberInput.getText();
 					String responsibleHomeNumber = responsibleHomeNumberInput.getText();
 					String responsibleSSN = responsibleSSNInput.getText();
 					String employerAddress = employerAddressInput.getText();
 					String employerCity = employerCityInput.getText();
-					String employerState = (String) employerStateDropdown.getSelectedItem();
+					String employerState = (String) REG_employerStateDropdown.getSelectedItem();
 					String employerZip = employerZipInput.getText();
 					
 					String query = "INSERT INTO patient.patient_information (First_Name, Middle_initial, Last_Name) VALUES (?,?,?)";
@@ -685,22 +652,24 @@ public class PatientReg
 		});
 		
 		
-		JCheckBox chckbxConfirmWithPatient = new JCheckBox("CONFIRM WITH PATIENT");
-		chckbxConfirmWithPatient.setBounds(425, 270, 170, 21);
-		registerPatientPanel.add(chckbxConfirmWithPatient);
-		chckbxConfirmWithPatient.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		JCheckBox REG_chckbxConfirmWithPatient = new JCheckBox("CONFIRM WITH PATIENT");
+		REG_chckbxConfirmWithPatient.setBounds(425, 270, 170, 21);
+		registerPatientPanel.add(REG_chckbxConfirmWithPatient);
+		REG_chckbxConfirmWithPatient.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		chckbxConfirmWithPatient.addActionListener(new ActionListener() 
+		REG_chckbxConfirmWithPatient.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent confirmed) 
 			{
-				if (chckbxConfirmWithPatient.isSelected())
+				if (REG_chckbxConfirmWithPatient.isSelected())
 				{
-					btnRegisterPatient.setVisible(true);
+					REG_btnRegisterPatient.setVisible(true);
+					REG_btnRegisterPatient.setEnabled(true);
 				}
-				if (chckbxConfirmWithPatient.isSelected() == false)
+				else
 				{
-					btnRegisterPatient.setVisible(false);
+					REG_btnRegisterPatient.setVisible(false);
+					REG_btnRegisterPatient.setEnabled(false);
 				}
 			}
 		});
@@ -711,20 +680,22 @@ public class PatientReg
 		confirmCancelPanel.setLayout(null);
 		confirmCancelPanel.setVisible(false);
 		
-		JButton btnYes = new JButton("YES");
-		btnYes.addActionListener(new ActionListener() {
+		JButton REG_btnYes = new JButton("YES");
+		REG_btnYes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent confirmedCancelSequence) 
 			{
+				layeredPane.setLayer(registerPatientPanel, 0);
+				layeredPane.setLayer(referringPhysicianMainMenu, 1);
 				firstNameInput.setText(null);
 				middleInitialInput.setText(null);
 				lastNameInput.setText(null);
 				birthMonthInput.setText(null);
 				birthDayInput.setText(null);
 				birthYearInput.setText(null);
-				sexDropdown.setSelectedIndex(0);
+				REG_sexDropdown.setSelectedIndex(0);
 				addressInput.setText(null);
 				cityInput.setText(null);
-				stateDropdown.setSelectedIndex(0);
+				REG_stateDropdown.setSelectedIndex(0);
 				zipCodeInput.setText(null);
 				workPhoneNumberInput.setText(null);
 				homePhoneNumberInput.setText(null);
@@ -732,33 +703,53 @@ public class PatientReg
 				employerNameInput.setText(null);
 				employerAddressInput.setText(null);
 				employerCityInput.setText(null);
-				employerStateDropdown.setSelectedIndex(0);
+				REG_employerStateDropdown.setSelectedIndex(0);
 				employerZipInput.setText(null);
 				responsibleNameInput.setText(null);
 				responsibleRelationshipInput.setText(null);
 				responsibleAddressInput.setText(null);
 				responsibleCityInput.setText(null);
-				responsibleStateDropdown.setSelectedIndex(0);
+				REG_responsibleStateDropdown.setSelectedIndex(0);
 				responsibleZipCodeInput.setText(null);
 				responsibleWorkNumberInput.setText(null);
 				responsibleHomeNumberInput.setText(null);
 				responsibleSSNInput.setText(null);
-				layeredPane.setLayer(registerPatientPanel, 0);
-				layeredPane.setLayer(referringPhysicianMainMenu, 1);
+				confirmCancelPanel.setVisible(false);
+				REG_chckbxConfirmWithPatient.setSelected(false);
+				REG_chckbxDifferentThanPatient.setSelected(false);
+				REG_btnRegisterPatient.setVisible(false);
+				REG_btnRegisterPatient.setEnabled(false);
+//Disable all the interactables in this page before the user can touch them.
+				REG_btnRegisterPatient.setEnabled(false);
+				REG_sexDropdown.setEnabled(false);
+				REG_chckbxConfirmWithPatient.setEnabled(false);
+				REG_stateDropdown.setEnabled(false);
+				REG_chckbxDifferentThanPatient.setEnabled(false);
+				REG_employerStateDropdown.setEnabled(false);
+				REG_btnNo.setEnabled(false);
+				REG_responsibleStateDropdown.setEnabled(false);
+				REG_btnYes.setEnabled(false);
+//Re-enable all the interactables in the Main Menu.
+				MAIN_btnEditPatientInfo.setEnabled(true);
+				MAIN_btnRegisterNewPatient.setEnabled(true);
+				MAIN_btnSendImagingRequest.setEnabled(true);
 			}
 		});
-		btnYes.setBounds(105, 9, 59, 21);
-		confirmCancelPanel.add(btnYes);
+		REG_btnYes.setBounds(105, 9, 59, 21);
+		confirmCancelPanel.add(REG_btnYes);
 		
-		btnNo = new JButton("NO");
-		btnNo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent cancelledCancelSequence) 
+		REG_btnNo = new JButton("NO");
+		REG_btnNo.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent REG_cancelledCancelSequence) 
 			{
 				confirmCancelPanel.setVisible(false);
+				REG_btnYes.setEnabled(false);
+				REG_btnNo.setEnabled(false);
 			}
 		});
-		btnNo.setBounds(174, 9, 65, 21);
-		confirmCancelPanel.add(btnNo);
+		REG_btnNo.setBounds(174, 9, 65, 21);
+		confirmCancelPanel.add(REG_btnNo);
 		
 		lblPleaseConfirm = new JLabel("Please Confirm:");
 		lblPleaseConfirm.setForeground(Color.RED);
@@ -766,15 +757,202 @@ public class PatientReg
 		confirmCancelPanel.add(lblPleaseConfirm);
 		lblPleaseConfirm.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
+		JButton REG_btnCancel = new JButton("Cancel");
+		REG_btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent cancelButtonClicked) 
 			{
 				confirmCancelPanel.setVisible(true);
+				REG_btnYes.setEnabled(true);
+				REG_btnNo.setEnabled(true);
 			}
 		});
-		btnCancel.setBounds(10, 265, 85, 21);
-		registerPatientPanel.add(btnCancel);
+		REG_btnCancel.setBounds(10, 265, 85, 21);
+		registerPatientPanel.add(REG_btnCancel);
+		
+		JPanel sendImagingRequest = new JPanel();
+		layeredPane.setLayer(sendImagingRequest, -1);
+		sendImagingRequest.setBounds(0, 0, 826, 427);
+		layeredPane.add(sendImagingRequest);
+		sendImagingRequest.setLayout(null);
+		
+		lblPatient = new JLabel("Patient:");
+		lblPatient.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblPatient.setBounds(10, 10, 62, 15);
+		sendImagingRequest.add(lblPatient);
+		
+		JLabel lblHypothesisNotes = new JLabel("Hypothesis Notes:");
+		lblHypothesisNotes.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblHypothesisNotes.setBounds(10, 54, 95, 15);
+		sendImagingRequest.add(lblHypothesisNotes);
+		
+		JTextArea hypothesisNotesInput = new JTextArea();
+		hypothesisNotesInput.setBounds(113, 47, 703, 92);
+		sendImagingRequest.add(hypothesisNotesInput);
+		
+		JComboBox IMG_patientDropdown = new JComboBox();
+		IMG_patientDropdown.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		IMG_patientDropdown.setToolTipText("");
+		IMG_patientDropdown.setBounds(58, 7, 195, 21);
+		sendImagingRequest.add(IMG_patientDropdown);
+		IMG_patientDropdown.addItem("SELECT");
+		
+		lblCondition = new JLabel("Condition:");
+		lblCondition.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblCondition.setBounds(271, 10, 62, 15);
+		sendImagingRequest.add(lblCondition);
+		
+		IMG_conditionDropdown = new JComboBox();
+		IMG_conditionDropdown.setToolTipText("");
+		IMG_conditionDropdown.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		IMG_conditionDropdown.setBounds(334, 7, 158, 21);
+		sendImagingRequest.add(IMG_conditionDropdown);
+		IMG_conditionDropdown.addItem("SELECT");
+		IMG_conditionDropdown.addItem("Fracture");
+		IMG_conditionDropdown.addItem("Hernia");
+		IMG_conditionDropdown.addItem("Embolism");
+		IMG_conditionDropdown.addItem("Cancer Screening");
+		IMG_conditionDropdown.addItem("arterial/vascular obstruction"); 
+		
+		JLabel lblObservations = new JLabel("Observations:");
+		lblObservations.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblObservations.setBounds(10, 154, 77, 15);
+		sendImagingRequest.add(lblObservations);
+		
+		JTextArea observationsInput = new JTextArea();
+		observationsInput.setBounds(97, 150, 719, 92);
+		sendImagingRequest.add(observationsInput);
+		
+		JLabel lblAreaOfBody = new JLabel("Area of Body:");
+		lblAreaOfBody.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblAreaOfBody.setBounds(510, 10, 77, 15);
+		sendImagingRequest.add(lblAreaOfBody);
+		
+		JComboBox IMG_bodyAreaDropdown = new JComboBox();
+		IMG_bodyAreaDropdown.setToolTipText("");
+		IMG_bodyAreaDropdown.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		IMG_bodyAreaDropdown.setBounds(597, 7, 127, 21);
+		sendImagingRequest.add(IMG_bodyAreaDropdown);
+		IMG_bodyAreaDropdown.addItem("SELECT");
+		
+		lblModality = new JLabel("Modality:");
+		lblModality.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblModality.setBounds(10, 272, 62, 15);
+		sendImagingRequest.add(lblModality);
+		
+		IMG_modalityDropdown = new JComboBox();
+		IMG_modalityDropdown.setToolTipText("");
+		IMG_modalityDropdown.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		IMG_modalityDropdown.setBounds(70, 269, 158, 21);
+		sendImagingRequest.add(IMG_modalityDropdown);
+		IMG_modalityDropdown.addItem("SELECT");
+		IMG_modalityDropdown.addItem("Plain X-Ray");
+		IMG_modalityDropdown.addItem("Fluoroscopy");
+		IMG_modalityDropdown.addItem("Mammography");
+		IMG_modalityDropdown.addItem("Ultrasound");
+		IMG_modalityDropdown.addItem("Computed Tompgraphy");
+		IMG_modalityDropdown.addItem("Magnetic Resonace Imaging");
+		
+		JButton IMG_btnGoToScheduling = new JButton("Go to Scheduling");
+		IMG_btnGoToScheduling.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		IMG_btnGoToScheduling.setBounds(635, 270, 158, 21);
+		sendImagingRequest.add(IMG_btnGoToScheduling);
+		IMG_btnGoToScheduling.setVisible(false);
+		
+		JCheckBox IMG_chckbxDone = new JCheckBox("Done?");
+		IMG_chckbxDone.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent IMG_Confirmation)
+			{
+				if (IMG_chckbxDone.isSelected())
+				{
+					IMG_btnGoToScheduling.setEnabled(true);
+					IMG_btnGoToScheduling.setVisible(true);
+				}
+				else
+				{
+					IMG_btnGoToScheduling.setEnabled(false);
+					IMG_btnGoToScheduling.setVisible(false);
+				}
+			}
+		});
+		IMG_chckbxDone.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		IMG_chckbxDone.setBounds(557, 269, 67, 21);
+		sendImagingRequest.add(IMG_chckbxDone);
+		
+		JPanel confirmCancelPanel1 = new JPanel();
+		confirmCancelPanel1.setBounds(106, 317, 267, 48);
+		sendImagingRequest.add(confirmCancelPanel1);
+		confirmCancelPanel1.setLayout(null);
+		confirmCancelPanel1.setVisible(false);
+		
+		JButton IMG_btnCancel1 = new JButton("Cancel");
+		IMG_btnCancel1.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent sendImagingRequestCancelButtonPressed) 
+			{
+				confirmCancelPanel1.setVisible(true);
+				IMG_btnYes2.setEnabled(true);
+				IMG_btnNo2.setEnabled(true);
+			}
+		});
+			
+		IMG_btnYes2 = new JButton("YES");
+		IMG_btnYes2.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent IMG_yesButtonPressed) 
+			{
+				layeredPane.setLayer(referringPhysicianMainMenu, 1);
+				layeredPane.setLayer(sendImagingRequest, -1);
+				hypothesisNotesInput.setText(null);
+				observationsInput.setText(null);
+				IMG_bodyAreaDropdown.setSelectedIndex(0);
+				IMG_chckbxDone.setSelected(false);
+				IMG_conditionDropdown.setSelectedIndex(0);
+				IMG_modalityDropdown.setSelectedIndex(0);
+				IMG_patientDropdown.setSelectedIndex(0);
+				IMG_bodyAreaDropdown.setEnabled(false);
+				IMG_btnCancel1.setEnabled(false);
+				IMG_btnGoToScheduling.setVisible(false);
+				IMG_btnGoToScheduling.setEnabled(false);
+				IMG_chckbxDone.setEnabled(false);
+				IMG_patientDropdown.setEnabled(false);
+				IMG_btnYes2.setEnabled(false);
+				IMG_btnNo2.setEnabled(false);
+				IMG_modalityDropdown.setEnabled(false);
+				confirmCancelPanel1.setVisible(false);
+				IMG_btnYes2.setEnabled(false);
+				IMG_btnNo2.setEnabled(false);
+				MAIN_btnEditPatientInfo.setEnabled(true);
+				MAIN_btnRegisterNewPatient.setEnabled(true);
+				MAIN_btnSendImagingRequest.setEnabled(true);
+				
+			}
+		});
+		IMG_btnYes2.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		IMG_btnYes2.setBounds(98, 10, 63, 21);
+		confirmCancelPanel1.add(IMG_btnYes2);
+		
+		IMG_btnNo2 = new JButton("NO");
+		IMG_btnNo2.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent IMG_cancelCancellation)
+			{
+				confirmCancelPanel1.setVisible(false);
+				IMG_btnYes2.setEnabled(false);
+				IMG_btnNo2.setEnabled(false);
+			}
+		});
+		IMG_btnNo2.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		IMG_btnNo2.setBounds(194, 10, 63, 21);
+		confirmCancelPanel1.add(IMG_btnNo2);
+		
+		JLabel lblPleaseConfirm_1 = new JLabel("Please confirm");
+		lblPleaseConfirm_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblPleaseConfirm_1.setBounds(10, 13, 92, 15);
+		confirmCancelPanel1.add(lblPleaseConfirm_1);
+		IMG_btnCancel1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		IMG_btnCancel1.setBounds(10, 326, 85, 21);
+		sendImagingRequest.add(IMG_btnCancel1);
 		
 		referringPhysicianMainMenu = new JPanel();
 		layeredPane.setLayer(referringPhysicianMainMenu, 1);
@@ -782,50 +960,104 @@ public class PatientReg
 		layeredPane.add(referringPhysicianMainMenu);
 		referringPhysicianMainMenu.setLayout(null);
 		
-		btnEditPatientInfo = new JButton("Edit an Existing Patient's Profile");
-		btnEditPatientInfo.addActionListener(new ActionListener() {
+		MAIN_btnEditPatientInfo = new JButton("Edit an Existing Patient's Profile");
+		MAIN_btnEditPatientInfo.addActionListener(new ActionListener()
+		{
 			public void actionPerformed(ActionEvent goToEditRegistrationInfo) 
 			{
 				
 			}
 		});
-		btnEditPatientInfo.setToolTipText("");
-		btnEditPatientInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnEditPatientInfo.setBounds(579, 181, 235, 50);
-		referringPhysicianMainMenu.add(btnEditPatientInfo);
+		MAIN_btnEditPatientInfo.setToolTipText("");
+		MAIN_btnEditPatientInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		MAIN_btnEditPatientInfo.setBounds(579, 181, 235, 50);
+		referringPhysicianMainMenu.add(MAIN_btnEditPatientInfo);
 		
-		btnSendImagingRequest = new JButton("Send an Imaging Request");
-		btnSendImagingRequest.addActionListener(new ActionListener() {
+		MAIN_btnSendImagingRequest = new JButton("Send an Imaging Request");
+		MAIN_btnSendImagingRequest.addActionListener(new ActionListener()
+		{
 			public void actionPerformed(ActionEvent goToImagingRequest) 
 			{
 				layeredPane.setLayer(sendImagingRequest, 1);
 				layeredPane.setLayer(referringPhysicianMainMenu, 0);
-				layeredPane.setLayer(registerPatientPanel, -1);
+				IMG_bodyAreaDropdown.setEnabled(true);
+				IMG_btnCancel1.setEnabled(true);
+				IMG_chckbxDone.setEnabled(true);
+				IMG_patientDropdown.setEnabled(true);
+				IMG_modalityDropdown.setEnabled(true);
+				IMG_conditionDropdown.setEnabled(true);
+				MAIN_btnEditPatientInfo.setEnabled(false);
+				MAIN_btnRegisterNewPatient.setEnabled(false);
+				MAIN_btnSendImagingRequest.setEnabled(false);
 			}
 		});
-		btnSendImagingRequest.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnSendImagingRequest.setBounds(296, 181, 235, 50);
-		referringPhysicianMainMenu.add(btnSendImagingRequest);
+		MAIN_btnSendImagingRequest.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		MAIN_btnSendImagingRequest.setBounds(296, 181, 235, 50);
+		referringPhysicianMainMenu.add(MAIN_btnSendImagingRequest);
 		
 		txtpnWelcomeBack = new JTextPane();
+		txtpnWelcomeBack.setEditable(false);
 		txtpnWelcomeBack.setBounds(10, 10, 111, 19);
 		txtpnWelcomeBack.setText("Welcome Back, Doctor");
 		referringPhysicianMainMenu.add(txtpnWelcomeBack);
 		
 		txtpnDoctor = new JTextPane();
+		txtpnDoctor.setEditable(false);
 		txtpnDoctor.setBounds(114, 10, 77, 19);
 		referringPhysicianMainMenu.add(txtpnDoctor);
 		
-		btnRegisterNewPatient = new JButton("Register a New Patient");
-		btnRegisterNewPatient.addActionListener(new ActionListener() {
+		MAIN_btnRegisterNewPatient = new JButton("Register a New Patient");
+		MAIN_btnRegisterNewPatient.addActionListener(new ActionListener() 
+		{
 			public void actionPerformed(ActionEvent goToRegisterPatientPanel) 
 			{
 				layeredPane.setLayer(referringPhysicianMainMenu, 0);
 				layeredPane.setLayer(registerPatientPanel, 1);
+				REG_btnCancel.setEnabled(true);
+				REG_btnRegisterPatient.setEnabled(true);
+				REG_btnYes.setEnabled(true);
+				REG_chckbxConfirmWithPatient.setEnabled(true);
+				REG_chckbxDifferentThanPatient.setEnabled(true);
+				REG_responsibleStateDropdown.setEnabled(true);
+				REG_sexDropdown.setEnabled(true);
+				REG_btnNo.setEnabled(true);
+				REG_employerStateDropdown.setEnabled(true);
+				REG_stateDropdown.setEnabled(true);
+				MAIN_btnEditPatientInfo.setEnabled(false);
+				MAIN_btnRegisterNewPatient.setEnabled(false);
+				MAIN_btnSendImagingRequest.setEnabled(false);
 			}
 		});
-		btnRegisterNewPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnRegisterNewPatient.setBounds(10, 181, 235, 50);
-		referringPhysicianMainMenu.add(btnRegisterNewPatient);
+		MAIN_btnRegisterNewPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		MAIN_btnRegisterNewPatient.setBounds(10, 181, 235, 50);
+		referringPhysicianMainMenu.add(MAIN_btnRegisterNewPatient);
+		
+		editPatientInfoPanel = new JPanel();
+		layeredPane.setLayer(editPatientInfoPanel, -2);
+		editPatientInfoPanel.setBounds(0, 0, 826, 423);
+		layeredPane.add(editPatientInfoPanel);
+		
+		//IMPORTANT! Make sure that the following 9 lines are at the BOTTOM of the code!
+		IMG_bodyAreaDropdown.setEnabled(false);
+		IMG_btnCancel1.setEnabled(false);
+		IMG_btnGoToScheduling.setEnabled(false);
+		IMG_chckbxDone.setEnabled(false);
+		IMG_patientDropdown.setEnabled(false);
+		IMG_btnYes2.setEnabled(false);
+		IMG_btnNo2.setEnabled(false);
+		IMG_modalityDropdown.setEnabled(false);
+		
+		//IMPORTANT! Make sure that the following 10 lines are at the BOTTOM of the code!
+		REG_btnCancel.setEnabled(false);
+		REG_btnRegisterPatient.setEnabled(false);
+		REG_btnYes.setEnabled(false);
+		REG_chckbxConfirmWithPatient.setEnabled(false);
+		REG_chckbxDifferentThanPatient.setEnabled(false);
+		REG_responsibleStateDropdown.setEnabled(false);
+		REG_sexDropdown.setEnabled(false);
+		REG_btnNo.setEnabled(false);
+		REG_employerStateDropdown.setEnabled(false);
+		REG_stateDropdown.setEnabled(false);
+		
 	}
 }
