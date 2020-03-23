@@ -600,53 +600,100 @@ public class PatientReg
 				Connection conn=null;
 
 				try {
-					conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/", "root", ""); //This part here created the connection to My SQL
+					conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/", "root", ""); //This part here created the connection to MySQL
 					if(conn != null) 
 					System.out.println("Connection Established.");
-					
-					
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					System.out.println("Connection Failure.");
+					e.printStackTrace();
+				}
+				
+				//if the connection fails, then the information will not be pushed to MySQL
+					if(conn != null) {
+				try {
 					String firstName = firstNameInput.getText();
 					String middleInitial = middleInitialInput.getText();
 					String lastName = lastNameInput.getText();
-					String sex = (String) REG_sexDropdown.getSelectedItem();
 					String birthMonth = birthMonthInput.getText();
 					String birthYear = birthYearInput.getText();
 					String birthDay = birthDayInput.getText();
+					String State = (String)REG_stateDropdown.getSelectedItem();
 					String City = cityInput.getText();
+					String Gender = (String) REG_sexDropdown.getSelectedItem();
 					String address = addressInput.getText();
-					String state = (String) REG_stateDropdown.getSelectedItem();
 					String zipCode = zipCodeInput.getText();
 					String employerName = employerNameInput.getText();
 					String workPhoneNumber = workPhoneNumberInput.getText();
 					String homePhoneNumber = homePhoneNumberInput.getText();
 					String socSecNum = socSecNumInput.getText();
+					String employerAddress = employerAddressInput.getText();
+					String employerCity = employerCityInput.getText();
+					String employerZip = employerZipInput.getText();
+					
+					String query = "INSERT INTO hospitaliris.patient_information (First_Name, Middle_initial, Last_Name, Gender, birthMonth, birthYear,birthDay, State, City,address,zipcode,employerName,workPhoneNumber,homePhoneNumber,socSecNum, employerAddress, employerCity, employerZip) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					PreparedStatement stmt = conn.prepareStatement(query);
+				
+					stmt.setString( 1, firstName);
+					stmt.setString( 2, middleInitial);
+					stmt.setString( 3, lastName);
+					stmt.setString(4, Gender);
+					stmt.setString( 5, birthMonth);
+					stmt.setString( 6, birthYear);
+					stmt.setString(7, birthDay);
+					stmt.setString(8, State);
+					stmt.setString( 9, City);
+					stmt.setString( 10, address);
+					stmt.setString( 11, zipCode);
+					stmt.setString( 12, employerName);
+					stmt.setString( 13, workPhoneNumber);
+					stmt.setString( 14, homePhoneNumber);
+					stmt.setString(15, socSecNum);
+					stmt.setString(16, employerAddress);
+					stmt.setString(17, employerCity);
+					stmt.setString(18, employerZip);
+					stmt.execute();
+					System.out.println("Patient information successfully saved!");
+				} catch(SQLException e) {
+					System.out.println("Something is wrong with the patient data");
+					e.printStackTrace();
+				}
+				
+				//this should only push the responsible user information if the checkbox is selected.
+				//done to prevent errors on eclipse side.
+				if (REG_chckbxDifferentThanPatient.isSelected()) {
+				try {
 					String ResponsibleName = responsibleNameInput.getText();
 					String responsibleRelationship = responsibleRelationshipInput.getText();
 					String responsibleAddress = responsibleAddressInput.getText();
+					String responsibleState =(String)REG_responsibleStateDropdown.getSelectedItem();
 					String responsibleCity = responsibleCityInput.getText();
-					String responsibleState = (String) REG_responsibleStateDropdown.getSelectedItem();
 					String responsibleZipCode = responsibleZipCodeInput.getText();
 					String responsibleWorkNumber = responsibleWorkNumberInput.getText();
 					String responsibleHomeNumber = responsibleHomeNumberInput.getText();
 					String responsibleSSN = responsibleSSNInput.getText();
-					String employerAddress = employerAddressInput.getText();
-					String employerCity = employerCityInput.getText();
-					String employerState = (String) REG_employerStateDropdown.getSelectedItem();
-					String employerZip = employerZipInput.getText();
+					String socSecNum = socSecNumInput.getText();
 					
-					String query = "INSERT INTO patient.patient_information (First_Name, Middle_initial, Last_Name) VALUES (?,?,?)";
-					PreparedStatement stmt = conn.prepareStatement(query);
-					
-					stmt.setString( 1, firstName);
-					stmt.setString( 2, middleInitial);
-					stmt.setString( 3, lastName);
-					
-					stmt.execute();
+					String query2 = "INSERT INTO hospitaliris.responsible_information (ResponsibleName, responsibleRelationship, responsibleAddressInput,responsibleState,responsibleCity,responsibleZipCode,responsibleWorkNumber,responsibleHomeNumber,responsibleSSN, dependentSSN) VALUES (?,?,?,?,?,?,?,?,?,?)";
+					PreparedStatement stmt2 = conn.prepareStatement(query2);
+					stmt2.setString( 1, ResponsibleName);
+					stmt2.setString( 2, responsibleRelationship);
+					stmt2.setString( 3, responsibleAddress);
+					stmt2.setString(4, responsibleState);
+					stmt2.setString( 5, responsibleCity);
+					stmt2.setString( 6, responsibleZipCode);
+					stmt2.setString( 7, responsibleWorkNumber);
+					stmt2.setString( 8, responsibleHomeNumber);
+					stmt2.setString( 9, responsibleSSN);
+					stmt2.setString( 10, socSecNum);
+					stmt2.execute();
+					System.out.println("responsible information succesfully saved!");
+				}catch(SQLException e) {
+					System.out.println("Something is wrong with the responsible figure data");
+					e.printStackTrace();
 				}
-				 catch (SQLException e) {
-						// TODO Auto-generated catch block
-						System.out.println("Connection Failure.");
-						e.printStackTrace();
+				
+				}
 					}
 			}
 		});
