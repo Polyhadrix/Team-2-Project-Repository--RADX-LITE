@@ -1,11 +1,17 @@
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -21,6 +27,9 @@ import javax.swing.JTextPane;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.border.BevelBorder;
+
+
+
 import javax.swing.JList;
 import javax.swing.JTabbedPane;
 
@@ -94,9 +103,11 @@ public class PatientReg
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		//getPatientInfo(672);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() 
 			{
+				getPatientInfo("321");
 				try {
 					PatientReg window = new PatientReg();
 					window.frame.setVisible(true);
@@ -631,7 +642,7 @@ public class PatientReg
 					String employerCity = employerCityInput.getText();
 					String employerZip = employerZipInput.getText();
 					
-					String query = "INSERT INTO hospitaliris.patient_information (First_Name, Middle_initial, Last_Name, Gender, birthMonth, birthYear,birthDay, State, City,address,zipcode,employerName,workPhoneNumber,homePhoneNumber,socSecNum, employerAddress, employerCity, employerZip) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					String query = "INSERT INTO hospitaliris.patient_information (First_Name, Middle_initial, Last_Name, Gender, birthMonth, birthYear,birthDay, State, City,address,zipcode,employerName,workPhoneNumber,homePhoneNumber,socSecNum,Patient_ID,employerAddress, employerCity, employerZip) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 					PreparedStatement stmt = conn.prepareStatement(query);
 				
 					stmt.setString( 1, firstName);
@@ -649,6 +660,7 @@ public class PatientReg
 					stmt.setString( 13, workPhoneNumber);
 					stmt.setString( 14, homePhoneNumber);
 					stmt.setString(15, socSecNum);
+					stmt.setString(16,"0001");
 					stmt.setString(16, employerAddress);
 					stmt.setString(17, employerCity);
 					stmt.setString(18, employerZip);
@@ -827,6 +839,8 @@ public class PatientReg
 		lblPatient.setBounds(10, 10, 62, 15);
 		sendImagingRequest.add(lblPatient);
 		
+			
+		
 		JLabel lblHypothesisNotes = new JLabel("Hypothesis Notes:");
 		lblHypothesisNotes.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblHypothesisNotes.setBounds(10, 54, 95, 15);
@@ -836,12 +850,13 @@ public class PatientReg
 		hypothesisNotesInput.setBounds(113, 47, 703, 92);
 		sendImagingRequest.add(hypothesisNotesInput);
 		
-		JComboBox IMG_patientDropdown = new JComboBox();
-		IMG_patientDropdown.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		IMG_patientDropdown.setToolTipText("");
-		IMG_patientDropdown.setBounds(58, 7, 195, 21);
-		sendImagingRequest.add(IMG_patientDropdown);
-		IMG_patientDropdown.addItem("SELECT");
+		JTextArea IMG_patientText = new JTextArea();
+		IMG_patientText.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		IMG_patientText.setToolTipText("");
+		IMG_patientText.setBounds(58, 7, 195, 21);
+		sendImagingRequest.add(IMG_patientText);
+			
+		
 		
 		lblCondition = new JLabel("Condition:");
 		lblCondition.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -956,13 +971,13 @@ public class PatientReg
 				IMG_chckbxDone.setSelected(false);
 				IMG_conditionDropdown.setSelectedIndex(0);
 				IMG_modalityDropdown.setSelectedIndex(0);
-				IMG_patientDropdown.setSelectedIndex(0);
+				IMG_patientText.setText(null);
 				IMG_bodyAreaDropdown.setEnabled(false);
 				IMG_btnCancel1.setEnabled(false);
 				IMG_btnGoToScheduling.setVisible(false);
 				IMG_btnGoToScheduling.setEnabled(false);
 				IMG_chckbxDone.setEnabled(false);
-				IMG_patientDropdown.setEnabled(false);
+				IMG_patientText.setEnabled(false);
 				IMG_btnYes2.setEnabled(false);
 				IMG_btnNo2.setEnabled(false);
 				IMG_modalityDropdown.setEnabled(false);
@@ -1030,7 +1045,7 @@ public class PatientReg
 				IMG_bodyAreaDropdown.setEnabled(true);
 				IMG_btnCancel1.setEnabled(true);
 				IMG_chckbxDone.setEnabled(true);
-				IMG_patientDropdown.setEnabled(true);
+				IMG_patientText.setEnabled(true);
 				IMG_modalityDropdown.setEnabled(true);
 				IMG_conditionDropdown.setEnabled(true);
 				MAIN_btnEditPatientInfo.setEnabled(false);
@@ -1089,7 +1104,7 @@ public class PatientReg
 		IMG_btnCancel1.setEnabled(false);
 		IMG_btnGoToScheduling.setEnabled(false);
 		IMG_chckbxDone.setEnabled(false);
-		IMG_patientDropdown.setEnabled(false);
+		IMG_patientText.setEnabled(false);
 		IMG_btnYes2.setEnabled(false);
 		IMG_btnNo2.setEnabled(false);
 		IMG_modalityDropdown.setEnabled(false);
@@ -1106,5 +1121,38 @@ public class PatientReg
 		REG_employerStateDropdown.setEnabled(false);
 		REG_stateDropdown.setEnabled(false);
 		
+	}
+	
+	private static List getPatientInfo(String ssn){
+		
+		List myArray = new List();
+		Connection conn=null;
+		try {
+			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/", "root", ""); //This part here created the connection to MySQL
+			} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Connection Failure.");
+			e.printStackTrace();
+		}
+		
+		if(conn != null) {
+			try {
+				Statement s = null;
+				String query= "SELECT First_Name from hospitaliris.patient_information where socsSecNum=" + ssn; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				 while (rs.next()) {
+				      String name = rs.getString("First_Name"); //retrieve the result and save it to name
+				      myArray.add(name); //intended to use when populating a dropdown
+				      System.out.println(name); //testing out what is saved to name.
+				         }
+					
+			} catch (SQLException e) {
+
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+					}
+		}
+		return myArray;
 	}
 }
