@@ -107,7 +107,7 @@ public class PatientReg
 		EventQueue.invokeLater(new Runnable() {
 			public void run() 
 			{
-				getPatientInfo("321");
+				fillDropdownMenu("321");
 				try {
 					PatientReg window = new PatientReg();
 					window.frame.setVisible(true);
@@ -1123,36 +1123,154 @@ public class PatientReg
 		
 	}
 	
-	private static List getPatientInfo(String ssn){
-		
+	private static List fillDropdownMenu(String ssn)
+	{
 		List myArray = new List();
 		Connection conn=null;
-		try {
+		try
+		{
 			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/", "root", ""); //This part here created the connection to MySQL
-			} catch (SQLException e) {
+		}
+		
+		catch (SQLException e)
+		{
 			// TODO Auto-generated catch block
 			System.out.println("Connection Failure.");
 			e.printStackTrace();
 		}
 		
-		if(conn != null) {
-			try {
+		if(conn != null) 
+		{
+			try
+			{
 				Statement s = null;
 				String query= "SELECT First_Name from hospitaliris.patient_information where socsSecNum=" + ssn; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				 while (rs.next()) {
-				      String name = rs.getString("First_Name"); //retrieve the result and save it to name
-				      myArray.add(name); //intended to use when populating a dropdown
-				      System.out.println(name); //testing out what is saved to name.
-				         }
-					
-			} catch (SQLException e) {
-
+					while (rs.next())
+					{
+						String SQLname = rs.getString("First_Name"); //retrieve the result and save it to name
+						myArray.add(SQLname); //intended to use when populating a dropdown
+						System.out.println(SQLname); //testing out what is saved to name.
+					}
+			} 
+			catch (SQLException e)
+			{
 				System.out.print("The following error was produced: "+"\n");
 				e.printStackTrace();
-					}
+			}
 		}
+		
 		return myArray;
+	}
+	
+	private static patient getPatientInfo(String patientID)
+	{
+		List myArray = new List();
+		Connection conn=null;
+		try {
+			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/", "root", ""); //This part here created the connection to MySQL
+			}
+		catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			System.out.println("Connection Failure.");
+			e.printStackTrace();
+		}
+		
+		if(conn != null) 
+		{
+			try
+			{
+				Statement s = null;
+				String query= "SELECT First_Name from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_firstName = rs.getString("First_Name"); //retrieve the result and save it to name	
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Middle_Initial from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_middleInitial = rs.getString("Middle_Initial"); //retrieve the result and save it to name	
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Last_Name from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_lastName = rs.getString("Last_Name"); //retrieve the result and save it to name	
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Birth_Month from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_birthMonth = rs.getString("Birth_Month"); //retrieve the result and save it to name	
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Birth_Day from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_birthDay = rs.getString("Birth_Day"); //retrieve the result and save it to name	
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Birth_Year from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_birthYear = rs.getString("Birth_Year"); //retrieve the result and save it to name	
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+		}
+		return new patient(patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, null);
 	}
 }
