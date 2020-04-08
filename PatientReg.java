@@ -99,6 +99,25 @@ public class PatientReg
 	private JComboBox IMG_modalityDropdown;
 	private JButton IMG_btnYes2;
 	private JButton IMG_btnNo2;
+	private JTextField EDIT_patientIDSearchInput;
+	private JTextField middleInitialInput_1;
+	private JTextField firstNameInput_1;
+	private JTextField lastNameInput_1;
+	private JTextField birthMonthInput_1;
+	private JTextField birthDayInput_1;
+	private JTextField birthYearInput_1;
+	private JLabel lblNoteExactly;
+	private JLabel lblStreetAddress_1;
+	private JTextField textField;
+	private JLabel lblCity_1;
+	private JTextField textField_1;
+	private JLabel lblState_1;
+	private JComboBox EDIT_stateDropdown;
+	private JLabel lblZipCode_1;
+	private JTextField textField_2;
+	private JLabel lblWorkPhone_1;
+	private JTextField textField_3;
+	private JLabel lblHomePhone_1;
 	/**
 	 * Launch the application.
 	 */
@@ -1022,14 +1041,7 @@ public class PatientReg
 		layeredPane.add(referringPhysicianMainMenu);
 		referringPhysicianMainMenu.setLayout(null);
 		
-		MAIN_btnEditPatientInfo = new JButton("Edit an Existing Patient's Profile");
-		MAIN_btnEditPatientInfo.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent goToEditRegistrationInfo) 
-			{
-				
-			}
-		});
+		
 		MAIN_btnEditPatientInfo.setToolTipText("");
 		MAIN_btnEditPatientInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		MAIN_btnEditPatientInfo.setBounds(579, 181, 235, 50);
@@ -1095,10 +1107,237 @@ public class PatientReg
 		referringPhysicianMainMenu.add(MAIN_btnRegisterNewPatient);
 		
 		editPatientInfoPanel = new JPanel();
-		layeredPane.setLayer(editPatientInfoPanel, -2);
+		layeredPane.setLayer(editPatientInfoPanel, 2);
 		editPatientInfoPanel.setBounds(0, 0, 826, 423);
 		layeredPane.add(editPatientInfoPanel);
+		editPatientInfoPanel.setLayout(null);
 		
+		JLabel lblSearchByPatientID = new JLabel("Search by patient ID:");
+		lblSearchByPatientID.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblSearchByPatientID.setBounds(10, 10, 126, 15);
+		editPatientInfoPanel.add(lblSearchByPatientID);
+		
+		EDIT_patientIDSearchInput = new JTextField();
+		EDIT_patientIDSearchInput.setColumns(10);
+		EDIT_patientIDSearchInput.setBounds(128, 9, 62, 19);
+		editPatientInfoPanel.add(EDIT_patientIDSearchInput);
+		
+		JButton EDIT_btnSearch = new JButton("SEARCH");
+		EDIT_btnSearch.setBounds(210, 8, 95, 21);
+		editPatientInfoPanel.add(EDIT_btnSearch);
+		
+		lblNoteExactly = new JLabel("[note: exactly 8 digits]");
+		lblNoteExactly.setFont(new Font("Tahoma", Font.ITALIC, 10));
+		lblNoteExactly.setBounds(329, 12, 108, 13);
+		editPatientInfoPanel.add(lblNoteExactly);
+		
+		JLabel lblFailurepleaseSearchAgain = new JLabel("Failure--Please search again");
+		lblFailurepleaseSearchAgain.setForeground(new Color(165, 42, 42));
+		lblFailurepleaseSearchAgain.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblFailurepleaseSearchAgain.setBounds(498, 4, 231, 21);
+		editPatientInfoPanel.add(lblFailurepleaseSearchAgain);
+		
+		JLabel lblSuccess = new JLabel("Success!");
+		lblSuccess.setForeground(new Color(34, 139, 34));
+		lblSuccess.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblSuccess.setBounds(739, 4, 77, 21);
+		editPatientInfoPanel.add(lblSuccess);
+		
+		JLabel lblFirstName_1 = new JLabel("First Name:");
+		lblFirstName_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblFirstName_1.setBounds(10, 51, 62, 15);
+		editPatientInfoPanel.add(lblFirstName_1);
+		
+		firstNameInput_1 = new JTextField();
+		firstNameInput_1.setColumns(10);
+		firstNameInput_1.setBounds(75, 50, 96, 19);
+		editPatientInfoPanel.add(firstNameInput_1);
+		
+		JLabel lblMiddleInitial_1 = new JLabel("Middle Initial:");
+		lblMiddleInitial_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblMiddleInitial_1.setBounds(181, 51, 77, 15);
+		editPatientInfoPanel.add(lblMiddleInitial_1);
+		
+		middleInitialInput_1 = new JTextField();
+		middleInitialInput_1.setColumns(10);
+		middleInitialInput_1.setBounds(259, 50, 23, 19);
+		editPatientInfoPanel.add(middleInitialInput_1);
+		
+		JLabel lblLastName_1 = new JLabel("Last Name:");
+		lblLastName_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblLastName_1.setBounds(292, 51, 65, 15);
+		editPatientInfoPanel.add(lblLastName_1);
+		
+		lastNameInput_1 = new JTextField();
+		lastNameInput_1.setColumns(10);
+		lastNameInput_1.setBounds(355, 50, 96, 19);
+		editPatientInfoPanel.add(lastNameInput_1);
+		
+		JLabel lblDateOfBirth_1 = new JLabel("Date of Birth:");
+		lblDateOfBirth_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblDateOfBirth_1.setBounds(461, 51, 71, 15);
+		editPatientInfoPanel.add(lblDateOfBirth_1);
+		
+		birthMonthInput_1 = new JTextField();
+		birthMonthInput_1.setColumns(10);
+		birthMonthInput_1.setBounds(538, 50, 22, 19);
+		editPatientInfoPanel.add(birthMonthInput_1);
+		
+		JLabel lblSlashDelimiter_1 = new JLabel("/");
+		lblSlashDelimiter_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblSlashDelimiter_1.setBounds(565, 53, 5, 15);
+		editPatientInfoPanel.add(lblSlashDelimiter_1);
+		
+		birthDayInput_1 = new JTextField();
+		birthDayInput_1.setColumns(10);
+		birthDayInput_1.setBounds(573, 50, 22, 19);
+		editPatientInfoPanel.add(birthDayInput_1);
+		
+		JLabel lblSlashDelimiter1_1 = new JLabel("/");
+		lblSlashDelimiter1_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblSlashDelimiter1_1.setBounds(600, 53, 5, 15);
+		editPatientInfoPanel.add(lblSlashDelimiter1_1);
+		
+		birthYearInput_1 = new JTextField();
+		birthYearInput_1.setColumns(10);
+		birthYearInput_1.setBounds(610, 50, 35, 19);
+		editPatientInfoPanel.add(birthYearInput_1);
+		
+		JLabel lblSex_1 = new JLabel("Sex:");
+		lblSex_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblSex_1.setBounds(655, 53, 22, 15);
+		editPatientInfoPanel.add(lblSex_1);
+		
+		JComboBox EDIT_sexDropdown = new JComboBox();
+		EDIT_sexDropdown.setEnabled(false);
+		EDIT_sexDropdown.setBounds(687, 49, 85, 19);
+		editPatientInfoPanel.add(EDIT_sexDropdown);
+		EDIT_sexDropdown.addItem("SELECT");
+		EDIT_sexDropdown.addItem("Male");
+		EDIT_sexDropdown.addItem("Female");
+		
+		lblStreetAddress_1 = new JLabel("Address:");
+		lblStreetAddress_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblStreetAddress_1.setBounds(10, 78, 46, 15);
+		editPatientInfoPanel.add(lblStreetAddress_1);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		textField.setBounds(64, 77, 140, 19);
+		editPatientInfoPanel.add(textField);
+		
+		lblCity_1 = new JLabel("City:");
+		lblCity_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblCity_1.setBounds(214, 80, 23, 15);
+		editPatientInfoPanel.add(lblCity_1);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(243, 77, 96, 19);
+		editPatientInfoPanel.add(textField_1);
+		
+		lblState_1 = new JLabel("State:");
+		lblState_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblState_1.setBounds(349, 80, 31, 15);
+		editPatientInfoPanel.add(lblState_1);
+		
+		EDIT_stateDropdown = new JComboBox();
+		EDIT_stateDropdown.setEnabled(false);
+		EDIT_stateDropdown.setBounds(390, 76, 99, 19);
+		editPatientInfoPanel.add(EDIT_stateDropdown);
+		EDIT_stateDropdown.addItem("SELECT");
+		EDIT_stateDropdown.addItem("Alabama");
+		EDIT_stateDropdown.addItem("Alaska");
+		EDIT_stateDropdown.addItem("Arkansas");
+		EDIT_stateDropdown.addItem("California");
+		EDIT_stateDropdown.addItem("Colorado");
+		EDIT_stateDropdown.addItem("Connecticut");
+		EDIT_stateDropdown.addItem("Delaware");
+		EDIT_stateDropdown.addItem("Florida");
+		EDIT_stateDropdown.addItem("Georgia");
+		EDIT_stateDropdown.addItem("Hawaii");
+		EDIT_stateDropdown.addItem("Idaho");
+		EDIT_stateDropdown.addItem("Illinois");
+		EDIT_stateDropdown.addItem("Indiana");
+		EDIT_stateDropdown.addItem("Iowa");
+		EDIT_stateDropdown.addItem("Kansas");
+		EDIT_stateDropdown.addItem("Kentucky");
+		EDIT_stateDropdown.addItem("Louisiana");
+		EDIT_stateDropdown.addItem("Maine");
+		EDIT_stateDropdown.addItem("Maryland");
+		EDIT_stateDropdown.addItem("Massachusetts");
+		EDIT_stateDropdown.addItem("Michigan");
+		EDIT_stateDropdown.addItem("Minnesota");
+		EDIT_stateDropdown.addItem("Mississippi");
+		EDIT_stateDropdown.addItem("Missouri");
+		EDIT_stateDropdown.addItem("Montana");
+		EDIT_stateDropdown.addItem("Nebraska");
+		EDIT_stateDropdown.addItem("Nevada");
+		EDIT_stateDropdown.addItem("New Hampshire");
+		EDIT_stateDropdown.addItem("New Jersey");
+		EDIT_stateDropdown.addItem("New Mexico");
+		EDIT_stateDropdown.addItem("New York");
+		EDIT_stateDropdown.addItem("North Carolina");
+		EDIT_stateDropdown.addItem("North Dakota");
+		EDIT_stateDropdown.addItem("Ohio");
+		EDIT_stateDropdown.addItem("Oklahoma");
+		EDIT_stateDropdown.addItem("Oregon");
+		EDIT_stateDropdown.addItem("Pennsylvania");
+		EDIT_stateDropdown.addItem("Rhode Island");
+		EDIT_stateDropdown.addItem("South Carolina");
+		EDIT_stateDropdown.addItem("South Dakota");
+		EDIT_stateDropdown.addItem("Tennessee");
+		EDIT_stateDropdown.addItem("Texas");
+		EDIT_stateDropdown.addItem("Utah");
+		EDIT_stateDropdown.addItem("Vermont");
+		EDIT_stateDropdown.addItem("Virginia");
+		EDIT_stateDropdown.addItem("Washington");
+		EDIT_stateDropdown.addItem("West Virginia");
+		EDIT_stateDropdown.addItem("Wisconsin");
+		EDIT_stateDropdown.addItem("Wyoming");
+		
+		lblZipCode_1 = new JLabel("Zip:");
+		lblZipCode_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblZipCode_1.setBounds(498, 80, 19, 15);
+		editPatientInfoPanel.add(lblZipCode_1);
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		textField_2.setBounds(524, 77, 46, 19);
+		editPatientInfoPanel.add(textField_2);
+		
+		lblWorkPhone_1 = new JLabel("Work Phone Number:");
+		lblWorkPhone_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblWorkPhone_1.setBounds(580, 80, 119, 15);
+		editPatientInfoPanel.add(lblWorkPhone_1);
+		
+		textField_3 = new JTextField();
+		textField_3.setColumns(10);
+		textField_3.setBounds(709, 77, 77, 19);
+		editPatientInfoPanel.add(textField_3);
+		
+		lblHomePhone_1 = new JLabel("Home Phone Number:");
+		lblHomePhone_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblHomePhone_1.setBounds(10, 103, 117, 15);
+		editPatientInfoPanel.add(lblHomePhone_1);
+		
+		MAIN_btnEditPatientInfo = new JButton("Edit an Existing Patient's Profile");
+		MAIN_btnEditPatientInfo.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent goToEditRegistrationInfo) 
+			{
+				layeredPane.setLayer(editPatientInfoPanel, 1);
+				layeredPane.setLayer(referringPhysicianMainMenu, 0);
+				MAIN_btnEditPatientInfo.setEnabled(false);
+				MAIN_btnRegisterNewPatient.setEnabled(false);
+				MAIN_btnSendImagingRequest.setEnabled(false);
+				EDIT_patientIDSearchInput.setEnabled(true);
+				EDIT_stateDropdown.setEnabled(true);
+				EDIT_sexDropdown.setEnabled(true);
+				EDIT_btnSearch.setEnabled(true);
+			}
+		});
+
 		//IMPORTANT! Make sure that the following 9 lines are at the BOTTOM of the code!
 		IMG_bodyAreaDropdown.setEnabled(false);
 		IMG_btnCancel1.setEnabled(false);
@@ -1166,6 +1405,7 @@ public class PatientReg
 	
 	private static patient getPatientInfo(String patientID)
 	{
+		patient specPatient = new patient(patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, null);
 		List myArray = new List();
 		Connection conn=null;
 		try {
@@ -1186,7 +1426,8 @@ public class PatientReg
 				String query= "SELECT First_Name from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_firstName = rs.getString("First_Name"); //retrieve the result and save it to name	
+				String SQL_firstName = rs.getString("First_Name"); //retrieve the result and save it to name
+				specPatient.setFirstName(SQL_firstName);
 			} 
 			
 			catch (SQLException e)
@@ -1201,7 +1442,8 @@ public class PatientReg
 				String query= "SELECT Middle_Initial from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_middleInitial = rs.getString("Middle_Initial"); //retrieve the result and save it to name	
+				String SQL_middleInitial = rs.getString("Middle_Initial"); //retrieve the result and save it to name
+				specPatient.setMiddleInitial(SQL_middleInitial);
 			} 
 			
 			catch (SQLException e)
@@ -1216,7 +1458,8 @@ public class PatientReg
 				String query= "SELECT Last_Name from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_lastName = rs.getString("Last_Name"); //retrieve the result and save it to name	
+				String SQL_lastName = rs.getString("Last_Name"); //retrieve the result and save it to name
+				specPatient.setLastName(SQL_lastName);
 			} 
 			
 			catch (SQLException e)
@@ -1231,7 +1474,8 @@ public class PatientReg
 				String query= "SELECT Birth_Month from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_birthMonth = rs.getString("Birth_Month"); //retrieve the result and save it to name	
+				String SQL_birthMonth = rs.getString("Birth_Month"); //retrieve the result and save it to name
+				specPatient.setBirthMonth(SQL_birthMonth);
 			} 
 			
 			catch (SQLException e)
@@ -1246,7 +1490,8 @@ public class PatientReg
 				String query= "SELECT Birth_Day from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_birthDay = rs.getString("Birth_Day"); //retrieve the result and save it to name	
+				String SQL_birthDay = rs.getString("Birth_Day"); //retrieve the result and save it to name
+				specPatient.setBirthDay(SQL_birthDay);
 			} 
 			
 			catch (SQLException e)
@@ -1261,7 +1506,8 @@ public class PatientReg
 				String query= "SELECT Birth_Year from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_birthYear = rs.getString("Birth_Year"); //retrieve the result and save it to name	
+				String SQL_birthYear = rs.getString("Birth_Year"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_birthYear);
 			} 
 			
 			catch (SQLException e)
@@ -1270,7 +1516,358 @@ public class PatientReg
 				e.printStackTrace();
 			}
 		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Sex from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_sex = rs.getString("Sex"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_sex);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Street_Address from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_streetAddress = rs.getString("Street_Address"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_streetAddress);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT City from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_city = rs.getString("City"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_city);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT State from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_state = rs.getString("State"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_state);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Zip_Code from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_zipCode = rs.getString("Zip_Code"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_zipCode);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Work_Phone_Number from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_workPhoneNumber = rs.getString("Work_Phone_Number"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_workPhoneNumber);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Home_Phone_Number from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_homePhoneNumber = rs.getString("Home_Phone_Number"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_homePhoneNumber);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Soc_Sec_Num from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_socSecNum = rs.getString("Soc_Sec_Num"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_socSecNum);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Employer_Name from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_employerName = rs.getString("Employer_Name"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_employerName);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Employer_Address from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_employerStreetAddress = rs.getString("Employer_Address"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_employerStreetAddress);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Employer_City from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_employerCity = rs.getString("Employer_City"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_employerCity);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Employer_State from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_employerState = rs.getString("Employer_State"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_employerState);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Employer_Zip from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_employerZipCode = rs.getString("Employer_Zip"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_employerZipCode);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Responsible_Name from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleName = rs.getString("Responsible_Name"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleName);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Responsible_Relationship from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleRelationship = rs.getString("Responsible_Relationship"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleRelationship);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Responsible_Street_Address from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleStreetAddress = rs.getString("Responsible_Street_Address"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleStreetAddress);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Responsible_City from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleCity = rs.getString("Responsible_City"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleCity);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Responsible_State from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleState = rs.getString("Responsible_State"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleState);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Responsible_Zip from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleZipCode = rs.getString("Responsible_Zip"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleZipCode);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Responsible_Work_Number from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleWorkNumber = rs.getString("Responsible_Work_Number"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleWorkNumber);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Responsible_Home_Number from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleHomeNumber = rs.getString("Responsible_Home_Number"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleHomeNumber);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Responsible_Soc_Sec_Num from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleSSN = rs.getString("Responsible_Soc_Sec_Num"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleSSN);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
 		}
-		return new patient(patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, null);
+		return specPatient;
 	}
 }
