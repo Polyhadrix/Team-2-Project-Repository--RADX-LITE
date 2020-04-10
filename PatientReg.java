@@ -1827,10 +1827,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Middle_Initial from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT Middle_initial from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_middleInitial = rs.getString("Middle_Initial"); //retrieve the result and save it to name
+				String SQL_middleInitial = rs.getString("Middle_initial"); //retrieve the result and save it to name
 				specPatient.setMiddleInitial(SQL_middleInitial);
 			} 
 			
@@ -1859,10 +1859,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Birth_Month from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT birthMonth from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_birthMonth = rs.getString("Birth_Month"); //retrieve the result and save it to name
+				String SQL_birthMonth = rs.getString("birthMonth"); //retrieve the result and save it to name
 				specPatient.setBirthMonth(SQL_birthMonth);
 			} 
 			
@@ -1875,10 +1875,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Birth_Day from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT birthDay from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_birthDay = rs.getString("Birth_Day"); //retrieve the result and save it to name
+				String SQL_birthDay = rs.getString("birthDay"); //retrieve the result and save it to name
 				specPatient.setBirthDay(SQL_birthDay);
 			} 
 			
@@ -1891,10 +1891,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Birth_Year from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT birthYear from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_birthYear = rs.getString("Birth_Year"); //retrieve the result and save it to name
+				String SQL_birthYear = rs.getString("birthYear"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_birthYear);
 			} 
 			
@@ -1907,10 +1907,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Sex from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT Gender from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_sex = rs.getString("Sex"); //retrieve the result and save it to name
+				String SQL_sex = rs.getString("Gender"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_sex);
 			} 
 			
@@ -1923,10 +1923,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Street_Address from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT address from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_streetAddress = rs.getString("Street_Address"); //retrieve the result and save it to name
+				String SQL_streetAddress = rs.getString("address"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_streetAddress);
 			} 
 			
@@ -1971,10 +1971,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Zip_Code from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT zipcode from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_zipCode = rs.getString("Zip_Code"); //retrieve the result and save it to name
+				String SQL_zipCode = rs.getString("zipcode"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_zipCode);
 			} 
 			
@@ -1987,10 +1987,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Work_Phone_Number from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT workPhoneNumber from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_workPhoneNumber = rs.getString("Work_Phone_Number"); //retrieve the result and save it to name
+				String SQL_workPhoneNumber = rs.getString("workPhoneNumber"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_workPhoneNumber);
 			} 
 			
@@ -2003,10 +2003,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Home_Phone_Number from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT homePhoneNumber from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_homePhoneNumber = rs.getString("Home_Phone_Number"); //retrieve the result and save it to name
+				String SQL_homePhoneNumber = rs.getString("homePhoneNumber"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_homePhoneNumber);
 			} 
 			
@@ -2019,10 +2019,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Soc_Sec_Num from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT socSecNum from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_socSecNum = rs.getString("Soc_Sec_Num"); //retrieve the result and save it to name
+				String SQL_socSecNum = rs.getString("socSecNum"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_socSecNum);
 			} 
 			
@@ -2035,10 +2035,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Employer_Name from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT employerName from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_employerName = rs.getString("Employer_Name"); //retrieve the result and save it to name
+				String SQL_employerName = rs.getString("employerName"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_employerName);
 			} 
 			
@@ -2051,10 +2051,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Employer_Address from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT employerAddress from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_employerStreetAddress = rs.getString("Employer_Address"); //retrieve the result and save it to name
+				String SQL_employerStreetAddress = rs.getString("employerAddress"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_employerStreetAddress);
 			} 
 			
@@ -2067,10 +2067,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Employer_City from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT employerCity from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_employerCity = rs.getString("Employer_City"); //retrieve the result and save it to name
+				String SQL_employerCity = rs.getString("employerCity"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_employerCity);
 			} 
 			
@@ -2083,10 +2083,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Employer_State from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT employerState from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_employerState = rs.getString("Employer_State"); //retrieve the result and save it to name
+				String SQL_employerState = rs.getString("employerState"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_employerState);
 			} 
 			
@@ -2099,10 +2099,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Employer_Zip from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT employerZip from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_employerZipCode = rs.getString("Employer_Zip"); //retrieve the result and save it to name
+				String SQL_employerZipCode = rs.getString("employerZip"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_employerZipCode);
 			} 
 			
@@ -2115,10 +2115,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Responsible_Name from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT responsibleName from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_responsibleName = rs.getString("Responsible_Name"); //retrieve the result and save it to name
+				String SQL_responsibleName = rs.getString("responsibleName"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_responsibleName);
 			} 
 			
@@ -2131,10 +2131,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Responsible_Relationship from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT responsibleRelationship from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_responsibleRelationship = rs.getString("Responsible_Relationship"); //retrieve the result and save it to name
+				String SQL_responsibleRelationship = rs.getString("responsibleRelationship"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_responsibleRelationship);
 			} 
 			
@@ -2147,10 +2147,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Responsible_Street_Address from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT responsibleAddressInput from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_responsibleStreetAddress = rs.getString("Responsible_Street_Address"); //retrieve the result and save it to name
+				String SQL_responsibleStreetAddress = rs.getString("responsibleAddressInput"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_responsibleStreetAddress);
 			} 
 			
@@ -2163,10 +2163,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Responsible_City from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT responsibleCity from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_responsibleCity = rs.getString("Responsible_City"); //retrieve the result and save it to name
+				String SQL_responsibleCity = rs.getString("responsibleCity"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_responsibleCity);
 			} 
 			
@@ -2179,10 +2179,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Responsible_State from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT responsibleState from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_responsibleState = rs.getString("Responsible_State"); //retrieve the result and save it to name
+				String SQL_responsibleState = rs.getString("responsibleState"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_responsibleState);
 			} 
 			
@@ -2195,10 +2195,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Responsible_Zip from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT responsibleZipCode from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_responsibleZipCode = rs.getString("Responsible_Zip"); //retrieve the result and save it to name
+				String SQL_responsibleZipCode = rs.getString("responsibleZipCode"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_responsibleZipCode);
 			} 
 			
@@ -2211,10 +2211,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Responsible_Work_Number from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT responsibleWorkNumber from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_responsibleWorkNumber = rs.getString("Responsible_Work_Number"); //retrieve the result and save it to name
+				String SQL_responsibleWorkNumber = rs.getString("responsibleWorkNumber"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_responsibleWorkNumber);
 			} 
 			
@@ -2227,10 +2227,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Responsible_Home_Number from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT responsibleHomeNumber from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_responsibleHomeNumber = rs.getString("Responsible_Home_Number"); //retrieve the result and save it to name
+				String SQL_responsibleHomeNumber = rs.getString("responsibleHomeNumber"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_responsibleHomeNumber);
 			} 
 			
@@ -2243,10 +2243,10 @@ public class PatientReg
 			try
 			{
 				Statement s = null;
-				String query= "SELECT Responsible_Soc_Sec_Num from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				String query= "SELECT responsibleSSN from hospitaliris.patient_information where patientID=" + patientID; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				String SQL_responsibleSSN = rs.getString("Responsible_Soc_Sec_Num"); //retrieve the result and save it to name
+				String SQL_responsibleSSN = rs.getString("responsibleSSN"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_responsibleSSN);
 			} 
 			
