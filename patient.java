@@ -2,7 +2,7 @@ import java.io.File;
 import java.util.Scanner;
 public class patient extends personnel
 {
-	private int patientID;
+	private String patientID;
 	private String firstName;
 	private String middleInitial;
 	private String lastName;
@@ -23,6 +23,7 @@ public class patient extends personnel
 	private String employerState;
 	private String employerZipCode;
 	private String responsibleName;
+	private boolean different;
 	private String responsibleRelationship;
 	private String responsibleStreetAddress;
 	private String responsibleCity;
@@ -32,11 +33,11 @@ public class patient extends personnel
 	private String responsibleHomePhoneNumber;
 	private String responsibleSocialSecurityNumber;
 	private File files;
-		public patient(int patientID, String firstName, String middleInitial, String lastName, String birthMonth,
+		public patient(String patientID, String firstName, String middleInitial, String lastName, String birthMonth,
 				String birthYear, String birthDay, String sex, String streetAddress, String city, String state,
 				String zipCode, String workPhoneNumber, String homePhoneNumber, String socialSecurityNumber,
 				String employerName, String employerStreetAddress, String employerCity, String employerState,
-				String employerZipCode, String responsibleName, String responsibleRelationship,
+				String employerZipCode, String responsibleName, boolean different, String responsibleRelationship,
 				String responsibleStreetAddress, String responsibleCity, String responsibleState,
 				String responsibleZipCode, String responsibleWorkPhoneNumber, String responsibleHomePhoneNumber,
 				String responsibleSocialSecurityNumber, File files)
@@ -63,6 +64,7 @@ public class patient extends personnel
 			this.employerState = employerState;
 			this.employerZipCode = employerZipCode;
 			this.responsibleName = responsibleName;
+			this.different = different;
 			this.responsibleRelationship = responsibleRelationship;
 			this.responsibleStreetAddress = responsibleStreetAddress;
 			this.responsibleCity = responsibleCity;
@@ -73,7 +75,7 @@ public class patient extends personnel
 			this.responsibleSocialSecurityNumber = responsibleSocialSecurityNumber;
 			this.files = files;
 		}
-		public void setPatientID(int patientID) {
+		public void setPatientID(String patientID) {
 			this.patientID = patientID;
 		}
 		public void setFirstName(String firstName) {
@@ -136,6 +138,9 @@ public class patient extends personnel
 		public void setResponsibleName(String responsibleName) {
 			this.responsibleName = responsibleName;
 		}
+		public void setDifferent(boolean different) {
+			this.different = different;
+		}
 		public void setResponsibleRelationship(String responsibleRelationship) {
 			this.responsibleRelationship = responsibleRelationship;
 		}
@@ -162,5 +167,98 @@ public class patient extends personnel
 		}
 		public void setFiles(File files) {
 			this.files = files;
+		}
+		public String getPatientID() {
+			return patientID;
+		}
+		public String getFirstName() {
+			return firstName;
+		}
+		public String getMiddleInitial() {
+			return middleInitial;
+		}
+		public String getLastName() {
+			return lastName;
+		}
+		public String getBirthMonth() {
+			return birthMonth;
+		}
+		public String getBirthYear() {
+			return birthYear;
+		}
+		public String getBirthDay() {
+			return birthDay;
+		}
+		public String getSex() {
+			return sex;
+		}
+		public String getStreetAddress() {
+			return streetAddress;
+		}
+		public String getCity() {
+			return city;
+		}
+		public String getState() {
+			return state;
+		}
+		public String getZipCode() {
+			return zipCode;
+		}
+		public String getWorkPhoneNumber() {
+			return workPhoneNumber;
+		}
+		public String getHomePhoneNumber() {
+			return homePhoneNumber;
+		}
+		public String getSocialSecurityNumber() {
+			return socialSecurityNumber;
+		}
+		public String getEmployerName() {
+			return employerName;
+		}
+		public String getEmployerStreetAddress() {
+			return employerStreetAddress;
+		}
+		public String getEmployerCity() {
+			return employerCity;
+		}
+		public String getEmployerState() {
+			return employerState;
+		}
+		public String getEmployerZipCode() {
+			return employerZipCode;
+		}
+		public String getResponsibleName() {
+			return responsibleName;
+		}
+		public boolean getDifferent() {
+			return different;
+		}
+		public String getResponsibleRelationship() {
+			return responsibleRelationship;
+		}
+		public String getResponsibleStreetAddress() {
+			return responsibleStreetAddress;
+		}
+		public String getResponsibleCity() {
+			return responsibleCity;
+		}
+		public String getResponsibleState() {
+			return responsibleState;
+		}
+		public String getResponsibleZipCode() {
+			return responsibleZipCode;
+		}
+		public String getResponsibleWorkPhoneNumber() {
+			return responsibleWorkPhoneNumber;
+		}
+		public String getResponsibleHomePhoneNumber() {
+			return responsibleHomePhoneNumber;
+		}
+		public String getResponsibleSocialSecurityNumber() {
+			return responsibleSocialSecurityNumber;
+		}
+		public File getFiles() {
+			return files;
 		}	
 }
