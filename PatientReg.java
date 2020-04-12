@@ -1140,10 +1140,6 @@ public class PatientReg
 		EDIT_patientIDSearchInput.setBounds(128, 9, 62, 19);
 		editPatientInfoPanel.add(EDIT_patientIDSearchInput);
 		
-		JButton EDIT_btnSearch = new JButton("SEARCH");
-		EDIT_btnSearch.setBounds(210, 8, 95, 21);
-		editPatientInfoPanel.add(EDIT_btnSearch);
-		
 		lblNoteExactly = new JLabel("[note: exactly 8 digits]");
 		lblNoteExactly.setFont(new Font("Tahoma", Font.ITALIC, 10));
 		lblNoteExactly.setBounds(329, 12, 108, 13);
@@ -1609,10 +1605,12 @@ public class PatientReg
 				if(responsiblePanel_1.isVisible() == true)
 				{
 					responsiblePanel_1.setVisible(false);
+					EDIT_responsibleStateDropdown.setEnabled(false);
 				}
 				else
 				{
 					responsiblePanel_1.setVisible(true);
+					EDIT_responsibleStateDropdown.setEnabled(true);
 				}
 			}
 		});
@@ -1620,6 +1618,57 @@ public class PatientReg
 		EDIT_chckbxDifferentThanPatient.setEnabled(false);
 		EDIT_chckbxDifferentThanPatient.setBounds(341, 157, 148, 21);
 		editPatientInfoPanel.add(EDIT_chckbxDifferentThanPatient);
+		
+		JButton EDIT_btnSearch = new JButton("SEARCH");
+		EDIT_btnSearch.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent searchbyPatientID)
+			{
+				patient patientRef = getPatientInfo(EDIT_patientIDSearchInput.getText());
+				firstNameInput_1.setText(patientRef.getFirstName());
+				middleInitialInput_1.setText(patientRef.getMiddleInitial());
+				lastNameInput_1.setText(patientRef.getLastName());
+				birthMonthInput_1.setText(patientRef.getBirthMonth());
+				birthDayInput_1.setText(patientRef.getBirthDay());
+				birthYearInput_1.setText(patientRef.getBirthYear());
+				EDIT_sexDropdown.setSelectedItem(patientRef.getSex());
+				streetAddressInput_1.setText(patientRef.getStreetAddress());
+				cityInput_1.setText(patientRef.getCity());
+				EDIT_stateDropdown.setSelectedItem(patientRef.getState());
+				zipInput_1.setText(patientRef.getZipCode());
+				workNumberInput_1.setText(patientRef.getWorkPhoneNumber());
+				homeNumberInput_1.setText(patientRef.getHomePhoneNumber());
+				socSecNumInput_1.setText(patientRef.getSocialSecurityNumber());
+				employerNameInput.setText(patientRef.getEmployerName());
+				employerAddressInput_1.setText(patientRef.getEmployerStreetAddress());
+				employerCityInput_1.setText(patientRef.getEmployerCity());
+				EDIT_employerStateDropdown.setSelectedItem(patientRef.getEmployerState());
+				employerZipInput_1.setText(patientRef.getEmployerZipCode());
+				responsibleNameInput_1.setText(patientRef.getResponsibleName());
+					if (patientRef.getDifferent() == true)
+					{
+						responsiblePanel_1.setVisible(true);
+						EDIT_responsibleStateDropdown.setEnabled(true);
+						EDIT_chckbxDifferentThanPatient.setSelected(true);
+					}
+					else
+					{
+						responsiblePanel_1.setVisible(false);
+						EDIT_responsibleStateDropdown.setEnabled(false);
+						EDIT_chckbxDifferentThanPatient.setSelected(false);
+					}
+				responsibleRelationshipInput_1.setText(patientRef.getResponsibleRelationship());
+				responsibleAddressInput_1.setText(patientRef.getResponsibleStreetAddress());
+				responsibleCityInput_1.setText(patientRef.getResponsibleCity());
+				EDIT_responsibleStateDropdown.setSelectedItem(patientRef.getResponsibleState());
+				responsibleZipInput_1.setText(patientRef.getResponsibleZipCode());
+				responsibleWorkNumberInput_1.setText(patientRef.getResponsibleWorkPhoneNumber());
+				responsibleHomeNumberInput_1.setText(patientRef.getResponsibleHomePhoneNumber());
+				responsibleSocSecNumInput_1.setText(patientRef.getResponsibleSocialSecurityNumber());
+			}
+		});
+		EDIT_btnSearch.setBounds(210, 8, 95, 21);
+		editPatientInfoPanel.add(EDIT_btnSearch);
 		
 		JButton EDIT_btnFinalizeEdit = new JButton("FINALIZE EDIT");
 		EDIT_btnFinalizeEdit.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -1742,6 +1791,7 @@ public class PatientReg
 				EDIT_btnNo.setEnabled(false);
 			}
 		});
+		
 		EDIT_btnNo.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		EDIT_btnNo.setEnabled(false);
 		EDIT_btnNo.setBounds(180, 8, 59, 21);
@@ -1793,7 +1843,7 @@ public class PatientReg
 	
 	private static patient getPatientInfo(String patientID)
 	{
-		patient specPatient = new patient(patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, null);
+		patient specPatient = new patient(patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, false, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, null);
 		List myArray = new List();
 		Connection conn=null;
 		try {
@@ -2120,6 +2170,22 @@ public class PatientReg
 				ResultSet rs=s.executeQuery(query);
 				String SQL_responsibleName = rs.getString("responsibleName"); //retrieve the result and save it to name
 				specPatient.setBirthYear(SQL_responsibleName);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT different from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				boolean SQL_different = rs.getBoolean("different"); //retrieve the result and save it to name
+				specPatient.setDifferent(SQL_different);
 			} 
 			
 			catch (SQLException e)
