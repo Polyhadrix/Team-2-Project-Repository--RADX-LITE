@@ -142,6 +142,7 @@ public class PatientReg
 	private JButton EDIT_btnYes;
 	private JButton EDIT_btnNo;
 	private JButton EDIT_btnCancel;
+	private JButton MAIN_btnViewEditInfo;
 	/**
 	 * Launch the application.
 	 */
@@ -832,7 +833,7 @@ public class PatientReg
 				REG_responsibleStateDropdown.setEnabled(false);
 				REG_btnYes.setEnabled(false);
 //Re-enable all the interactables in the Main Menu.
-				MAIN_btnEditPatientInfo.setEnabled(true);
+				MAIN_btnViewEditInfo.setEnabled(true);
 				MAIN_btnRegisterNewPatient.setEnabled(true);
 				MAIN_btnSendImagingRequest.setEnabled(true);
 			}
@@ -879,37 +880,37 @@ public class PatientReg
 		
 		lblPatient = new JLabel("Patient:");
 		lblPatient.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblPatient.setBounds(10, 10, 62, 15);
+		lblPatient.setBounds(10, 13, 62, 15);
 		sendImagingRequest.add(lblPatient);
 		
 			
 		
 		JLabel lblHypothesisNotes = new JLabel("Hypothesis Notes:");
 		lblHypothesisNotes.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblHypothesisNotes.setBounds(10, 54, 95, 15);
+		lblHypothesisNotes.setBounds(10, 106, 95, 15);
 		sendImagingRequest.add(lblHypothesisNotes);
 		
 		JTextArea hypothesisNotesInput = new JTextArea();
-		hypothesisNotesInput.setBounds(113, 47, 703, 92);
+		hypothesisNotesInput.setBounds(113, 99, 703, 92);
 		sendImagingRequest.add(hypothesisNotesInput);
 		
 		JTextArea IMG_patientText = new JTextArea();
 		IMG_patientText.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		IMG_patientText.setToolTipText("");
-		IMG_patientText.setBounds(58, 7, 195, 21);
+		IMG_patientText.setBounds(58, 10, 195, 21);
 		sendImagingRequest.add(IMG_patientText);
 			
 		
 		
 		lblCondition = new JLabel("Condition:");
 		lblCondition.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblCondition.setBounds(271, 10, 62, 15);
+		lblCondition.setBounds(271, 62, 62, 15);
 		sendImagingRequest.add(lblCondition);
 		
 		IMG_conditionDropdown = new JComboBox();
 		IMG_conditionDropdown.setToolTipText("");
 		IMG_conditionDropdown.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		IMG_conditionDropdown.setBounds(334, 7, 158, 21);
+		IMG_conditionDropdown.setBounds(334, 59, 158, 21);
 		sendImagingRequest.add(IMG_conditionDropdown);
 		IMG_conditionDropdown.addItem("SELECT");
 		IMG_conditionDropdown.addItem("Fracture");
@@ -920,34 +921,34 @@ public class PatientReg
 		
 		JLabel lblObservations = new JLabel("Observations:");
 		lblObservations.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblObservations.setBounds(10, 154, 77, 15);
+		lblObservations.setBounds(10, 206, 77, 15);
 		sendImagingRequest.add(lblObservations);
 		
 		JTextArea observationsInput = new JTextArea();
-		observationsInput.setBounds(97, 150, 719, 92);
+		observationsInput.setBounds(97, 202, 719, 92);
 		sendImagingRequest.add(observationsInput);
 		
 		JLabel lblAreaOfBody = new JLabel("Area of Body:");
 		lblAreaOfBody.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblAreaOfBody.setBounds(510, 10, 77, 15);
+		lblAreaOfBody.setBounds(510, 62, 77, 15);
 		sendImagingRequest.add(lblAreaOfBody);
 		
 		JComboBox IMG_bodyAreaDropdown = new JComboBox();
 		IMG_bodyAreaDropdown.setToolTipText("");
 		IMG_bodyAreaDropdown.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		IMG_bodyAreaDropdown.setBounds(597, 7, 127, 21);
+		IMG_bodyAreaDropdown.setBounds(597, 59, 127, 21);
 		sendImagingRequest.add(IMG_bodyAreaDropdown);
 		IMG_bodyAreaDropdown.addItem("SELECT");
 		
 		lblModality = new JLabel("Modality:");
 		lblModality.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblModality.setBounds(10, 272, 62, 15);
+		lblModality.setBounds(10, 324, 62, 15);
 		sendImagingRequest.add(lblModality);
 		
 		IMG_modalityDropdown = new JComboBox();
 		IMG_modalityDropdown.setToolTipText("");
 		IMG_modalityDropdown.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		IMG_modalityDropdown.setBounds(70, 269, 158, 21);
+		IMG_modalityDropdown.setBounds(70, 321, 158, 21);
 		sendImagingRequest.add(IMG_modalityDropdown);
 		IMG_modalityDropdown.addItem("SELECT");
 		IMG_modalityDropdown.addItem("Plain X-Ray");
@@ -959,7 +960,7 @@ public class PatientReg
 		
 		JButton IMG_btnGoToScheduling = new JButton("Go to Scheduling");
 		IMG_btnGoToScheduling.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		IMG_btnGoToScheduling.setBounds(635, 270, 158, 21);
+		IMG_btnGoToScheduling.setBounds(635, 322, 158, 21);
 		sendImagingRequest.add(IMG_btnGoToScheduling);
 		IMG_btnGoToScheduling.setVisible(false);
 		
@@ -981,11 +982,11 @@ public class PatientReg
 			}
 		});
 		IMG_chckbxDone.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		IMG_chckbxDone.setBounds(557, 269, 67, 21);
+		IMG_chckbxDone.setBounds(557, 321, 67, 21);
 		sendImagingRequest.add(IMG_chckbxDone);
 		
 		JPanel confirmCancelPanel1 = new JPanel();
-		confirmCancelPanel1.setBounds(106, 317, 267, 48);
+		confirmCancelPanel1.setBounds(106, 369, 267, 48);
 		sendImagingRequest.add(confirmCancelPanel1);
 		confirmCancelPanel1.setLayout(null);
 		confirmCancelPanel1.setVisible(false);
@@ -1000,42 +1001,6 @@ public class PatientReg
 				IMG_btnNo2.setEnabled(true);
 			}
 		});
-			
-		IMG_btnYes2 = new JButton("YES");
-		IMG_btnYes2.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent IMG_yesButtonPressed) 
-			{
-				layeredPane.setLayer(referringPhysicianMainMenu, 1);
-				layeredPane.setLayer(sendImagingRequest, -1);
-				hypothesisNotesInput.setText(null);
-				observationsInput.setText(null);
-				IMG_bodyAreaDropdown.setSelectedIndex(0);
-				IMG_chckbxDone.setSelected(false);
-				IMG_conditionDropdown.setSelectedIndex(0);
-				IMG_modalityDropdown.setSelectedIndex(0);
-				IMG_patientText.setText(null);
-				IMG_bodyAreaDropdown.setEnabled(false);
-				IMG_btnCancel1.setEnabled(false);
-				IMG_btnGoToScheduling.setVisible(false);
-				IMG_btnGoToScheduling.setEnabled(false);
-				IMG_chckbxDone.setEnabled(false);
-				IMG_patientText.setEnabled(false);
-				IMG_btnYes2.setEnabled(false);
-				IMG_btnNo2.setEnabled(false);
-				IMG_modalityDropdown.setEnabled(false);
-				confirmCancelPanel1.setVisible(false);
-				IMG_btnYes2.setEnabled(false);
-				IMG_btnNo2.setEnabled(false);
-				MAIN_btnEditPatientInfo.setEnabled(true);
-				MAIN_btnRegisterNewPatient.setEnabled(true);
-				MAIN_btnSendImagingRequest.setEnabled(true);
-				
-			}
-		});
-		IMG_btnYes2.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		IMG_btnYes2.setBounds(98, 10, 63, 21);
-		confirmCancelPanel1.add(IMG_btnYes2);
 		
 		IMG_btnNo2 = new JButton("NO");
 		IMG_btnNo2.addActionListener(new ActionListener()
@@ -1056,7 +1021,7 @@ public class PatientReg
 		lblPleaseConfirm_1.setBounds(10, 13, 92, 15);
 		confirmCancelPanel1.add(lblPleaseConfirm_1);
 		IMG_btnCancel1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		IMG_btnCancel1.setBounds(10, 326, 85, 21);
+		IMG_btnCancel1.setBounds(10, 378, 85, 21);
 		sendImagingRequest.add(IMG_btnCancel1);
 		
 		referringPhysicianMainMenu = new JPanel();
@@ -1064,28 +1029,6 @@ public class PatientReg
 		referringPhysicianMainMenu.setBounds(0, 0, 824, 423);
 		layeredPane.add(referringPhysicianMainMenu);
 		referringPhysicianMainMenu.setLayout(null);
-		
-		MAIN_btnSendImagingRequest = new JButton("Place an Order");
-		MAIN_btnSendImagingRequest.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent goToImagingRequest) 
-			{
-				layeredPane.setLayer(sendImagingRequest, 1);
-				layeredPane.setLayer(referringPhysicianMainMenu, 0);
-				IMG_bodyAreaDropdown.setEnabled(true);
-				IMG_btnCancel1.setEnabled(true);
-				IMG_chckbxDone.setEnabled(true);
-				IMG_patientText.setEnabled(true);
-				IMG_modalityDropdown.setEnabled(true);
-				IMG_conditionDropdown.setEnabled(true);
-				MAIN_btnEditPatientInfo.setEnabled(false);
-				MAIN_btnRegisterNewPatient.setEnabled(false);
-				MAIN_btnSendImagingRequest.setEnabled(false);
-			}
-		});
-		MAIN_btnSendImagingRequest.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		MAIN_btnSendImagingRequest.setBounds(296, 181, 235, 50);
-		referringPhysicianMainMenu.add(MAIN_btnSendImagingRequest);
 		
 		txtpnWelcomeBack = new JTextPane();
 		txtpnWelcomeBack.setEditable(false);
@@ -1115,7 +1058,7 @@ public class PatientReg
 				REG_btnNo.setEnabled(true);
 				REG_employerStateDropdown.setEnabled(true);
 				REG_stateDropdown.setEnabled(true);
-				MAIN_btnEditPatientInfo.setEnabled(false);
+				MAIN_btnViewEditInfo.setEnabled(false);
 				MAIN_btnRegisterNewPatient.setEnabled(false);
 				MAIN_btnSendImagingRequest.setEnabled(false);
 			}
@@ -1697,7 +1640,7 @@ public class PatientReg
 		EDIT_chckbxDone.setBounds(518, 290, 77, 21);
 		editPatientInfoPanel.add(EDIT_chckbxDone);
 		
-		JButton MAIN_btnViewEditInfo = new JButton("View/Edit Patient Profile");
+		MAIN_btnViewEditInfo = new JButton("View/Edit Patient Profile");
 		MAIN_btnViewEditInfo.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent goToViewEditInfo)
@@ -1797,6 +1740,63 @@ public class PatientReg
 		EDIT_btnNo.setBounds(180, 8, 59, 21);
 		confirmCancelPanel_2.add(EDIT_btnNo);
 		confirmCancelPanel_2.setVisible(false);
+		
+		MAIN_btnSendImagingRequest = new JButton("Place an Order");
+		MAIN_btnSendImagingRequest.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent goToImagingRequest) 
+			{
+				layeredPane.setLayer(sendImagingRequest, 1);
+				layeredPane.setLayer(referringPhysicianMainMenu, 0);
+				IMG_bodyAreaDropdown.setEnabled(true);
+				IMG_btnCancel1.setEnabled(true);
+				IMG_chckbxDone.setEnabled(true);
+				IMG_patientText.setEnabled(true);
+				IMG_modalityDropdown.setEnabled(true);
+				IMG_conditionDropdown.setEnabled(true);
+				MAIN_btnViewEditInfo.setEnabled(false);
+				MAIN_btnRegisterNewPatient.setEnabled(false);
+				MAIN_btnSendImagingRequest.setEnabled(false);
+			}
+		});
+		MAIN_btnSendImagingRequest.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		MAIN_btnSendImagingRequest.setBounds(296, 181, 235, 50);
+		referringPhysicianMainMenu.add(MAIN_btnSendImagingRequest);
+		
+		IMG_btnYes2 = new JButton("YES");
+		IMG_btnYes2.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent IMG_yesButtonPressed) 
+			{
+				layeredPane.setLayer(referringPhysicianMainMenu, 1);
+				layeredPane.setLayer(sendImagingRequest, -1);
+				hypothesisNotesInput.setText(null);
+				observationsInput.setText(null);
+				IMG_bodyAreaDropdown.setSelectedIndex(0);
+				IMG_chckbxDone.setSelected(false);
+				IMG_conditionDropdown.setSelectedIndex(0);
+				IMG_modalityDropdown.setSelectedIndex(0);
+				IMG_patientText.setText(null);
+				IMG_bodyAreaDropdown.setEnabled(false);
+				IMG_btnCancel1.setEnabled(false);
+				IMG_btnGoToScheduling.setVisible(false);
+				IMG_btnGoToScheduling.setEnabled(false);
+				IMG_chckbxDone.setEnabled(false);
+				IMG_patientText.setEnabled(false);
+				IMG_btnYes2.setEnabled(false);
+				IMG_btnNo2.setEnabled(false);
+				IMG_modalityDropdown.setEnabled(false);
+				confirmCancelPanel1.setVisible(false);
+				IMG_btnYes2.setEnabled(false);
+				IMG_btnNo2.setEnabled(false);
+				MAIN_btnViewEditInfo.setEnabled(true);
+				MAIN_btnRegisterNewPatient.setEnabled(true);
+				MAIN_btnSendImagingRequest.setEnabled(true);
+			}
+		});
+		IMG_btnYes2.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		IMG_btnYes2.setBounds(98, 10, 63, 21);
+		confirmCancelPanel1.add(IMG_btnYes2);
 	}
 	
 	
