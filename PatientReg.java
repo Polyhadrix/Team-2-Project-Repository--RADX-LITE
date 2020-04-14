@@ -1614,6 +1614,112 @@ public class PatientReg
 		editPatientInfoPanel.add(EDIT_btnSearch);
 		
 		JButton EDIT_btnFinalizeEdit = new JButton("FINALIZE EDIT");
+		EDIT_btnFinalizeEdit.addActionListener(new ActionListener()
+	        	{
+				public void actionPerformed(ActionEvent editFinalized) 
+			{
+				Connection conn=null;
+
+				try {
+					conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/", "root", ""); //This part here created the connection to MySQL
+					if(conn != null) 
+					System.out.println("Connection Established.");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					System.out.println("Connection Failure.");
+					e.printStackTrace();
+				}
+				
+				//if the connection fails, then the information will not be pushed to MySQL
+					if(conn != null) {
+				try {
+					String firstName = firstNameInput_1.getText();
+					String middleInitial = middleInitialInput_1.getText();
+					String lastName = lastNameInput_1.getText();
+					String birthMonth = birthMonthInput_1.getText();
+					String birthYear = birthYearInput_1.getText();
+					String birthDay = birthDayInput_1.getText();
+					String State = (String) EDIT_stateDropdown.getSelectedItem();
+					String City = cityInput_1.getText();
+					String Gender = (String) EDIT_sexDropdown.getSelectedItem();
+					String address = addressInput_1.getText();
+					String zipCode = zipCodeInput_1.getText();
+					String employerName = employerNameInput_1.getText();
+					String workPhoneNumber = workPhoneNumberInput_1.getText();
+					String homePhoneNumber = homePhoneNumberInput_1.getText();
+					String socSecNum = socSecNumInput_1.getText();
+					String employerAddress = employerAddressInput_1.getText();
+					String employerCity = employerCityInput_1.getText();
+					String employerZip = employerZipInput_1.getText();
+					
+					String query = "INSERT INTO hospitaliris.patient_information (First_Name, Middle_initial, Last_Name, Gender, birthMonth, birthYear,birthDay, State, City,address,zipcode,employerName,workPhoneNumber,homePhoneNumber,socSecNum,Patient_ID,employerAddress, employerCity, employerZip) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					PreparedStatement stmt = conn.prepareStatement(query);
+				
+					stmt.setString( 1, firstName);
+					stmt.setString( 2, middleInitial);
+					stmt.setString( 3, lastName);
+					stmt.setString(4, Gender);
+					stmt.setString( 5, birthMonth);
+					stmt.setString( 6, birthYear);
+					stmt.setString(7, birthDay);
+					stmt.setString(8, State);
+					stmt.setString( 9, City);
+					stmt.setString( 10, address);
+					stmt.setString( 11, zipCode);
+					stmt.setString( 12, employerName);
+					stmt.setString( 13, workPhoneNumber);
+					stmt.setString( 14, homePhoneNumber);
+					stmt.setString(15, socSecNum);
+					stmt.setString(16,"0001");
+					stmt.setString(16, employerAddress);
+					stmt.setString(17, employerCity);
+					stmt.setString(18, employerZip);
+					stmt.execute();
+					System.out.println("Patient information successfully saved!");
+				} catch(SQLException e) {
+					System.out.println("Something is wrong with the patient data");
+					e.printStackTrace();
+				}
+				
+				//this should only push the responsible user information if the checkbox is selected.
+				//done to prevent errors on eclipse side.
+				if (REG_chckbxDifferentThanPatient.isSelected()) {
+				try {
+					String ResponsibleName = responsibleNameInput_1.getText();
+					String responsibleRelationship = responsibleRelationshipInput_1.getText();
+					String responsibleAddress = responsibleAddressInput_1.getText();
+					String responsibleState =(String)EDIT_responsibleStateDropdown.getSelectedItem();
+					String responsibleCity = responsibleCityInput_1.getText();
+					String responsibleZipCode = responsibleZipCodeInput_1.getText();
+					String responsibleWorkNumber = responsibleWorkNumberInput_1.getText();
+					String responsibleHomeNumber = responsibleHomeNumberInput_1.getText();
+					String responsibleSSN = responsibleSSNInput_1.getText();
+					String socSecNum = socSecNumInput_1.getText();
+					
+					String query2 = "INSERT INTO hospitaliris.responsible_information (ResponsibleName, responsibleRelationship, responsibleAddressInput,responsibleState,responsibleCity,responsibleZipCode,responsibleWorkNumber,responsibleHomeNumber,responsibleSSN, dependentSSN) VALUES (?,?,?,?,?,?,?,?,?,?)";
+					PreparedStatement stmt2 = conn.prepareStatement(query2);
+					stmt2.setString( 1, ResponsibleName);
+					stmt2.setString( 2, responsibleRelationship);
+					stmt2.setString( 3, responsibleAddress);
+					stmt2.setString(4, responsibleState);
+					stmt2.setString( 5, responsibleCity);
+					stmt2.setString( 6, responsibleZipCode);
+					stmt2.setString( 7, responsibleWorkNumber);
+					stmt2.setString( 8, responsibleHomeNumber);
+					stmt2.setString( 9, responsibleSSN);
+					stmt2.setString( 10, socSecNum);
+					stmt2.execute();
+					System.out.println("responsible information succesfully saved!");
+				}catch(SQLException e) {
+					System.out.println("Something is wrong with the responsible figure data");
+					e.printStackTrace();
+				}
+				
+				}
+					}
+			}
+		});
+								       
 		EDIT_btnFinalizeEdit.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		EDIT_btnFinalizeEdit.setBounds(604, 291, 125, 21);
 		editPatientInfoPanel.add(EDIT_btnFinalizeEdit);
@@ -1700,6 +1806,43 @@ public class PatientReg
 		{
 			public void actionPerformed(ActionEvent confirmCancel_2)
 			{
+				firstNameInput_1.setText(null);
+				middleInitialInput_1.setText(null);
+				lastNameInput_1.setText(null);
+				birthMonthInput_1.setText(null);
+				birthDayInput_1.setText(null);
+				birthYearInput_1.setText(null);
+				EDIT_sexDropdown.setSelectedIndex(0);
+				streetAddressInput_1.setText(null);
+				cityInput_1.setText(null);
+				EDIT_stateDropdown.setSelectedIndex(0);
+				zipInput_1.setText(null);
+				workNumberInput_1.setText(null);
+				homeNumberInput_1.setText(null);
+				socSecNumInput_1.setText(null);
+				employerNameInput.setText(null);
+				employerAddressInput_1.setText(null);
+				employerCityInput_1.setText(null);
+				EDIT_employerStateDropdown.setSelectedIndex(0);
+				employerZipInput_1.setText(null);
+				responsibleNameInput_1.setText(null);
+					if (EDIT_chckbxDifferentThanPatient.isSelected() == true)
+					{
+						responsiblePanel_1.setVisible(false);
+						EDIT_responsibleStateDropdown.setEnabled(false);
+						EDIT_chckbxDifferentThanPatient.setSelected(false);
+						responsibleRelationshipInput_1.setText(null);
+						responsibleAddressInput_1.setText(null);
+						responsibleCityInput_1.setText(null);
+						EDIT_responsibleStateDropdown.setSelectedIndex(0);
+						responsibleZipInput_1.setText(null);
+						responsibleWorkNumberInput_1.setText(null);
+						responsibleHomeNumberInput_1.setText(null);
+						responsibleSocSecNumInput_1.setText(null);
+					}
+					else if (EDIT_chckbxDifferentThanPatient.isSelected() == false)
+					{
+					}
 				EDIT_btnNo.setEnabled(false);
 				EDIT_btnYes.setEnabled(false);
 				confirmCancelPanel_2.setVisible(false);
