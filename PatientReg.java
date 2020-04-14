@@ -1642,11 +1642,11 @@ public class PatientReg
 					String State = (String) EDIT_stateDropdown.getSelectedItem();
 					String City = cityInput_1.getText();
 					String Gender = (String) EDIT_sexDropdown.getSelectedItem();
-					String address = addressInput_1.getText();
-					String zipCode = zipCodeInput_1.getText();
+					String address = streetAddressInput_1.getText();
+					String zipCode = zipInput_1.getText();
 					String employerName = employerNameInput_1.getText();
-					String workPhoneNumber = workPhoneNumberInput_1.getText();
-					String homePhoneNumber = homePhoneNumberInput_1.getText();
+					String workPhoneNumber = workNumberInput_1.getText();
+					String homePhoneNumber = homeNumberInput_1.getText();
 					String socSecNum = socSecNumInput_1.getText();
 					String employerAddress = employerAddressInput_1.getText();
 					String employerCity = employerCityInput_1.getText();
@@ -1690,10 +1690,10 @@ public class PatientReg
 					String responsibleAddress = responsibleAddressInput_1.getText();
 					String responsibleState =(String)EDIT_responsibleStateDropdown.getSelectedItem();
 					String responsibleCity = responsibleCityInput_1.getText();
-					String responsibleZipCode = responsibleZipCodeInput_1.getText();
+					String responsibleZipCode = responsibleZipInput_1.getText();
 					String responsibleWorkNumber = responsibleWorkNumberInput_1.getText();
 					String responsibleHomeNumber = responsibleHomeNumberInput_1.getText();
-					String responsibleSSN = responsibleSSNInput_1.getText();
+					String responsibleSSN = responsibleSocSecNumInput_1.getText();
 					String socSecNum = socSecNumInput_1.getText();
 					
 					String query2 = "INSERT INTO hospitaliris.responsible_information (ResponsibleName, responsibleRelationship, responsibleAddressInput,responsibleState,responsibleCity,responsibleZipCode,responsibleWorkNumber,responsibleHomeNumber,responsibleSSN, dependentSSN) VALUES (?,?,?,?,?,?,?,?,?,?)";
