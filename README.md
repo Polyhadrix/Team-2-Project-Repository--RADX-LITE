@@ -1,2 +1,10 @@
 # Team-A-Project-Repository
-Only the DANKEST code belongs in this repository. No half-assed bullshit. Ve like our software to be za greatest!!!
+Honestly... I don't know what "dank" means in the context of internet jargon.
+
+Added `registration.java` which is a reworking of `PatientReg.java` that utilizes the java.swing package's "GridBagLayout" layout manager for an elastic layout and also introduces many helper functions to reduce code repetition.
+
+Note: It is still a work in progress. I have yet to add the LayeredPanels effect present in the original, and still need to implement the functions for improved database communication. I hope to post an update with those tomorrow noon (4/21/2020).
+
+For those delving very deep, the colWidth assumes an [arbitrarily] set amount of columns (currently set to "24" because of its high divisibility: 2/3/4/6/8/12/24.)
+
+Remember: Working with Java Frames, Panes, Panels, et al. gets very convoluted, so it's handy to keep the ol' paper-and-pencil handy.
