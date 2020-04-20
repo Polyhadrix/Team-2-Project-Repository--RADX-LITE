@@ -35,7 +35,6 @@ import javax.swing.JTabbedPane;
 
 public class PatientReg
 {
-
 	private JFrame frame;
 	private JTextField firstNameInput;
 	private JTextField middleInitialInput;
@@ -99,6 +98,51 @@ public class PatientReg
 	private JComboBox IMG_modalityDropdown;
 	private JButton IMG_btnYes2;
 	private JButton IMG_btnNo2;
+	private JTextField EDIT_patientIDSearchInput;
+	private JTextField middleInitialInput_1;
+	private JTextField firstNameInput_1;
+	private JTextField lastNameInput_1;
+	private JTextField birthMonthInput_1;
+	private JTextField birthDayInput_1;
+	private JTextField birthYearInput_1;
+	private JLabel lblNoteExactly;
+	private JLabel lblStreetAddress_1;
+	private JTextField streetAddressInput_1;
+	private JLabel lblCity_1;
+	private JTextField cityInput_1;
+	private JLabel lblState_1;
+	private JComboBox EDIT_stateDropdown;
+	private JLabel lblZipCode_1;
+	private JTextField zipInput_1;
+	private JLabel lblWorkPhone_1;
+	private JTextField workNumberInput_1;
+	private JLabel lblHomePhone_1;
+	private JTextField homeNumberInput_1;
+	private JTextField socSecNumInput_1;
+	private JTextField employerNameInput_1;
+	private JTextField employerAddressInput_1;
+	private JTextField employerCityInput_1;
+	private JTextField employerZipInput_1;
+	private JTextField responsibleRelationshipInput_1;
+	private JTextField responsibleAddressInput_1;
+	private JTextField responsibleCityInput_1;
+	private JComboBox EDIT_responsibleStateDropdown;
+	private JLabel lblResponsibleZipCode_1;
+	private JTextField responsibleZipInput_1;
+	private JLabel lblResponsibleWorkPhone_1;
+	private JTextField responsibleWorkNumberInput_1;
+	private JLabel lblResponsibleHomePhone_1;
+	private JTextField responsibleHomeNumberInput_1;
+	private JLabel lblResponsibleSSN_1;
+	private JTextField responsibleSocSecNumInput_1;
+	private JCheckBox EDIT_chckbxDifferentThanPatient;
+	private JTextField responsibleNameInput_1;
+	private JLabel lblPleaseConfirm_2;
+	private JPanel confirmCancelPanel_2;
+	private JButton EDIT_btnYes;
+	private JButton EDIT_btnNo;
+	private JButton EDIT_btnCancel;
+	private JButton MAIN_btnViewEditInfo;
 	/**
 	 * Launch the application.
 	 */
@@ -107,7 +151,7 @@ public class PatientReg
 		EventQueue.invokeLater(new Runnable() {
 			public void run() 
 			{
-				getPatientInfo("321");
+				fillDropdownMenu("321");
 				try {
 					PatientReg window = new PatientReg();
 					window.frame.setVisible(true);
@@ -641,29 +685,47 @@ public class PatientReg
 					String employerAddress = employerAddressInput.getText();
 					String employerCity = employerCityInput.getText();
 					String employerZip = employerZipInput.getText();
+					String responsibleName = responsibleNameInput.getText();
+					String responsibleRelationship = responsibleRelationshipInput.getText();
+					String responsibleAddress = responsibleAddressInput.getText();
+					String responsibleCity = responsibleCityInput.getText();
+					String responsibleState = (String)REG_stateDropdown.getSelectedItem();
+					String responsibleZipCode = responsibleZipCodeInput.getText();
+					String responsibleWorkNumber = responsibleWorkNumberInput.getText();
+					String responsibleHomeNumber = responsibleHomeNumberInput.getText();
+					String responsibleSSN = responsibleSSNInput.getText();
 					
-					String query = "INSERT INTO hospitaliris.patient_information (First_Name, Middle_initial, Last_Name, Gender, birthMonth, birthYear,birthDay, State, City,address,zipcode,employerName,workPhoneNumber,homePhoneNumber,socSecNum,Patient_ID,employerAddress, employerCity, employerZip) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					String query = "INSERT INTO hospitaliris.patient_information (First_Name, Middle_initial, Last_Name, Gender, birthMonth, birthYear,birthDay, State, City,address,zipcode,employerName,workPhoneNumber,homePhoneNumber,socSecNum,Patient_ID,employerAddress, employerCity, employerZip, responsibleName, responsibleRelationship, responsibleStreetAddress, responsibleCity, responsibleState, responsibleZipCode, responsibleWorkPhoneNumber, responsibleHomePhoneNumber, responsibleSocialSecurityNumber) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 					PreparedStatement stmt = conn.prepareStatement(query);
 				
-					stmt.setString( 1, firstName);
-					stmt.setString( 2, middleInitial);
-					stmt.setString( 3, lastName);
+					stmt.setString(1, firstName);
+					stmt.setString(2, middleInitial);
+					stmt.setString(3, lastName);
 					stmt.setString(4, Gender);
-					stmt.setString( 5, birthMonth);
-					stmt.setString( 6, birthYear);
+					stmt.setString(5, birthMonth);
+					stmt.setString(6, birthYear);
 					stmt.setString(7, birthDay);
 					stmt.setString(8, State);
-					stmt.setString( 9, City);
-					stmt.setString( 10, address);
-					stmt.setString( 11, zipCode);
-					stmt.setString( 12, employerName);
-					stmt.setString( 13, workPhoneNumber);
-					stmt.setString( 14, homePhoneNumber);
+					stmt.setString(9, City);
+					stmt.setString(10, address);
+					stmt.setString(11, zipCode);
+					stmt.setString(12, employerName);
+					stmt.setString(13, workPhoneNumber);
+					stmt.setString(14, homePhoneNumber);
 					stmt.setString(15, socSecNum);
 					stmt.setString(16,"0001");
 					stmt.setString(16, employerAddress);
 					stmt.setString(17, employerCity);
 					stmt.setString(18, employerZip);
+					stmt.setString(19, responsibleName);
+					stmt.setString(20, responsibleRelationship);
+					stmt.setString(21, responsibleAddress);
+					stmt.setString(22, responsibleCity);
+					stmt.setString(23, responsibleState);
+					stmt.setString(24, responsibleZipCode);
+					stmt.setString(25, responsibleWorkNumber);
+					stmt.setString(26, responsibleHomeNumber);
+					stmt.setString(27, responsibleSSN);
 					stmt.execute();
 					System.out.println("Patient information successfully saved!");
 				} catch(SQLException e) {
@@ -789,7 +851,7 @@ public class PatientReg
 				REG_responsibleStateDropdown.setEnabled(false);
 				REG_btnYes.setEnabled(false);
 //Re-enable all the interactables in the Main Menu.
-				MAIN_btnEditPatientInfo.setEnabled(true);
+				MAIN_btnViewEditInfo.setEnabled(true);
 				MAIN_btnRegisterNewPatient.setEnabled(true);
 				MAIN_btnSendImagingRequest.setEnabled(true);
 			}
@@ -836,37 +898,37 @@ public class PatientReg
 		
 		lblPatient = new JLabel("Patient:");
 		lblPatient.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblPatient.setBounds(10, 10, 62, 15);
+		lblPatient.setBounds(10, 13, 62, 15);
 		sendImagingRequest.add(lblPatient);
 		
 			
 		
 		JLabel lblHypothesisNotes = new JLabel("Hypothesis Notes:");
 		lblHypothesisNotes.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblHypothesisNotes.setBounds(10, 54, 95, 15);
+		lblHypothesisNotes.setBounds(10, 106, 95, 15);
 		sendImagingRequest.add(lblHypothesisNotes);
 		
 		JTextArea hypothesisNotesInput = new JTextArea();
-		hypothesisNotesInput.setBounds(113, 47, 703, 92);
+		hypothesisNotesInput.setBounds(113, 99, 703, 92);
 		sendImagingRequest.add(hypothesisNotesInput);
 		
 		JTextArea IMG_patientText = new JTextArea();
 		IMG_patientText.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		IMG_patientText.setToolTipText("");
-		IMG_patientText.setBounds(58, 7, 195, 21);
+		IMG_patientText.setBounds(58, 10, 195, 21);
 		sendImagingRequest.add(IMG_patientText);
 			
 		
 		
 		lblCondition = new JLabel("Condition:");
 		lblCondition.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblCondition.setBounds(271, 10, 62, 15);
+		lblCondition.setBounds(271, 62, 62, 15);
 		sendImagingRequest.add(lblCondition);
 		
 		IMG_conditionDropdown = new JComboBox();
 		IMG_conditionDropdown.setToolTipText("");
 		IMG_conditionDropdown.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		IMG_conditionDropdown.setBounds(334, 7, 158, 21);
+		IMG_conditionDropdown.setBounds(334, 59, 158, 21);
 		sendImagingRequest.add(IMG_conditionDropdown);
 		IMG_conditionDropdown.addItem("SELECT");
 		IMG_conditionDropdown.addItem("Fracture");
@@ -877,34 +939,34 @@ public class PatientReg
 		
 		JLabel lblObservations = new JLabel("Observations:");
 		lblObservations.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblObservations.setBounds(10, 154, 77, 15);
+		lblObservations.setBounds(10, 206, 77, 15);
 		sendImagingRequest.add(lblObservations);
 		
 		JTextArea observationsInput = new JTextArea();
-		observationsInput.setBounds(97, 150, 719, 92);
+		observationsInput.setBounds(97, 202, 719, 92);
 		sendImagingRequest.add(observationsInput);
 		
 		JLabel lblAreaOfBody = new JLabel("Area of Body:");
 		lblAreaOfBody.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblAreaOfBody.setBounds(510, 10, 77, 15);
+		lblAreaOfBody.setBounds(510, 62, 77, 15);
 		sendImagingRequest.add(lblAreaOfBody);
 		
 		JComboBox IMG_bodyAreaDropdown = new JComboBox();
 		IMG_bodyAreaDropdown.setToolTipText("");
 		IMG_bodyAreaDropdown.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		IMG_bodyAreaDropdown.setBounds(597, 7, 127, 21);
+		IMG_bodyAreaDropdown.setBounds(597, 59, 127, 21);
 		sendImagingRequest.add(IMG_bodyAreaDropdown);
 		IMG_bodyAreaDropdown.addItem("SELECT");
 		
 		lblModality = new JLabel("Modality:");
 		lblModality.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblModality.setBounds(10, 272, 62, 15);
+		lblModality.setBounds(10, 324, 62, 15);
 		sendImagingRequest.add(lblModality);
 		
 		IMG_modalityDropdown = new JComboBox();
 		IMG_modalityDropdown.setToolTipText("");
 		IMG_modalityDropdown.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		IMG_modalityDropdown.setBounds(70, 269, 158, 21);
+		IMG_modalityDropdown.setBounds(70, 321, 158, 21);
 		sendImagingRequest.add(IMG_modalityDropdown);
 		IMG_modalityDropdown.addItem("SELECT");
 		IMG_modalityDropdown.addItem("Plain X-Ray");
@@ -916,7 +978,7 @@ public class PatientReg
 		
 		JButton IMG_btnGoToScheduling = new JButton("Go to Scheduling");
 		IMG_btnGoToScheduling.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		IMG_btnGoToScheduling.setBounds(635, 270, 158, 21);
+		IMG_btnGoToScheduling.setBounds(635, 322, 158, 21);
 		sendImagingRequest.add(IMG_btnGoToScheduling);
 		IMG_btnGoToScheduling.setVisible(false);
 		
@@ -938,11 +1000,11 @@ public class PatientReg
 			}
 		});
 		IMG_chckbxDone.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		IMG_chckbxDone.setBounds(557, 269, 67, 21);
+		IMG_chckbxDone.setBounds(557, 321, 67, 21);
 		sendImagingRequest.add(IMG_chckbxDone);
 		
 		JPanel confirmCancelPanel1 = new JPanel();
-		confirmCancelPanel1.setBounds(106, 317, 267, 48);
+		confirmCancelPanel1.setBounds(106, 369, 267, 48);
 		sendImagingRequest.add(confirmCancelPanel1);
 		confirmCancelPanel1.setLayout(null);
 		confirmCancelPanel1.setVisible(false);
@@ -957,42 +1019,6 @@ public class PatientReg
 				IMG_btnNo2.setEnabled(true);
 			}
 		});
-			
-		IMG_btnYes2 = new JButton("YES");
-		IMG_btnYes2.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent IMG_yesButtonPressed) 
-			{
-				layeredPane.setLayer(referringPhysicianMainMenu, 1);
-				layeredPane.setLayer(sendImagingRequest, -1);
-				hypothesisNotesInput.setText(null);
-				observationsInput.setText(null);
-				IMG_bodyAreaDropdown.setSelectedIndex(0);
-				IMG_chckbxDone.setSelected(false);
-				IMG_conditionDropdown.setSelectedIndex(0);
-				IMG_modalityDropdown.setSelectedIndex(0);
-				IMG_patientText.setText(null);
-				IMG_bodyAreaDropdown.setEnabled(false);
-				IMG_btnCancel1.setEnabled(false);
-				IMG_btnGoToScheduling.setVisible(false);
-				IMG_btnGoToScheduling.setEnabled(false);
-				IMG_chckbxDone.setEnabled(false);
-				IMG_patientText.setEnabled(false);
-				IMG_btnYes2.setEnabled(false);
-				IMG_btnNo2.setEnabled(false);
-				IMG_modalityDropdown.setEnabled(false);
-				confirmCancelPanel1.setVisible(false);
-				IMG_btnYes2.setEnabled(false);
-				IMG_btnNo2.setEnabled(false);
-				MAIN_btnEditPatientInfo.setEnabled(true);
-				MAIN_btnRegisterNewPatient.setEnabled(true);
-				MAIN_btnSendImagingRequest.setEnabled(true);
-				
-			}
-		});
-		IMG_btnYes2.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		IMG_btnYes2.setBounds(98, 10, 63, 21);
-		confirmCancelPanel1.add(IMG_btnYes2);
 		
 		IMG_btnNo2 = new JButton("NO");
 		IMG_btnNo2.addActionListener(new ActionListener()
@@ -1013,7 +1039,7 @@ public class PatientReg
 		lblPleaseConfirm_1.setBounds(10, 13, 92, 15);
 		confirmCancelPanel1.add(lblPleaseConfirm_1);
 		IMG_btnCancel1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		IMG_btnCancel1.setBounds(10, 326, 85, 21);
+		IMG_btnCancel1.setBounds(10, 378, 85, 21);
 		sendImagingRequest.add(IMG_btnCancel1);
 		
 		referringPhysicianMainMenu = new JPanel();
@@ -1021,41 +1047,6 @@ public class PatientReg
 		referringPhysicianMainMenu.setBounds(0, 0, 824, 423);
 		layeredPane.add(referringPhysicianMainMenu);
 		referringPhysicianMainMenu.setLayout(null);
-		
-		MAIN_btnEditPatientInfo = new JButton("Edit an Existing Patient's Profile");
-		MAIN_btnEditPatientInfo.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent goToEditRegistrationInfo) 
-			{
-				
-			}
-		});
-		MAIN_btnEditPatientInfo.setToolTipText("");
-		MAIN_btnEditPatientInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		MAIN_btnEditPatientInfo.setBounds(579, 181, 235, 50);
-		referringPhysicianMainMenu.add(MAIN_btnEditPatientInfo);
-		
-		MAIN_btnSendImagingRequest = new JButton("Send an Imaging Request");
-		MAIN_btnSendImagingRequest.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent goToImagingRequest) 
-			{
-				layeredPane.setLayer(sendImagingRequest, 1);
-				layeredPane.setLayer(referringPhysicianMainMenu, 0);
-				IMG_bodyAreaDropdown.setEnabled(true);
-				IMG_btnCancel1.setEnabled(true);
-				IMG_chckbxDone.setEnabled(true);
-				IMG_patientText.setEnabled(true);
-				IMG_modalityDropdown.setEnabled(true);
-				IMG_conditionDropdown.setEnabled(true);
-				MAIN_btnEditPatientInfo.setEnabled(false);
-				MAIN_btnRegisterNewPatient.setEnabled(false);
-				MAIN_btnSendImagingRequest.setEnabled(false);
-			}
-		});
-		MAIN_btnSendImagingRequest.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		MAIN_btnSendImagingRequest.setBounds(296, 181, 235, 50);
-		referringPhysicianMainMenu.add(MAIN_btnSendImagingRequest);
 		
 		txtpnWelcomeBack = new JTextPane();
 		txtpnWelcomeBack.setEditable(false);
@@ -1085,7 +1076,7 @@ public class PatientReg
 				REG_btnNo.setEnabled(true);
 				REG_employerStateDropdown.setEnabled(true);
 				REG_stateDropdown.setEnabled(true);
-				MAIN_btnEditPatientInfo.setEnabled(false);
+				MAIN_btnViewEditInfo.setEnabled(false);
 				MAIN_btnRegisterNewPatient.setEnabled(false);
 				MAIN_btnSendImagingRequest.setEnabled(false);
 			}
@@ -1098,61 +1089,1400 @@ public class PatientReg
 		layeredPane.setLayer(editPatientInfoPanel, -2);
 		editPatientInfoPanel.setBounds(0, 0, 826, 423);
 		layeredPane.add(editPatientInfoPanel);
+		editPatientInfoPanel.setLayout(null);
 		
-		//IMPORTANT! Make sure that the following 9 lines are at the BOTTOM of the code!
-		IMG_bodyAreaDropdown.setEnabled(false);
-		IMG_btnCancel1.setEnabled(false);
-		IMG_btnGoToScheduling.setEnabled(false);
-		IMG_chckbxDone.setEnabled(false);
-		IMG_patientText.setEnabled(false);
-		IMG_btnYes2.setEnabled(false);
-		IMG_btnNo2.setEnabled(false);
-		IMG_modalityDropdown.setEnabled(false);
+		JLabel lblSearchByPatientID = new JLabel("Search by patient ID:");
+		lblSearchByPatientID.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblSearchByPatientID.setBounds(10, 10, 126, 15);
+		editPatientInfoPanel.add(lblSearchByPatientID);
 		
-		//IMPORTANT! Make sure that the following 10 lines are at the BOTTOM of the code!
-		REG_btnCancel.setEnabled(false);
-		REG_btnRegisterPatient.setEnabled(false);
-		REG_btnYes.setEnabled(false);
-		REG_chckbxConfirmWithPatient.setEnabled(false);
-		REG_chckbxDifferentThanPatient.setEnabled(false);
-		REG_responsibleStateDropdown.setEnabled(false);
-		REG_sexDropdown.setEnabled(false);
-		REG_btnNo.setEnabled(false);
-		REG_employerStateDropdown.setEnabled(false);
-		REG_stateDropdown.setEnabled(false);
+		EDIT_patientIDSearchInput = new JTextField();
+		EDIT_patientIDSearchInput.setColumns(10);
+		EDIT_patientIDSearchInput.setBounds(128, 9, 62, 19);
+		editPatientInfoPanel.add(EDIT_patientIDSearchInput);
 		
+		lblNoteExactly = new JLabel("[note: exactly 8 digits]");
+		lblNoteExactly.setFont(new Font("Tahoma", Font.ITALIC, 10));
+		lblNoteExactly.setBounds(329, 12, 108, 13);
+		editPatientInfoPanel.add(lblNoteExactly);
+		
+		JLabel lblFailurepleaseSearchAgain = new JLabel("Failure--Please search again");
+		lblFailurepleaseSearchAgain.setForeground(new Color(165, 42, 42));
+		lblFailurepleaseSearchAgain.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblFailurepleaseSearchAgain.setBounds(498, 4, 231, 21);
+		editPatientInfoPanel.add(lblFailurepleaseSearchAgain);
+		lblFailurepleaseSearchAgain.setVisible(false);
+		
+		JLabel lblSuccess = new JLabel("Success!");
+		lblSuccess.setForeground(new Color(34, 139, 34));
+		lblSuccess.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblSuccess.setBounds(739, 4, 77, 21);
+		editPatientInfoPanel.add(lblSuccess);
+		lblSuccess.setVisible(false);
+		
+		JLabel lblFirstName_1 = new JLabel("First Name:");
+		lblFirstName_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblFirstName_1.setBounds(10, 51, 62, 15);
+		editPatientInfoPanel.add(lblFirstName_1);
+		
+		firstNameInput_1 = new JTextField();
+		firstNameInput_1.setColumns(10);
+		firstNameInput_1.setBounds(75, 50, 96, 19);
+		editPatientInfoPanel.add(firstNameInput_1);
+		
+		JLabel lblMiddleInitial_1 = new JLabel("Middle Initial:");
+		lblMiddleInitial_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblMiddleInitial_1.setBounds(181, 51, 77, 15);
+		editPatientInfoPanel.add(lblMiddleInitial_1);
+		
+		middleInitialInput_1 = new JTextField();
+		middleInitialInput_1.setColumns(10);
+		middleInitialInput_1.setBounds(259, 50, 23, 19);
+		editPatientInfoPanel.add(middleInitialInput_1);
+		
+		JLabel lblLastName_1 = new JLabel("Last Name:");
+		lblLastName_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblLastName_1.setBounds(292, 51, 65, 15);
+		editPatientInfoPanel.add(lblLastName_1);
+		
+		lastNameInput_1 = new JTextField();
+		lastNameInput_1.setColumns(10);
+		lastNameInput_1.setBounds(355, 50, 96, 19);
+		editPatientInfoPanel.add(lastNameInput_1);
+		
+		JLabel lblDateOfBirth_1 = new JLabel("Date of Birth:");
+		lblDateOfBirth_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblDateOfBirth_1.setBounds(461, 51, 71, 15);
+		editPatientInfoPanel.add(lblDateOfBirth_1);
+		
+		birthMonthInput_1 = new JTextField();
+		birthMonthInput_1.setColumns(10);
+		birthMonthInput_1.setBounds(538, 50, 22, 19);
+		editPatientInfoPanel.add(birthMonthInput_1);
+		
+		JLabel lblSlashDelimiter_1 = new JLabel("/");
+		lblSlashDelimiter_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblSlashDelimiter_1.setBounds(565, 53, 5, 15);
+		editPatientInfoPanel.add(lblSlashDelimiter_1);
+		
+		birthDayInput_1 = new JTextField();
+		birthDayInput_1.setColumns(10);
+		birthDayInput_1.setBounds(573, 50, 22, 19);
+		editPatientInfoPanel.add(birthDayInput_1);
+		
+		JLabel lblSlashDelimiter1_1 = new JLabel("/");
+		lblSlashDelimiter1_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblSlashDelimiter1_1.setBounds(600, 53, 5, 15);
+		editPatientInfoPanel.add(lblSlashDelimiter1_1);
+		
+		birthYearInput_1 = new JTextField();
+		birthYearInput_1.setColumns(10);
+		birthYearInput_1.setBounds(610, 50, 35, 19);
+		editPatientInfoPanel.add(birthYearInput_1);
+		
+		JLabel lblSex_1 = new JLabel("Sex:");
+		lblSex_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblSex_1.setBounds(655, 53, 22, 15);
+		editPatientInfoPanel.add(lblSex_1);
+		
+		JComboBox EDIT_sexDropdown = new JComboBox();
+		EDIT_sexDropdown.setEnabled(false);
+		EDIT_sexDropdown.setBounds(687, 49, 85, 19);
+		editPatientInfoPanel.add(EDIT_sexDropdown);
+		EDIT_sexDropdown.addItem("SELECT");
+		EDIT_sexDropdown.addItem("Male");
+		EDIT_sexDropdown.addItem("Female");
+		
+		lblStreetAddress_1 = new JLabel("Address:");
+		lblStreetAddress_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblStreetAddress_1.setBounds(10, 78, 46, 15);
+		editPatientInfoPanel.add(lblStreetAddress_1);
+		
+		streetAddressInput_1 = new JTextField();
+		streetAddressInput_1.setColumns(10);
+		streetAddressInput_1.setBounds(64, 77, 140, 19);
+		editPatientInfoPanel.add(streetAddressInput_1);
+		
+		lblCity_1 = new JLabel("City:");
+		lblCity_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblCity_1.setBounds(214, 80, 23, 15);
+		editPatientInfoPanel.add(lblCity_1);
+		
+		cityInput_1 = new JTextField();
+		cityInput_1.setColumns(10);
+		cityInput_1.setBounds(243, 77, 96, 19);
+		editPatientInfoPanel.add(cityInput_1);
+		
+		lblState_1 = new JLabel("State:");
+		lblState_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblState_1.setBounds(349, 80, 31, 15);
+		editPatientInfoPanel.add(lblState_1);
+		
+		EDIT_stateDropdown = new JComboBox();
+		EDIT_stateDropdown.setEnabled(false);
+		EDIT_stateDropdown.setBounds(390, 76, 99, 19);
+		editPatientInfoPanel.add(EDIT_stateDropdown);
+		EDIT_stateDropdown.addItem("SELECT");
+		EDIT_stateDropdown.addItem("Alabama");
+		EDIT_stateDropdown.addItem("Alaska");
+		EDIT_stateDropdown.addItem("Arkansas");
+		EDIT_stateDropdown.addItem("California");
+		EDIT_stateDropdown.addItem("Colorado");
+		EDIT_stateDropdown.addItem("Connecticut");
+		EDIT_stateDropdown.addItem("Delaware");
+		EDIT_stateDropdown.addItem("Florida");
+		EDIT_stateDropdown.addItem("Georgia");
+		EDIT_stateDropdown.addItem("Hawaii");
+		EDIT_stateDropdown.addItem("Idaho");
+		EDIT_stateDropdown.addItem("Illinois");
+		EDIT_stateDropdown.addItem("Indiana");
+		EDIT_stateDropdown.addItem("Iowa");
+		EDIT_stateDropdown.addItem("Kansas");
+		EDIT_stateDropdown.addItem("Kentucky");
+		EDIT_stateDropdown.addItem("Louisiana");
+		EDIT_stateDropdown.addItem("Maine");
+		EDIT_stateDropdown.addItem("Maryland");
+		EDIT_stateDropdown.addItem("Massachusetts");
+		EDIT_stateDropdown.addItem("Michigan");
+		EDIT_stateDropdown.addItem("Minnesota");
+		EDIT_stateDropdown.addItem("Mississippi");
+		EDIT_stateDropdown.addItem("Missouri");
+		EDIT_stateDropdown.addItem("Montana");
+		EDIT_stateDropdown.addItem("Nebraska");
+		EDIT_stateDropdown.addItem("Nevada");
+		EDIT_stateDropdown.addItem("New Hampshire");
+		EDIT_stateDropdown.addItem("New Jersey");
+		EDIT_stateDropdown.addItem("New Mexico");
+		EDIT_stateDropdown.addItem("New York");
+		EDIT_stateDropdown.addItem("North Carolina");
+		EDIT_stateDropdown.addItem("North Dakota");
+		EDIT_stateDropdown.addItem("Ohio");
+		EDIT_stateDropdown.addItem("Oklahoma");
+		EDIT_stateDropdown.addItem("Oregon");
+		EDIT_stateDropdown.addItem("Pennsylvania");
+		EDIT_stateDropdown.addItem("Rhode Island");
+		EDIT_stateDropdown.addItem("South Carolina");
+		EDIT_stateDropdown.addItem("South Dakota");
+		EDIT_stateDropdown.addItem("Tennessee");
+		EDIT_stateDropdown.addItem("Texas");
+		EDIT_stateDropdown.addItem("Utah");
+		EDIT_stateDropdown.addItem("Vermont");
+		EDIT_stateDropdown.addItem("Virginia");
+		EDIT_stateDropdown.addItem("Washington");
+		EDIT_stateDropdown.addItem("West Virginia");
+		EDIT_stateDropdown.addItem("Wisconsin");
+		EDIT_stateDropdown.addItem("Wyoming");
+		
+		lblZipCode_1 = new JLabel("Zip:");
+		lblZipCode_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblZipCode_1.setBounds(498, 80, 19, 15);
+		editPatientInfoPanel.add(lblZipCode_1);
+		
+		zipInput_1 = new JTextField();
+		zipInput_1.setColumns(10);
+		zipInput_1.setBounds(524, 77, 46, 19);
+		editPatientInfoPanel.add(zipInput_1);
+		
+		lblWorkPhone_1 = new JLabel("Work Phone Number:");
+		lblWorkPhone_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblWorkPhone_1.setBounds(580, 80, 119, 15);
+		editPatientInfoPanel.add(lblWorkPhone_1);
+		
+		workNumberInput_1 = new JTextField();
+		workNumberInput_1.setColumns(10);
+		workNumberInput_1.setBounds(709, 77, 77, 19);
+		editPatientInfoPanel.add(workNumberInput_1);
+		
+		lblHomePhone_1 = new JLabel("Home Phone Number:");
+		lblHomePhone_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblHomePhone_1.setBounds(10, 103, 117, 15);
+		editPatientInfoPanel.add(lblHomePhone_1);
+		
+		homeNumberInput_1 = new JTextField();
+		homeNumberInput_1.setColumns(10);
+		homeNumberInput_1.setBounds(137, 102, 77, 19);
+		editPatientInfoPanel.add(homeNumberInput_1);
+		
+		JLabel lblSSN_1 = new JLabel("Social Security Number:");
+		lblSSN_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblSSN_1.setBounds(224, 105, 129, 15);
+		editPatientInfoPanel.add(lblSSN_1);
+		
+		socSecNumInput_1 = new JTextField();
+		socSecNumInput_1.setColumns(10);
+		socSecNumInput_1.setBounds(359, 102, 96, 19);
+		editPatientInfoPanel.add(socSecNumInput_1);
+		
+		JLabel lblEmployerName_1 = new JLabel("Name of Employer:");
+		lblEmployerName_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblEmployerName_1.setBounds(461, 103, 102, 15);
+		editPatientInfoPanel.add(lblEmployerName_1);
+		
+		employerNameInput_1 = new JTextField();
+		employerNameInput_1.setColumns(10);
+		employerNameInput_1.setBounds(573, 102, 96, 19);
+		editPatientInfoPanel.add(employerNameInput_1);
+		
+		JLabel lblEmployerAddress_1 = new JLabel("Street Address of Workplace:");
+		lblEmployerAddress_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblEmployerAddress_1.setBounds(10, 128, 160, 24);
+		editPatientInfoPanel.add(lblEmployerAddress_1);
+		
+		employerAddressInput_1 = new JTextField();
+		employerAddressInput_1.setColumns(10);
+		employerAddressInput_1.setBounds(169, 131, 119, 19);
+		editPatientInfoPanel.add(employerAddressInput_1);
+		
+		JLabel lblEmployerCity_1 = new JLabel("City:");
+		lblEmployerCity_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblEmployerCity_1.setBounds(298, 130, 31, 19);
+		editPatientInfoPanel.add(lblEmployerCity_1);
+		
+		JLabel lblEmployerState_1 = new JLabel("State:");
+		lblEmployerState_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblEmployerState_1.setBounds(435, 133, 31, 15);
+		editPatientInfoPanel.add(lblEmployerState_1);
+		
+		employerCityInput_1 = new JTextField();
+		employerCityInput_1.setColumns(10);
+		employerCityInput_1.setBounds(329, 132, 96, 19);
+		editPatientInfoPanel.add(employerCityInput_1);
+		
+		JComboBox EDIT_employerStateDropdown = new JComboBox();
+		EDIT_employerStateDropdown.setEnabled(false);
+		EDIT_employerStateDropdown.setBounds(471, 131, 99, 19);
+		editPatientInfoPanel.add(EDIT_employerStateDropdown);
+		EDIT_employerStateDropdown.addItem("SELECT");
+		EDIT_employerStateDropdown.addItem("Alabama");
+		EDIT_employerStateDropdown.addItem("Alaska");
+		EDIT_employerStateDropdown.addItem("Arkansas");
+		EDIT_employerStateDropdown.addItem("California");
+		EDIT_employerStateDropdown.addItem("Colorado");
+		EDIT_employerStateDropdown.addItem("Connecticut");
+		EDIT_employerStateDropdown.addItem("Delaware");
+		EDIT_employerStateDropdown.addItem("Florida");
+		EDIT_employerStateDropdown.addItem("Georgia");
+		EDIT_employerStateDropdown.addItem("Hawaii");
+		EDIT_employerStateDropdown.addItem("Idaho");
+		EDIT_employerStateDropdown.addItem("Illinois");
+		EDIT_employerStateDropdown.addItem("Indiana");
+		EDIT_employerStateDropdown.addItem("Iowa");
+		EDIT_employerStateDropdown.addItem("Kansas");
+		EDIT_employerStateDropdown.addItem("Kentucky");
+		EDIT_employerStateDropdown.addItem("Louisiana");
+		EDIT_employerStateDropdown.addItem("Maine");
+		EDIT_employerStateDropdown.addItem("Maryland");
+		EDIT_employerStateDropdown.addItem("Massachusetts");
+		EDIT_employerStateDropdown.addItem("Michigan");
+		EDIT_employerStateDropdown.addItem("Minnesota");
+		EDIT_employerStateDropdown.addItem("Mississippi");
+		EDIT_employerStateDropdown.addItem("Missouri");
+		EDIT_employerStateDropdown.addItem("Montana");
+		EDIT_employerStateDropdown.addItem("Nebraska");
+		EDIT_employerStateDropdown.addItem("Nevada");
+		EDIT_employerStateDropdown.addItem("New Hampshire");
+		EDIT_employerStateDropdown.addItem("New Jersey");
+		EDIT_employerStateDropdown.addItem("New Mexico");
+		EDIT_employerStateDropdown.addItem("New York");
+		EDIT_employerStateDropdown.addItem("North Carolina");
+		EDIT_employerStateDropdown.addItem("North Dakota");
+		EDIT_employerStateDropdown.addItem("Ohio");
+		EDIT_employerStateDropdown.addItem("Oklahoma");
+		EDIT_employerStateDropdown.addItem("Oregon");
+		EDIT_employerStateDropdown.addItem("Pennsylvania");
+		EDIT_employerStateDropdown.addItem("Rhode Island");
+		EDIT_employerStateDropdown.addItem("South Carolina");
+		EDIT_employerStateDropdown.addItem("South Dakota");
+		EDIT_employerStateDropdown.addItem("Tennessee");
+		EDIT_employerStateDropdown.addItem("Texas");
+		EDIT_employerStateDropdown.addItem("Utah");
+		EDIT_employerStateDropdown.addItem("Vermont");
+		EDIT_employerStateDropdown.addItem("Virginia");
+		EDIT_employerStateDropdown.addItem("Washington");
+		EDIT_employerStateDropdown.addItem("West Virginia");
+		EDIT_employerStateDropdown.addItem("Wisconsin");
+		EDIT_employerStateDropdown.addItem("Wyoming");
+		
+		JLabel lblEmployerZipCode_1 = new JLabel("Zip:");
+		lblEmployerZipCode_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblEmployerZipCode_1.setBounds(586, 133, 19, 15);
+		editPatientInfoPanel.add(lblEmployerZipCode_1);
+		
+		employerZipInput_1 = new JTextField();
+		employerZipInput_1.setColumns(10);
+		employerZipInput_1.setBounds(610, 132, 96, 19);
+		editPatientInfoPanel.add(employerZipInput_1);
+		
+		JLabel lblResponsibleName_1 = new JLabel("Person Responsible for Balance:");
+		lblResponsibleName_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblResponsibleName_1.setBounds(12, 160, 178, 15);
+		editPatientInfoPanel.add(lblResponsibleName_1);
+		
+		responsibleNameInput_1 = new JTextField();
+		responsibleNameInput_1.setColumns(10);
+		responsibleNameInput_1.setBounds(186, 160, 140, 19);
+		editPatientInfoPanel.add(responsibleNameInput_1);
+		
+		JPanel responsiblePanel_1 = new JPanel();
+		responsiblePanel_1.setBounds(10, 185, 740, 101);
+		editPatientInfoPanel.add(responsiblePanel_1);
+		responsiblePanel_1.setLayout(null);
+		responsiblePanel_1.setVisible(false);
+		
+		JLabel lblResponsibleRelationship_1 = new JLabel("Relationship of Individual:");
+		lblResponsibleRelationship_1.setBounds(0, 11, 142, 15);
+		responsiblePanel_1.add(lblResponsibleRelationship_1);
+		lblResponsibleRelationship_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		
+		responsibleRelationshipInput_1 = new JTextField();
+		responsibleRelationshipInput_1.setColumns(10);
+		responsibleRelationshipInput_1.setBounds(147, 10, 96, 19);
+		responsiblePanel_1.add(responsibleRelationshipInput_1);
+		
+		JLabel lblAddressIfDifferent_1 = new JLabel("Address of Individual:");
+		lblAddressIfDifferent_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblAddressIfDifferent_1.setBounds(0, 43, 124, 15);
+		responsiblePanel_1.add(lblAddressIfDifferent_1);
+		
+		responsibleAddressInput_1 = new JTextField();
+		responsibleAddressInput_1.setColumns(10);
+		responsibleAddressInput_1.setBounds(124, 42, 96, 19);
+		responsiblePanel_1.add(responsibleAddressInput_1);
+		
+		JLabel lblResponsibleCity_2 = new JLabel("City:");
+		lblResponsibleCity_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblResponsibleCity_2.setBounds(230, 41, 31, 19);
+		responsiblePanel_1.add(lblResponsibleCity_2);
+		
+		responsibleCityInput_1 = new JTextField();
+		responsibleCityInput_1.setColumns(10);
+		responsibleCityInput_1.setBounds(259, 42, 96, 19);
+		responsiblePanel_1.add(responsibleCityInput_1);
+		
+		JLabel lblResponsibleState_1 = new JLabel("State:");
+		lblResponsibleState_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblResponsibleState_1.setBounds(365, 43, 31, 15);
+		responsiblePanel_1.add(lblResponsibleState_1);
+		
+		EDIT_responsibleStateDropdown = new JComboBox();
+		EDIT_responsibleStateDropdown.setEnabled(false);
+		EDIT_responsibleStateDropdown.setBounds(406, 42, 99, 19);
+		responsiblePanel_1.add(EDIT_responsibleStateDropdown);
+		EDIT_responsibleStateDropdown.addItem("SELECT");
+		EDIT_responsibleStateDropdown.addItem("Alabama");
+		EDIT_responsibleStateDropdown.addItem("Alaska");
+		EDIT_responsibleStateDropdown.addItem("Arkansas");
+		EDIT_responsibleStateDropdown.addItem("California");
+		EDIT_responsibleStateDropdown.addItem("Colorado");
+		EDIT_responsibleStateDropdown.addItem("Connecticut");
+		EDIT_responsibleStateDropdown.addItem("Delaware");
+		EDIT_responsibleStateDropdown.addItem("Florida");
+		EDIT_responsibleStateDropdown.addItem("Georgia");
+		EDIT_responsibleStateDropdown.addItem("Hawaii");
+		EDIT_responsibleStateDropdown.addItem("Idaho");
+		EDIT_responsibleStateDropdown.addItem("Illinois");
+		EDIT_responsibleStateDropdown.addItem("Indiana");
+		EDIT_responsibleStateDropdown.addItem("Iowa");
+		EDIT_responsibleStateDropdown.addItem("Kansas");
+		EDIT_responsibleStateDropdown.addItem("Kentucky");
+		EDIT_responsibleStateDropdown.addItem("Louisiana");
+		EDIT_responsibleStateDropdown.addItem("Maine");
+		EDIT_responsibleStateDropdown.addItem("Maryland");
+		EDIT_responsibleStateDropdown.addItem("Massachusetts");
+		EDIT_responsibleStateDropdown.addItem("Michigan");
+		EDIT_responsibleStateDropdown.addItem("Minnesota");
+		EDIT_responsibleStateDropdown.addItem("Mississippi");
+		EDIT_responsibleStateDropdown.addItem("Missouri");
+		EDIT_responsibleStateDropdown.addItem("Montana");
+		EDIT_responsibleStateDropdown.addItem("Nebraska");
+		EDIT_responsibleStateDropdown.addItem("Nevada");
+		EDIT_responsibleStateDropdown.addItem("New Hampshire");
+		EDIT_responsibleStateDropdown.addItem("New Jersey");
+		EDIT_responsibleStateDropdown.addItem("New Mexico");
+		EDIT_responsibleStateDropdown.addItem("New York");
+		EDIT_responsibleStateDropdown.addItem("North Carolina");
+		EDIT_responsibleStateDropdown.addItem("North Dakota");
+		EDIT_responsibleStateDropdown.addItem("Ohio");
+		EDIT_responsibleStateDropdown.addItem("Oklahoma");
+		EDIT_responsibleStateDropdown.addItem("Oregon");
+		EDIT_responsibleStateDropdown.addItem("Pennsylvania");
+		EDIT_responsibleStateDropdown.addItem("Rhode Island");
+		EDIT_responsibleStateDropdown.addItem("South Carolina");
+		EDIT_responsibleStateDropdown.addItem("South Dakota");
+		EDIT_responsibleStateDropdown.addItem("Tennessee");
+		EDIT_responsibleStateDropdown.addItem("Texas");
+		EDIT_responsibleStateDropdown.addItem("Utah");
+		EDIT_responsibleStateDropdown.addItem("Vermont");
+		EDIT_responsibleStateDropdown.addItem("Virginia");
+		EDIT_responsibleStateDropdown.addItem("Washington");
+		EDIT_responsibleStateDropdown.addItem("West Virginia");
+		EDIT_responsibleStateDropdown.addItem("Wisconsin");
+		EDIT_responsibleStateDropdown.addItem("Wyoming");
+		
+		lblResponsibleZipCode_1 = new JLabel("Zip:");
+		lblResponsibleZipCode_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblResponsibleZipCode_1.setBounds(515, 43, 19, 15);
+		responsiblePanel_1.add(lblResponsibleZipCode_1);
+		
+		responsibleZipInput_1 = new JTextField();
+		responsibleZipInput_1.setColumns(10);
+		responsibleZipInput_1.setBounds(544, 42, 96, 19);
+		responsiblePanel_1.add(responsibleZipInput_1);
+		
+		lblResponsibleWorkPhone_1 = new JLabel("Work Phone Number:");
+		lblResponsibleWorkPhone_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblResponsibleWorkPhone_1.setBounds(0, 75, 117, 15);
+		responsiblePanel_1.add(lblResponsibleWorkPhone_1);
+		
+		responsibleWorkNumberInput_1 = new JTextField();
+		responsibleWorkNumberInput_1.setColumns(10);
+		responsibleWorkNumberInput_1.setBounds(124, 75, 96, 19);
+		responsiblePanel_1.add(responsibleWorkNumberInput_1);
+		
+		lblResponsibleHomePhone_1 = new JLabel("Home Phone Number:");
+		lblResponsibleHomePhone_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblResponsibleHomePhone_1.setBounds(230, 77, 124, 15);
+		responsiblePanel_1.add(lblResponsibleHomePhone_1);
+		
+		responsibleHomeNumberInput_1 = new JTextField();
+		responsibleHomeNumberInput_1.setColumns(10);
+		responsibleHomeNumberInput_1.setBounds(356, 75, 96, 19);
+		responsiblePanel_1.add(responsibleHomeNumberInput_1);
+		
+		lblResponsibleSSN_1 = new JLabel("Social Security Number:");
+		lblResponsibleSSN_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblResponsibleSSN_1.setBounds(458, 78, 132, 15);
+		responsiblePanel_1.add(lblResponsibleSSN_1);
+		
+		responsibleSocSecNumInput_1 = new JTextField();
+		responsibleSocSecNumInput_1.setColumns(10);
+		responsibleSocSecNumInput_1.setBounds(594, 74, 96, 19);
+		responsiblePanel_1.add(responsibleSocSecNumInput_1);
+		
+		EDIT_chckbxDifferentThanPatient = new JCheckBox("Different than Patient?");
+		EDIT_chckbxDifferentThanPatient.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent differentThanPatient_1)
+			{
+				if(responsiblePanel_1.isVisible() == true)
+				{
+					responsiblePanel_1.setVisible(false);
+					EDIT_responsibleStateDropdown.setEnabled(false);
+				}
+				else
+				{
+					responsiblePanel_1.setVisible(true);
+					EDIT_responsibleStateDropdown.setEnabled(true);
+				}
+			}
+		});
+		EDIT_chckbxDifferentThanPatient.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		EDIT_chckbxDifferentThanPatient.setEnabled(false);
+		EDIT_chckbxDifferentThanPatient.setBounds(341, 157, 148, 21);
+		editPatientInfoPanel.add(EDIT_chckbxDifferentThanPatient);
+		
+		JButton EDIT_btnSearch = new JButton("SEARCH");
+		EDIT_btnSearch.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent searchbyPatientID)
+			{
+				patient patientRef = getPatientInfo(EDIT_patientIDSearchInput.getText());
+				firstNameInput_1.setText(patientRef.getFirstName());
+				middleInitialInput_1.setText(patientRef.getMiddleInitial());
+				lastNameInput_1.setText(patientRef.getLastName());
+				birthMonthInput_1.setText(patientRef.getBirthMonth());
+				birthDayInput_1.setText(patientRef.getBirthDay());
+				birthYearInput_1.setText(patientRef.getBirthYear());
+				EDIT_sexDropdown.setSelectedItem(patientRef.getSex());
+				streetAddressInput_1.setText(patientRef.getStreetAddress());
+				cityInput_1.setText(patientRef.getCity());
+				EDIT_stateDropdown.setSelectedItem(patientRef.getState());
+				zipInput_1.setText(patientRef.getZipCode());
+				workNumberInput_1.setText(patientRef.getWorkPhoneNumber());
+				homeNumberInput_1.setText(patientRef.getHomePhoneNumber());
+				socSecNumInput_1.setText(patientRef.getSocialSecurityNumber());
+				employerNameInput.setText(patientRef.getEmployerName());
+				employerAddressInput_1.setText(patientRef.getEmployerStreetAddress());
+				employerCityInput_1.setText(patientRef.getEmployerCity());
+				EDIT_employerStateDropdown.setSelectedItem(patientRef.getEmployerState());
+				employerZipInput_1.setText(patientRef.getEmployerZipCode());
+				responsibleNameInput_1.setText(patientRef.getResponsibleName());
+					if (patientRef.getDifferent() == true)
+					{
+						responsiblePanel_1.setVisible(true);
+						EDIT_responsibleStateDropdown.setEnabled(true);
+						EDIT_chckbxDifferentThanPatient.setSelected(true);
+					}
+					else
+					{
+						responsiblePanel_1.setVisible(false);
+						EDIT_responsibleStateDropdown.setEnabled(false);
+						EDIT_chckbxDifferentThanPatient.setSelected(false);
+					}
+				responsibleRelationshipInput_1.setText(patientRef.getResponsibleRelationship());
+				responsibleAddressInput_1.setText(patientRef.getResponsibleStreetAddress());
+				responsibleCityInput_1.setText(patientRef.getResponsibleCity());
+				EDIT_responsibleStateDropdown.setSelectedItem(patientRef.getResponsibleState());
+				responsibleZipInput_1.setText(patientRef.getResponsibleZipCode());
+				responsibleWorkNumberInput_1.setText(patientRef.getResponsibleWorkPhoneNumber());
+				responsibleHomeNumberInput_1.setText(patientRef.getResponsibleHomePhoneNumber());
+				responsibleSocSecNumInput_1.setText(patientRef.getResponsibleSocialSecurityNumber());
+			}
+		});
+		EDIT_btnSearch.setBounds(210, 8, 95, 21);
+		editPatientInfoPanel.add(EDIT_btnSearch);
+		
+		JButton EDIT_btnFinalizeEdit = new JButton("FINALIZE EDIT");
+		EDIT_btnFinalizeEdit.addActionListener(new ActionListener()
+	        	{
+				public void actionPerformed(ActionEvent editFinalized) 
+			{
+				Connection conn=null;
+
+				try {
+					conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/", "root", ""); //This part here created the connection to MySQL
+					if(conn != null) 
+					System.out.println("Connection Established.");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					System.out.println("Connection Failure.");
+					e.printStackTrace();
+				}
+				
+				//if the connection fails, then the information will not be pushed to MySQL
+					if(conn != null) {
+				try {
+					String firstName = firstNameInput_1.getText();
+					String middleInitial = middleInitialInput_1.getText();
+					String lastName = lastNameInput_1.getText();
+					String birthMonth = birthMonthInput_1.getText();
+					String birthYear = birthYearInput_1.getText();
+					String birthDay = birthDayInput_1.getText();
+					String State = (String) EDIT_stateDropdown.getSelectedItem();
+					String City = cityInput_1.getText();
+					String Gender = (String) EDIT_sexDropdown.getSelectedItem();
+					String address = streetAddressInput_1.getText();
+					String zipCode = zipInput_1.getText();
+					String employerName = employerNameInput_1.getText();
+					String workPhoneNumber = workNumberInput_1.getText();
+					String homePhoneNumber = homeNumberInput_1.getText();
+					String socSecNum = socSecNumInput_1.getText();
+					String employerAddress = employerAddressInput_1.getText();
+					String employerCity = employerCityInput_1.getText();
+					String employerZip = employerZipInput_1.getText();
+					
+					String query = "INSERT INTO hospitaliris.patient_information (First_Name, Middle_initial, Last_Name, Gender, birthMonth, birthYear,birthDay, State, City,address,zipcode,employerName,workPhoneNumber,homePhoneNumber,socSecNum,Patient_ID,employerAddress, employerCity, employerZip) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					PreparedStatement stmt = conn.prepareStatement(query);
+				
+					stmt.setString( 1, firstName);
+					stmt.setString( 2, middleInitial);
+					stmt.setString( 3, lastName);
+					stmt.setString(4, Gender);
+					stmt.setString( 5, birthMonth);
+					stmt.setString( 6, birthYear);
+					stmt.setString(7, birthDay);
+					stmt.setString(8, State);
+					stmt.setString( 9, City);
+					stmt.setString( 10, address);
+					stmt.setString( 11, zipCode);
+					stmt.setString( 12, employerName);
+					stmt.setString( 13, workPhoneNumber);
+					stmt.setString( 14, homePhoneNumber);
+					stmt.setString(15, socSecNum);
+					stmt.setString(16,"0001");
+					stmt.setString(16, employerAddress);
+					stmt.setString(17, employerCity);
+					stmt.setString(18, employerZip);
+					stmt.execute();
+					System.out.println("Patient information successfully saved!");
+				} catch(SQLException e) {
+					System.out.println("Something is wrong with the patient data");
+					e.printStackTrace();
+				}
+				
+				//this should only push the responsible user information if the checkbox is selected.
+				//done to prevent errors on eclipse side.
+				if (REG_chckbxDifferentThanPatient.isSelected()) {
+				try {
+					String ResponsibleName = responsibleNameInput_1.getText();
+					String responsibleRelationship = responsibleRelationshipInput_1.getText();
+					String responsibleAddress = responsibleAddressInput_1.getText();
+					String responsibleState =(String)EDIT_responsibleStateDropdown.getSelectedItem();
+					String responsibleCity = responsibleCityInput_1.getText();
+					String responsibleZipCode = responsibleZipInput_1.getText();
+					String responsibleWorkNumber = responsibleWorkNumberInput_1.getText();
+					String responsibleHomeNumber = responsibleHomeNumberInput_1.getText();
+					String responsibleSSN = responsibleSocSecNumInput_1.getText();
+					String socSecNum = socSecNumInput_1.getText();
+					
+					String query2 = "INSERT INTO hospitaliris.responsible_information (ResponsibleName, responsibleRelationship, responsibleAddressInput,responsibleState,responsibleCity,responsibleZipCode,responsibleWorkNumber,responsibleHomeNumber,responsibleSSN, dependentSSN) VALUES (?,?,?,?,?,?,?,?,?,?)";
+					PreparedStatement stmt2 = conn.prepareStatement(query2);
+					stmt2.setString( 1, ResponsibleName);
+					stmt2.setString( 2, responsibleRelationship);
+					stmt2.setString( 3, responsibleAddress);
+					stmt2.setString(4, responsibleState);
+					stmt2.setString( 5, responsibleCity);
+					stmt2.setString( 6, responsibleZipCode);
+					stmt2.setString( 7, responsibleWorkNumber);
+					stmt2.setString( 8, responsibleHomeNumber);
+					stmt2.setString( 9, responsibleSSN);
+					stmt2.setString( 10, socSecNum);
+					stmt2.execute();
+					System.out.println("responsible information succesfully saved!");
+				}catch(SQLException e) {
+					System.out.println("Something is wrong with the responsible figure data");
+					e.printStackTrace();
+				}
+				
+				}
+					}
+			}
+		});
+								       
+		EDIT_btnFinalizeEdit.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		EDIT_btnFinalizeEdit.setBounds(604, 291, 125, 21);
+		editPatientInfoPanel.add(EDIT_btnFinalizeEdit);
+		EDIT_btnFinalizeEdit.setVisible(false);
+		
+		JCheckBox EDIT_chckbxDone = new JCheckBox("Done?");
+		EDIT_chckbxDone.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent doneEditing)
+			{
+				if (EDIT_btnFinalizeEdit.isVisible())
+				{
+					EDIT_btnFinalizeEdit.setVisible(false);
+					EDIT_btnFinalizeEdit.setEnabled(false);
+				}
+				else
+				{
+					EDIT_btnFinalizeEdit.setVisible(true);
+					EDIT_btnFinalizeEdit.setEnabled(true);
+				}
+			}
+		});
+		EDIT_chckbxDone.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		EDIT_chckbxDone.setEnabled(false);
+		EDIT_chckbxDone.setBounds(518, 290, 77, 21);
+		editPatientInfoPanel.add(EDIT_chckbxDone);
+		
+		MAIN_btnViewEditInfo = new JButton("View/Edit Patient Profile");
+		MAIN_btnViewEditInfo.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent goToViewEditInfo)
+			{
+				layeredPane.setLayer(editPatientInfoPanel, 1);
+				layeredPane.setLayer(referringPhysicianMainMenu, -2);
+				MAIN_btnViewEditInfo.setEnabled(false);
+				MAIN_btnRegisterNewPatient.setEnabled(false);
+				MAIN_btnSendImagingRequest.setEnabled(false);
+				EDIT_stateDropdown.setEnabled(true);
+				EDIT_responsibleStateDropdown.setEnabled(true);
+				EDIT_patientIDSearchInput.setEnabled(true);
+				EDIT_chckbxDifferentThanPatient.setEnabled(true);
+				EDIT_sexDropdown.setEnabled(true);
+				EDIT_employerStateDropdown.setEnabled(true);
+				EDIT_btnSearch.setEnabled(true);
+				EDIT_btnFinalizeEdit.setEnabled(true);
+				EDIT_btnCancel.setEnabled(true);
+				EDIT_btnNo.setEnabled(true);
+				EDIT_btnYes.setEnabled(true);
+				EDIT_chckbxDone.setEnabled(true);
+			}
+		});
+		MAIN_btnViewEditInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		MAIN_btnViewEditInfo.setBounds(579, 181, 235, 50);
+		referringPhysicianMainMenu.add(MAIN_btnViewEditInfo);
+		
+		EDIT_btnCancel = new JButton("Cancel");
+		EDIT_btnCancel.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent cancelEdit)
+			{
+				confirmCancelPanel_2.setVisible(true);
+				EDIT_btnYes.setEnabled(true);
+				EDIT_btnNo.setEnabled(true);
+			}
+		});
+		
+		EDIT_btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		EDIT_btnCancel.setEnabled(false);
+		EDIT_btnCancel.setBounds(10, 291, 76, 21);
+		editPatientInfoPanel.add(EDIT_btnCancel);
+				
+		confirmCancelPanel_2 = new JPanel();
+		confirmCancelPanel_2.setBounds(108, 284, 249, 35);
+		editPatientInfoPanel.add(confirmCancelPanel_2);
+		confirmCancelPanel_2.setLayout(null);
+				
+		lblPleaseConfirm_2 = new JLabel("Please Confirm:");
+		lblPleaseConfirm_2.setBounds(0, 10, 82, 15);
+		confirmCancelPanel_2.add(lblPleaseConfirm_2);
+		lblPleaseConfirm_2.setForeground(Color.RED);
+		lblPleaseConfirm_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
+				
+		EDIT_btnYes = new JButton("YES");
+		EDIT_btnYes.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent confirmCancel_2)
+			{
+				firstNameInput_1.setText(null);
+				middleInitialInput_1.setText(null);
+				lastNameInput_1.setText(null);
+				birthMonthInput_1.setText(null);
+				birthDayInput_1.setText(null);
+				birthYearInput_1.setText(null);
+				EDIT_sexDropdown.setSelectedIndex(0);
+				streetAddressInput_1.setText(null);
+				cityInput_1.setText(null);
+				EDIT_stateDropdown.setSelectedIndex(0);
+				zipInput_1.setText(null);
+				workNumberInput_1.setText(null);
+				homeNumberInput_1.setText(null);
+				socSecNumInput_1.setText(null);
+				employerNameInput.setText(null);
+				employerAddressInput_1.setText(null);
+				employerCityInput_1.setText(null);
+				EDIT_employerStateDropdown.setSelectedIndex(0);
+				employerZipInput_1.setText(null);
+				responsibleNameInput_1.setText(null);
+					if (EDIT_chckbxDifferentThanPatient.isSelected() == true)
+					{
+						responsiblePanel_1.setVisible(false);
+						EDIT_responsibleStateDropdown.setEnabled(false);
+						EDIT_chckbxDifferentThanPatient.setSelected(false);
+						responsibleRelationshipInput_1.setText(null);
+						responsibleAddressInput_1.setText(null);
+						responsibleCityInput_1.setText(null);
+						EDIT_responsibleStateDropdown.setSelectedIndex(0);
+						responsibleZipInput_1.setText(null);
+						responsibleWorkNumberInput_1.setText(null);
+						responsibleHomeNumberInput_1.setText(null);
+						responsibleSocSecNumInput_1.setText(null);
+					}
+					else if (EDIT_chckbxDifferentThanPatient.isSelected() == false)
+					{
+					}
+				EDIT_btnNo.setEnabled(false);
+				EDIT_btnYes.setEnabled(false);
+				confirmCancelPanel_2.setVisible(false);
+				layeredPane.setLayer(referringPhysicianMainMenu, 1);
+				layeredPane.setLayer(editPatientInfoPanel, -2);
+				MAIN_btnViewEditInfo.setEnabled(true);
+				MAIN_btnRegisterNewPatient.setEnabled(true);
+				MAIN_btnSendImagingRequest.setEnabled(true);
+				EDIT_stateDropdown.setEnabled(false);
+				EDIT_responsibleStateDropdown.setEnabled(false);
+				EDIT_patientIDSearchInput.setEnabled(false);
+				EDIT_chckbxDifferentThanPatient.setEnabled(false);
+				EDIT_sexDropdown.setEnabled(false);
+				EDIT_employerStateDropdown.setEnabled(false);
+				EDIT_btnSearch.setEnabled(false);
+				EDIT_btnFinalizeEdit.setEnabled(false);
+				EDIT_chckbxDone.setEnabled(false);
+			}
+		});
+		EDIT_btnYes.setBounds(93, 8, 59, 21);
+		confirmCancelPanel_2.add(EDIT_btnYes);
+		EDIT_btnYes.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		EDIT_btnYes.setEnabled(false);
+				
+		EDIT_btnNo = new JButton("NO");
+		EDIT_btnNo.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent cancelCancellation_2)
+			{
+				confirmCancelPanel_2.setVisible(false);
+				EDIT_btnYes.setEnabled(false);
+				EDIT_btnNo.setEnabled(false);
+			}
+		});
+		
+		EDIT_btnNo.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		EDIT_btnNo.setEnabled(false);
+		EDIT_btnNo.setBounds(180, 8, 59, 21);
+		confirmCancelPanel_2.add(EDIT_btnNo);
+		confirmCancelPanel_2.setVisible(false);
+		
+		MAIN_btnSendImagingRequest = new JButton("Place an Order");
+		MAIN_btnSendImagingRequest.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent goToImagingRequest) 
+			{
+				layeredPane.setLayer(sendImagingRequest, 1);
+				layeredPane.setLayer(referringPhysicianMainMenu, 0);
+				IMG_bodyAreaDropdown.setEnabled(true);
+				IMG_btnCancel1.setEnabled(true);
+				IMG_chckbxDone.setEnabled(true);
+				IMG_patientText.setEnabled(true);
+				IMG_modalityDropdown.setEnabled(true);
+				IMG_conditionDropdown.setEnabled(true);
+				MAIN_btnViewEditInfo.setEnabled(false);
+				MAIN_btnRegisterNewPatient.setEnabled(false);
+				MAIN_btnSendImagingRequest.setEnabled(false);
+			}
+		});
+		MAIN_btnSendImagingRequest.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		MAIN_btnSendImagingRequest.setBounds(296, 181, 235, 50);
+		referringPhysicianMainMenu.add(MAIN_btnSendImagingRequest);
+		
+		IMG_btnYes2 = new JButton("YES");
+		IMG_btnYes2.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent IMG_yesButtonPressed) 
+			{
+				layeredPane.setLayer(referringPhysicianMainMenu, 1);
+				layeredPane.setLayer(sendImagingRequest, -1);
+				hypothesisNotesInput.setText(null);
+				observationsInput.setText(null);
+				IMG_bodyAreaDropdown.setSelectedIndex(0);
+				IMG_chckbxDone.setSelected(false);
+				IMG_conditionDropdown.setSelectedIndex(0);
+				IMG_modalityDropdown.setSelectedIndex(0);
+				IMG_patientText.setText(null);
+				IMG_bodyAreaDropdown.setEnabled(false);
+				IMG_btnCancel1.setEnabled(false);
+				IMG_btnGoToScheduling.setVisible(false);
+				IMG_btnGoToScheduling.setEnabled(false);
+				IMG_chckbxDone.setEnabled(false);
+				IMG_patientText.setEnabled(false);
+				IMG_btnYes2.setEnabled(false);
+				IMG_btnNo2.setEnabled(false);
+				IMG_modalityDropdown.setEnabled(false);
+				confirmCancelPanel1.setVisible(false);
+				IMG_btnYes2.setEnabled(false);
+				IMG_btnNo2.setEnabled(false);
+				MAIN_btnViewEditInfo.setEnabled(true);
+				MAIN_btnRegisterNewPatient.setEnabled(true);
+				MAIN_btnSendImagingRequest.setEnabled(true);
+			}
+		});
+		IMG_btnYes2.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		IMG_btnYes2.setBounds(98, 10, 63, 21);
+		confirmCancelPanel1.add(IMG_btnYes2);
 	}
 	
-	private static List getPatientInfo(String ssn){
-		
+	
+	private static List fillDropdownMenu(String ssn)
+	{
 		List myArray = new List();
 		Connection conn=null;
-		try {
+		try
+		{
 			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/", "root", ""); //This part here created the connection to MySQL
-			} catch (SQLException e) {
+		}
+		
+		catch (SQLException e)
+		{
 			// TODO Auto-generated catch block
 			System.out.println("Connection Failure.");
 			e.printStackTrace();
 		}
 		
-		if(conn != null) {
-			try {
+		if(conn != null) 
+		{
+			try
+			{
 				Statement s = null;
 				String query= "SELECT First_Name from hospitaliris.patient_information where socsSecNum=" + ssn; //edit this 
 				s=conn.createStatement();
 				ResultSet rs=s.executeQuery(query);
-				 while (rs.next()) {
-				      String name = rs.getString("First_Name"); //retrieve the result and save it to name
-				      myArray.add(name); //intended to use when populating a dropdown
-				      System.out.println(name); //testing out what is saved to name.
-				         }
-					
-			} catch (SQLException e) {
-
+					while (rs.next())
+					{
+						String SQLname = rs.getString("First_Name"); //retrieve the result and save it to name
+						myArray.add(SQLname); //intended to use when populating a dropdown
+						System.out.println(SQLname); //testing out what is saved to name.
+					}
+			} 
+			catch (SQLException e)
+			{
 				System.out.print("The following error was produced: "+"\n");
 				e.printStackTrace();
-					}
+			}
 		}
+		
 		return myArray;
+	}
+	
+	private static patient getPatientInfo(String patientID)
+	{
+		patient specPatient = new patient(patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, false, patientID, patientID, patientID, patientID, patientID, patientID, patientID, patientID, null);
+		List myArray = new List();
+		Connection conn=null;
+		try {
+			conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/", "root", ""); //This part here created the connection to MySQL
+			}
+		catch (SQLException e) 
+		{
+			// TODO Auto-generated catch block
+			System.out.println("Connection Failure.");
+			e.printStackTrace();
+		}
+		
+		if(conn != null) 
+		{
+			try
+			{
+				Statement s = null;
+				String query= "SELECT First_Name from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_firstName = rs.getString("First_Name"); //retrieve the result and save it to name
+				specPatient.setFirstName(SQL_firstName);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Middle_initial from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_middleInitial = rs.getString("Middle_initial"); //retrieve the result and save it to name
+				specPatient.setMiddleInitial(SQL_middleInitial);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Last_Name from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_lastName = rs.getString("Last_Name"); //retrieve the result and save it to name
+				specPatient.setLastName(SQL_lastName);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT birthMonth from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_birthMonth = rs.getString("birthMonth"); //retrieve the result and save it to name
+				specPatient.setBirthMonth(SQL_birthMonth);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT birthDay from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_birthDay = rs.getString("birthDay"); //retrieve the result and save it to name
+				specPatient.setBirthDay(SQL_birthDay);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT birthYear from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_birthYear = rs.getString("birthYear"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_birthYear);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT Gender from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_sex = rs.getString("Gender"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_sex);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT address from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_streetAddress = rs.getString("address"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_streetAddress);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT City from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_city = rs.getString("City"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_city);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT State from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_state = rs.getString("State"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_state);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT zipcode from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_zipCode = rs.getString("zipcode"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_zipCode);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT workPhoneNumber from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_workPhoneNumber = rs.getString("workPhoneNumber"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_workPhoneNumber);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT homePhoneNumber from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_homePhoneNumber = rs.getString("homePhoneNumber"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_homePhoneNumber);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT socSecNum from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_socSecNum = rs.getString("socSecNum"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_socSecNum);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT employerName from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_employerName = rs.getString("employerName"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_employerName);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT employerAddress from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_employerStreetAddress = rs.getString("employerAddress"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_employerStreetAddress);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT employerCity from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_employerCity = rs.getString("employerCity"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_employerCity);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT employerState from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_employerState = rs.getString("employerState"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_employerState);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT employerZip from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_employerZipCode = rs.getString("employerZip"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_employerZipCode);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT responsibleName from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleName = rs.getString("responsibleName"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleName);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT different from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				boolean SQL_different = rs.getBoolean("different"); //retrieve the result and save it to name
+				specPatient.setDifferent(SQL_different);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT responsibleRelationship from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleRelationship = rs.getString("responsibleRelationship"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleRelationship);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT responsibleAddressInput from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleStreetAddress = rs.getString("responsibleAddressInput"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleStreetAddress);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT responsibleCity from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleCity = rs.getString("responsibleCity"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleCity);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT responsibleState from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleState = rs.getString("responsibleState"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleState);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT responsibleZipCode from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleZipCode = rs.getString("responsibleZipCode"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleZipCode);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT responsibleWorkNumber from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleWorkNumber = rs.getString("responsibleWorkNumber"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleWorkNumber);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT responsibleHomeNumber from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleHomeNumber = rs.getString("responsibleHomeNumber"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleHomeNumber);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		//-----
+			try
+			{
+				Statement s = null;
+				String query= "SELECT responsibleSSN from hospitaliris.patient_information where patientID=" + patientID; //edit this 
+				s=conn.createStatement();
+				ResultSet rs=s.executeQuery(query);
+				String SQL_responsibleSSN = rs.getString("responsibleSSN"); //retrieve the result and save it to name
+				specPatient.setBirthYear(SQL_responsibleSSN);
+			} 
+			
+			catch (SQLException e)
+			{
+				System.out.print("The following error was produced: "+"\n");
+				e.printStackTrace();
+			}
+		}
+		return specPatient;
 	}
 }
