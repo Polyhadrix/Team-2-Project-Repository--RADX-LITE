@@ -3,6 +3,7 @@ package ris;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+
 import javax.swing.*;
 
 public class registration {
@@ -411,6 +412,10 @@ public class registration {
 					sentry.setString(qCount++, sZip.getText());
 					
 					sentry.executeUpdate(); // commit insert/update
+					ResultSet rs = sentry.executeQuery("SELECT MAX(id) AS `id` FROM `ris`.`steward`");
+					 rs.first();
+					int lastid = rs.getInt("id");
+					sentry.executeUpdate("UPDATE `ris`.`patient` SET `steward_id`="+lastid+" WHERE `steward_id` IS NULL ORDER BY `id` DESC LIMIT 1");
 					
 				} catch (SQLException e) { e.printStackTrace();}
 			}
@@ -460,8 +465,9 @@ private static class viewPatientListener implements ActionListener { public void
 					pState.setSelectedItem( results.getString("state") );
 					pZip.setText( results.getString("zip") );
 					String employer_id = results.getString("employer_id");
+					String steward_id = results.getString("steward_id");
 					
-					if(! employer_id.isEmpty()) {
+					if(employer_id!=null && !employer_id.isEmpty()) {
 						sql="SELECT * FROM `ris`.`employer` WHERE `id`="+results.getString("employer_id");
 						results = sentry.executeQuery(sql); results.first();
 						eCompany.setText( results.getString("name") );
@@ -470,7 +476,21 @@ private static class viewPatientListener implements ActionListener { public void
 						eState.setSelectedItem( results.getString("state") );
 						eZip.setText( results.getString("zip") );
 					}
-					
+
+					if(steward_id!=null && !steward_id.isEmpty()) {
+						sql="SELECT * FROM `ris`.`steward` WHERE `id`="+results.getString("steward_id");
+						results = sentry.executeQuery(sql); results.first();
+						sName.setText( results.getString("name") );
+						sSSN.setText( results.getString("ssn") );
+						sRelation.setText( results.getString("relation") );
+						sHome.setText( results.getString("home_phone") );
+						sCell.setText( results.getString("cell_phone") );
+						sWork.setText( results.getString("work_phone") );
+						sStreet.setText( results.getString("street") );
+						sCity.setText( results.getString("city") );
+						sState.setSelectedItem( results.getString("state") );
+						sZip.setText( results.getString("zip") );
+					}
 
 				}
 			} catch (SQLException e) { e.printStackTrace();}
