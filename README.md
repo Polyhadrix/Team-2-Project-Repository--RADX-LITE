@@ -16,17 +16,17 @@ Note: It is still a work in progress. I have yet to add the LayeredPanels effect
 ### Create the Database
 1. (In XAMPP) On the `MySQL` module line, click `Admin`. This should open up your default browser to `phpMyAdmin`.
 
-Option A: Copy-Paste Method  
-...A1. (On another `gitHub` tab) Open the file `ris.sql` and copy the raw code.  
-...A2. (In the `phpMyAdmin` tab) Click the `SQL` tab on the top menu bar.  
-...A3. Paste the code from gitHub into the text area.  
-...A4. Hit the 'Go' button on the bottom right.
+**Option A:** Copy-Paste Method  
+⋅⋅⋅A1. (On another `gitHub` tab) Open the file `ris.sql` and copy the raw code.  
+⋅⋅⋅A2. (In the `phpMyAdmin` tab) Click the `SQL` tab on the top menu bar.  
+⋅⋅⋅A3. Paste the code from gitHub into the text area.  
+⋅⋅⋅A4. Hit the 'Go' button on the bottom right.
 
-Option B: Download-Import Method (if you already downloaded the entire git Branch in a zip file)  
-...B1. (In `phpMyAdmin`) Click the 'Import' button on the top menu bar.  
-...B2. Click the "Choose File".  
-...B3. Click the `ris.sql` file.  
-...B4. Scroll down and click the 'Go' button.
+**Option B**: Download-Import Method (if you already downloaded the entire git Branch in a zip file)  
+⋅⋅⋅B1. (In `phpMyAdmin`) Click the 'Import' button on the top menu bar.  
+⋅⋅⋅B2. Click the "Choose File".  
+⋅⋅⋅B3. Click the `ris.sql` file.  
+⋅⋅⋅B4. Scroll down and click the 'Go' button.
 
 3. (In `phpMyAdmin`) Click the lefthand panel below the phpMyAdmin logo, click the green refresh arrow icon.
 4. The Database `ris` should now appear near the bottom of your database list on the lefthand panel.
