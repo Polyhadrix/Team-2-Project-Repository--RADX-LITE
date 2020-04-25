@@ -24,7 +24,7 @@ UPDATE: NOW WindowBuilder COMPATIBLE! =D
 ⋅⋅⋅B3. Click the `ris.sql` file.  
 ⋅⋅⋅B4. Scroll down and click the 'Go' button.
 
-3. (In `phpMyAdmin`) Click the lefthand panel below the phpMyAdmin logo, click the green refresh arrow icon.
+3. (In `phpMyAdmin`) In the lefthand panel below the phpMyAdmin logo, click the green refresh arrow icon.
 4. The Database `ris` should now appear near the bottom of your database list on the lefthand panel.
 (You can explore it to see the database's tables.)
 
