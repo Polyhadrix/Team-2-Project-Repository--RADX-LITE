@@ -1,5 +1,4 @@
 package ris;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
@@ -806,13 +805,38 @@ public class AddRegistrationPanel {
 		row9.setLayout(gbl_row9);
 		
 		JButton btn_submitPatient = new JButton("Register Patient");
-		btn_submitPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btn_submitPatient.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btn_submitPatient.addActionListener(new addPatientListener() );
 		GridBagConstraints gbc_btn_submitPatient = new GridBagConstraints();
 		gbc_btn_submitPatient.insets = new Insets(0, 5, 0, 5);
 		gbc_btn_submitPatient.gridx = 0;
 		gbc_btn_submitPatient.gridy = 0;
 		row9.add(btn_submitPatient, gbc_btn_submitPatient);
+		
+		JButton btnClearForm = new JButton("Clear Form");
+		btnClearForm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent clearFormButtonPressed)
+			{
+				search.setText(null);	pFirst.setText(null);	pMiddle.setText(null);	pLast.setText(null);	pBirth.setText(null);
+				pHome.setText(null);	pCell.setText(null);	pWork.setText(null);	pSSN.setText(null);		pStreet.setText(null);
+				pCity.setText(null);	pState.setSelectedIndex(0);		pSex.setSelectedIndex(0);	pZip.setText(null);		eCompany.setText(null);
+				eStreet.setText(null);	eCity.setText(null);	eState.setSelectedIndex(0);		eZip.setText(null);
+				
+				if (isDependent.isSelected())
+				{
+					sName.setText(null);	sRelation.setText(null);	sSSN.setText(null);		sHome.setText(null);	sCell.setText(null);
+					sWork.setText(null);	sStreet.setText(null);		sCity.setText(null);	sState.setSelectedIndex(0);		sZip.setText(null);
+					isDependent.setSelected(false);
+				}
+			}
+		});
+		btnClearForm.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		GridBagConstraints gbc_btnClearForm = new GridBagConstraints();
+		gbc_btnClearForm.anchor = GridBagConstraints.WEST;
+		gbc_btnClearForm.insets = new Insets(0, 50, 0, 5);
+		gbc_btnClearForm.gridx = 1;
+		gbc_btnClearForm.gridy = 0;
+		row9.add(btnClearForm, gbc_btnClearForm);
 		
 	} // initialize()
 	
