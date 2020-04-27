@@ -1,6 +1,3 @@
--- -----------------------------------------------------
--- Schema ris
--- -----------------------------------------------------
 CREATE DATABASE IF NOT EXISTS `ris` DEFAULT CHARACTER SET utf8mb4 ;
 USE `ris` ;
 
@@ -58,8 +55,8 @@ CREATE TABLE IF NOT EXISTS `ris`.`patient` (
   `employer_id` INT NULL,
   `steward_id` INT NULL,
   PRIMARY KEY (`id`),
-  INDEX `FK_Patient_Employer_idx` (`employer_id` ASC),
-  INDEX `FK_Patient_Steward_idx` (`steward_id` ASC),
+  INDEX `FK_Patient_Employer_idx` (`employer_id` ASC) VISIBLE,
+  INDEX `FK_Patient_Steward_idx` (`steward_id` ASC) VISIBLE,
   CONSTRAINT `FK_Patient_Employer`
     FOREIGN KEY (`employer_id`)
     REFERENCES `ris`.`employer` (`id`)
@@ -78,12 +75,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ris`.`image` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `url` VARCHAR(255) NOT NULL,
   `patient_id` INT NOT NULL,
-  `image_date` VARCHAR(45) NULL,
-  `notes` VARCHAR(1000) NULL,
+  `last_modified` VARCHAR(45) NULL,
+  `modal` VARCHAR(45) NULL,
+  `url` VARCHAR(255) NOT NULL,
+  `observations` VARCHAR(1000) NULL,
+  `poi` VARCHAR(45) NULL,
+  `condition` VARCHAR(45) NULL,
   PRIMARY KEY (`id`),
-  INDEX `FK_Image_Patient_idx` (`patient_id` ASC),
+  INDEX `FK_Image_Patient_idx` (`patient_id` ASC) VISIBLE,
   CONSTRAINT `FK_Image_Patient`
     FOREIGN KEY (`patient_id`)
     REFERENCES `ris`.`patient` (`id`)
