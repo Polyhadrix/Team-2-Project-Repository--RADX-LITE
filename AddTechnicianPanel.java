@@ -5,8 +5,9 @@ import java.awt.event.*;
 import java.io.*;
 import java.nio.file.*;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.text.*;
+import java.util.*;
+import java.util.Date;
 
 import javax.swing.*;
 
@@ -22,12 +23,11 @@ public class AddTechnicianPanel {
 	private static JTextArea observations;
 	/* Dynamic Labels */
 	private static JLabel lbl_imgPreview, out_tName, out_tSex, out_tBirth, out_tSSN;
-	/* List of Labels (Keep updated in body) */
-	private static ArrayList<JLabel> allLabels = new ArrayList<>();
 	/* Drop-Downs */
 	private static JComboBox<String> condition, poi, modality;
-	/* All Components: Keep updated list at end of createPanel() */
-	private static ArrayList<JTextField> allTextFields = new ArrayList<>();
+	/* All Components: Keep updated list at end of createPanel() This is used to clearForm()*/
+	private static ArrayList<JLabel> allLabels = new ArrayList<>();
+	private static ArrayList<JTextArea> allTextAreas = new ArrayList<>();
 	private static ArrayList<JComboBox<String>> allDropDowns = new ArrayList<JComboBox<String>>();
 	/*Drop-Down Values: myCBox.setModel(new DefaultComboBoxModel<String>(myArr));*/
 	private static String[] conditions = {"","Fracture","Hernia","Embolism","Cancer", "Arterial/Vascular Obstruction"};
@@ -359,6 +359,7 @@ public class AddTechnicianPanel {
 		row5.setLayout(gbl_row5);
 		
 		JButton btn_uploadImage = new JButton("Upload Image");
+		btn_uploadImage.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { confirmUpload(); } });
 		btn_uploadImage.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		//btn_submitPatient.addActionListener(new addPatientListener() );
 		GridBagConstraints gbc_btn_uploadImage = new GridBagConstraints();
@@ -368,7 +369,7 @@ public class AddTechnicianPanel {
 		row5.add(btn_uploadImage, gbc_btn_uploadImage);
 		
 		JButton btnClearForm = new JButton("Clear Form");
-		btnClearForm.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent clearFormButtonPressed) { clearForm(); } });
+		btnClearForm.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent clearFormButtonPressed) { search.setText(null); clearForm(); } });
 		btnClearForm.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GridBagConstraints gbc_btnClearForm = new GridBagConstraints();
 		gbc_btnClearForm.anchor = GridBagConstraints.WEST;
@@ -378,6 +379,8 @@ public class AddTechnicianPanel {
 		row5.add(btnClearForm, gbc_btnClearForm);
 
 		allLabels.addAll( Arrays.asList(out_tName,out_tSex,out_tBirth,out_tSSN) );
+		allTextAreas.addAll( Arrays.asList(observations) );
+		allDropDowns.addAll( Arrays.asList(modality, condition, poi) );
 
 		return pnl_technician;
 	} // initialize()
@@ -456,7 +459,7 @@ public class AddTechnicianPanel {
 						    JOptionPane.WARNING_MESSAGE);
 					clearForm();
 				}else { // Results found, Load them up!
-					clearForm();
+					//clearForm();
 					results.first();
 					out_tName.setText( results.getString("last_name") +", "+ results.getString("first_name"));
 					out_tBirth.setText( results.getString("birthdate") );
@@ -469,18 +472,105 @@ public class AddTechnicianPanel {
 	}/*actionPerformed()*/
 	
 	// Helper Functions
-	private static void clearForm(){ for(JLabel lbl : allLabels) lbl.setText(null); }
+	private static void clearForm(){
+		for(JLabel lbl : allLabels) lbl.setText(null);
+		for(JTextArea lbl : allTextAreas) lbl.setText(null);
+		for(JComboBox<?> d : allDropDowns ) d.setSelectedIndex(0);
+	}
 	
-	private static void copyImgToAppFolder() throws IOException {
+	private static void confirmUpload() {
+		if(! search.getText().isBlank() ) {
+			int response = JOptionPane.showConfirmDialog(mainContent, // Display pop-up Confirmation to this frame
+				    "You are about to apply this image to Patient:\nPID#"+search.getText()+" : "+out_tName.getText(), // The message
+				    "Confirm Upload", // The Title Bar
+				    JOptionPane.OK_CANCEL_OPTION // Options
+				    );
+			if( response == JOptionPane.YES_OPTION) { uploadImg(); }
+		}else{// They didn't select a patient
+			
+			JOptionPane.showMessageDialog(mainContent,
+			    "You must select a patient to apply the image too.",
+			    "Select a Patient",
+			    JOptionPane.ERROR_MESSAGE);
+			
+		}
+	}
+	
+	private static void uploadImg() {
+		// String imgPath = copyImg().toString; // Copies file to a local project folder
+		String imgPath = selectedFile.toPath().toString(); // For interest of time, we'll just point to the native image folder
+		PreparedStatement cli = null;
+		String patientID = search.getText().strip().replaceFirst("^0+(?!$)", ""); // Remove whitespace and leading 0's
+		// Prepare Datetime
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String datetime = dateFormat.format( new Date() );
+		String insertCmd="";
+
 		
-	    Path src = selectedFile.toPath();
-	    Path dst = Paths.get("src/img/");
-	    try
-	    { 
-	       Files.copy(src, dst.resolve(selectedFile.getName()), StandardCopyOption.REPLACE_EXISTING);
-	       log("File Copied");
-	    }
-	    catch(IOException e){ e.printStackTrace(); }
+		String dupeChk = "SELECT * FROM `ris`.`image` WHERE `url`=?";
+		try {
+			cli = conn.prepareStatement(dupeChk);
+			cli.setString(1, imgPath);
+			ResultSet results = cli.executeQuery();
+			
+			if( results.isBeforeFirst() ) { // Results Found
+
+				 // Display pop-up Confirmation to this frame
+				int response = JOptionPane.showConfirmDialog(mainContent,
+					    "This image seems to already be in the database.\n"
+					    + "Did you want to update its information?",
+					    "Update Image Information?",
+					    JOptionPane.YES_NO_OPTION);
+				if( response == JOptionPane.YES_OPTION) { /* Duplicate Found: UPDATE Image */
+					insertCmd = "UPDATE `ris`.`image` "
+							+ "SET `patient_id`=?,`modality`=?,`poi`=?,`condition`=?,`observations`=?,`last_modified`=?"
+							+ " WHERE `url`=?";
+					int qCount = 1; // Because counting question marks is annoying...
+					
+					cli = conn.prepareStatement(insertCmd);
+					cli.setString(qCount++, patientID);
+					cli.setString(qCount++, modality.getSelectedItem().toString() );
+					cli.setString(qCount++, poi.getSelectedItem().toString() );
+					cli.setString(qCount++, condition.getSelectedItem().toString() );
+					cli.setString(qCount++, observations.getText() );
+					cli.setString(qCount++, datetime);
+					cli.executeUpdate(); // commit insert/update
+					
+					JOptionPane.showMessageDialog(mainContent,
+						    "Image successfully updated.");
+
+				}
+			}else { // No duplicates found, INSERT Image
+
+				insertCmd = "INSERT INTO `ris`.`image`"
+						 + " (`patient_id`,`url`,`modality`,`poi`,`condition`,`observations`,`last_modified`) VALUES"
+						 + " (?,?,?,?,?,?,?)";
+					int qCount = 1; // Because counting question marks is annoying...
+					
+						// Notify the database of our intended statement
+						cli = conn.prepareStatement(insertCmd);
+						// Load up the ?s in the statement
+						cli.setString(qCount++, patientID);
+						cli.setString(qCount++, imgPath);
+						cli.setString(qCount++, modality.getSelectedItem().toString() );
+						cli.setString(qCount++, poi.getSelectedItem().toString() );
+						cli.setString(qCount++, condition.getSelectedItem().toString() );
+						cli.setString(qCount++, observations.getText() );
+						cli.setString(qCount++, datetime);
+						cli.executeUpdate(); // commit insert/update
+						
+						JOptionPane.showMessageDialog(mainContent,
+							    "Image successfully uploaded.");
+				
+			} // Ends Else(No dupes found, INSERT Image) block
+		} catch (SQLException e1) {e1.printStackTrace();}
+
+	}// uploadImage()
+	
+	private static Path copyImg() {
+		Path src = selectedFile.toPath(); Path dst = Paths.get("src/img/");
+	    try{ return Files.copy(src, dst.resolve(selectedFile.getName()), StandardCopyOption.REPLACE_EXISTING); }
+	    catch(IOException e){ log("Unexpected Upload Error"); e.printStackTrace(); } return null;
 	}
 	
 	// Shortcut to print to System.out.println()
