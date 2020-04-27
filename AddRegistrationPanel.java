@@ -966,18 +966,18 @@ public class AddRegistrationPanel {
 			clearForm();
 			currentPatient = currentEmployer = currentSteward = null;
 			}else{
-				PreparedStatement sentry = null;
+				PreparedStatement cli = null;
 				String sql = "SELECT * FROM `ris`.`patient` WHERE `id`=?";
 
 				// Try-Catch for SQLException
 				try {
 					// Notify the database of our intended statement
-					sentry = conn.prepareStatement(sql);
+					cli = conn.prepareStatement(sql);
 					// Load up the ?s in the statement
 					
 					String searchID = search.getText().strip().replaceFirst("^0+(?!$)", ""); // Remove whitespace and leading 0's
-					sentry.setString(1, searchID);
-					ResultSet results = sentry.executeQuery();
+					cli.setString(1, searchID);
+					ResultSet results = cli.executeQuery();
 					
 					if(! results.isBeforeFirst() ) { // No Results Found
 						JOptionPane.showMessageDialog(mainContent,
@@ -1010,7 +1010,7 @@ public class AddRegistrationPanel {
 						if(employer_id!=null && !employer_id.isEmpty()) {
 							currentEmployer = employer_id;
 							sql="SELECT * FROM `ris`.`employer` WHERE `id`="+employer_id;
-							results = sentry.executeQuery(sql); results.first();
+							results = cli.executeQuery(sql); results.first();
 							eCompany.setText( results.getString("name") );
 							eStreet.setText( results.getString("street") );
 							eCity.setText( results.getString("city") );
@@ -1022,7 +1022,7 @@ public class AddRegistrationPanel {
 							currentSteward = steward_id;
 							isDependent.setSelected(true);;
 							sql="SELECT * FROM `ris`.`steward` WHERE `id`="+steward_id;
-							results = sentry.executeQuery(sql); results.first();
+							results = cli.executeQuery(sql); results.first();
 							sName.setText( results.getString("name") );
 							sSSN.setText( results.getString("ssn") );
 							sRelation.setText( results.getString("relation") );
