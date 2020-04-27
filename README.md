@@ -1,5 +1,10 @@
-# Team-A-Project-Repository
-I honestly don't know what "dank" means in internet jargon.
+# Remaining Tasks
+1. Create a "Main Menu" or "Back/Cancel" Button for each screen to return. 
+2. Finish image upload functions (probably the only complex part remaining)
+3. Update `ris.sql` to account for the necessary fields in the Radiologist panel I missed earlier.
+4. Create the Radiologist Panel (not difficult, just tedious)
+5. Create "Design Documents" for the project... *we probably should have started with those, oh well.*
+6. Review the rubric for additional requirements.
 
 UPDATE: NOW WindowBuilder COMPATIBLE! =D 
 
