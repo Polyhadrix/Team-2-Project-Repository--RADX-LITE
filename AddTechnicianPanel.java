@@ -111,6 +111,7 @@ public class AddTechnicianPanel {
 		search.addActionListener( new viewPatientListener() );
 		search.addFocusListener( new viewPatientListener() );
 		GridBagConstraints gbc_search = new GridBagConstraints();
+		gbc_search.insets = new Insets(0, 0, 0, 5);
 		gbc_search.fill = GridBagConstraints.HORIZONTAL;
 		gbc_search.gridx = 1;
 		gbc_search.gridy = 0;
