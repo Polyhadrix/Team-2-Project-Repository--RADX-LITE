@@ -50,7 +50,7 @@ public class AddRadiologistPanel {
 		GridBagLayout gbl_pnl_technician = new GridBagLayout();
 		gbl_pnl_technician.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0};
 		gbl_pnl_technician.columnWidths = new int[] {0};
-		gbl_pnl_technician.rowHeights = new int[] {0, 0, 0, 0, 0, 0};
+		gbl_pnl_technician.rowHeights = new int[] {0, 0, 0, 260, 0, 0};
 		gbl_pnl_technician.columnWeights = new double[]{1.0};
 		pnl_radiologist.setLayout(gbl_pnl_technician);
 
@@ -210,9 +210,9 @@ public class AddRadiologistPanel {
 		gbc_row3.gridy = 3;
 		pnl_radiologist.add(row3, gbc_row3);
 		GridBagLayout gbl_row3 = new GridBagLayout();
-		gbl_row3.columnWidths = new int[] {0};
+		gbl_row3.columnWidths = new int[] {0, 0, 629};
 		gbl_row3.rowHeights = new int[] {0};
-		gbl_row3.columnWeights = new double[]{1.0, 1.0};
+		gbl_row3.columnWeights = new double[]{1.0, 1.0, 0.0};
 		gbl_row3.rowWeights = new double[]{1.0};
 		row3.setLayout(gbl_row3);
 		
@@ -220,12 +220,12 @@ public class AddRadiologistPanel {
 		GridBagConstraints gbc_img_pnl = new GridBagConstraints();
 		gbc_img_pnl.fill = GridBagConstraints.VERTICAL;
 		gbc_img_pnl.weighty = 0.0;
-		gbc_img_pnl.insets = new Insets(0, 0, 5, 0);
+		gbc_img_pnl.insets = new Insets(0, 0, 0, 5);
 		gbc_img_pnl.gridx = 0;
 		gbc_img_pnl.gridy = 0;
 		row3.add(img_pnl, gbc_img_pnl);
 		GridBagLayout gbl_img_pnl = new GridBagLayout();
-		gbl_img_pnl.columnWidths = new int[]{0, 0};
+		gbl_img_pnl.columnWidths = new int[]{126, 0};
 		gbl_img_pnl.rowHeights = new int[]{0, 0, 0, 0};
 		gbl_img_pnl.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_img_pnl.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
@@ -262,6 +262,7 @@ public class AddRadiologistPanel {
 		
 		JPanel note_pnl = new JPanel();
 		GridBagConstraints gbc_note_pnl = new GridBagConstraints();
+		gbc_note_pnl.insets = new Insets(0, 0, 0, 5);
 		gbc_note_pnl.weighty = 1.0;
 		gbc_note_pnl.fill = GridBagConstraints.BOTH;
 		gbc_note_pnl.gridx = 1;
@@ -269,9 +270,9 @@ public class AddRadiologistPanel {
 		row3.add(note_pnl, gbc_note_pnl);
 		GridBagLayout gbl_note_pnl = new GridBagLayout();
 		gbl_note_pnl.columnWidths = new int[]{0, 0};
-		gbl_note_pnl.rowHeights = new int[]{0, 0, 0};
+		gbl_note_pnl.rowHeights = new int[]{0, 0, 0, 0};
 		gbl_note_pnl.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_note_pnl.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_note_pnl.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
 		note_pnl.setLayout(gbl_note_pnl);
 		
 		JLabel lbl_Observations = new JLabel("Technician's Observations");
@@ -284,11 +285,42 @@ public class AddRadiologistPanel {
 		
 		observations = new JTextArea();
 		GridBagConstraints gbc_observations = new GridBagConstraints();
+		gbc_observations.insets = new Insets(0, 0, 5, 0);
 		gbc_observations.weighty = 1.0;
 		gbc_observations.fill = GridBagConstraints.BOTH;
 		gbc_observations.gridx = 0;
 		gbc_observations.gridy = 1;
 		note_pnl.add(observations, gbc_observations);
+		
+		JPanel note_pnl_1 = new JPanel();
+		GridBagConstraints gbc_note_pnl_1 = new GridBagConstraints();
+		gbc_note_pnl_1.fill = GridBagConstraints.BOTH;
+		gbc_note_pnl_1.gridx = 2;
+		gbc_note_pnl_1.gridy = 0;
+		row3.add(note_pnl_1, gbc_note_pnl_1);
+		GridBagLayout gbl_note_pnl_1 = new GridBagLayout();
+		gbl_note_pnl_1.columnWidths = new int[]{0, 0};
+		gbl_note_pnl_1.rowHeights = new int[]{0, 0, 0, 0};
+		gbl_note_pnl_1.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_note_pnl_1.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+		note_pnl_1.setLayout(gbl_note_pnl_1);
+		
+		JLabel lbl_r_Observations = new JLabel("Radiologist's Observations");
+		lbl_r_Observations.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GridBagConstraints gbc_lbl_r_Observations = new GridBagConstraints();
+		gbc_lbl_r_Observations.insets = new Insets(0, 0, 5, 0);
+		gbc_lbl_r_Observations.gridx = 0;
+		gbc_lbl_r_Observations.gridy = 0;
+		note_pnl_1.add(lbl_r_Observations, gbc_lbl_r_Observations);
+		
+		JTextArea observations_1 = new JTextArea();
+		GridBagConstraints gbc_observations_1 = new GridBagConstraints();
+		gbc_observations_1.weighty = 1.0;
+		gbc_observations_1.fill = GridBagConstraints.BOTH;
+		gbc_observations_1.insets = new Insets(0, 0, 5, 0);
+		gbc_observations_1.gridx = 0;
+		gbc_observations_1.gridy = 1;
+		note_pnl_1.add(observations_1, gbc_observations_1);
 		btn_ViewImage.addActionListener( new chooseImageListener() );
 
 		JPanel row4 = new JPanel();
