@@ -3,6 +3,9 @@ package ris;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import javax.swing.*;
 
 public class AddRegistrationPanel {
@@ -18,6 +21,9 @@ public class AddRegistrationPanel {
 	private static JCheckBox isDependent;	
 	/* Drop-Downs */
 	private static JComboBox<String> pSex, pState, eState, sState;
+	/* All Components: Keep updated list at end of createPanel() */
+	private static ArrayList<JTextField> allTextFields = new ArrayList<>();
+	private static ArrayList<JComboBox<String>> allDropDowns = new ArrayList<JComboBox<String>>();
 	/*Drop-Down Values*/
 	private static String[] states = {"","Alabama","Alaska","Arkansas","California","Colorado","Connecticut","Delaware",
 			"Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana",
@@ -30,13 +36,13 @@ public class AddRegistrationPanel {
 	/* Panels */
 	private static JPanel pnl_steward;
 	
-	public AddRegistrationPanel(JFrame param_window, Connection param_conn) {
-		mainContent = param_window.getContentPane();
-		conn = param_conn;
-		createPnlRegistration();
-	}
+	/* WindowBuilder Requires a class constructor to work correctly */
+	public AddRegistrationPanel() {
+		createPnlRegistration(mainContent,conn);}
 	
-	public static void createPnlRegistration() {
+	public static JPanel createPnlRegistration(Container param_contentPane, Connection param_conn) {
+		mainContent = param_contentPane;
+		conn = param_conn;
 		JPanel pnl_registration = new JPanel();
 		GridBagConstraints gbc_pnl_registration = new GridBagConstraints();
 		gbc_pnl_registration.fill = GridBagConstraints.HORIZONTAL;
@@ -537,8 +543,8 @@ public class AddRegistrationPanel {
 		row7.setLayout(gbl_row7);
 		
 		isDependent = new JCheckBox("is a dependent");
-		isDependent.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		isDependent.addItemListener(new ItemListener() {
+		      public void itemStateChanged(ItemEvent e) {
 				pnl_steward.setVisible( isDependent.isSelected() );
 			}
 		});
@@ -814,6 +820,21 @@ public class AddRegistrationPanel {
 		gbc_btn_submitPatient.gridy = 0;
 		row9.add(btn_submitPatient, gbc_btn_submitPatient);
 		
+		JButton btnClearForm = new JButton("Clear Form");
+		btnClearForm.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent clearFormButtonPressed) { clearForm(); } });
+		btnClearForm.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GridBagConstraints gbc_btnClearForm = new GridBagConstraints();
+		gbc_btnClearForm.anchor = GridBagConstraints.WEST;
+		gbc_btnClearForm.insets = new Insets(0, 50, 0, 5);
+		gbc_btnClearForm.gridx = 1;
+		gbc_btnClearForm.gridy = 0;
+		row9.add(btnClearForm, gbc_btnClearForm);
+
+		allTextFields.addAll( Arrays.asList(pFirst, pMiddle, pLast, pBirth, pHome, pCell, pWork, pSSN, pStreet, pCity, pZip,
+				eCompany, eStreet, eCity, eZip,sName, sRelation, sSSN, sHome, sCell, sWork, sStreet, sCity, sZip) );
+		allDropDowns.addAll( Arrays.asList(pSex, pState, eState, sState) );
+		
+		return pnl_registration;
 	} // initialize()
 	
 	/* Listeners */
@@ -945,6 +966,7 @@ public class AddRegistrationPanel {
 						    "Warning",
 						    JOptionPane.WARNING_MESSAGE);
 				}else { // Results found, Load them up!
+					clearForm();
 					results.first();
 					pFirst.setText( results.getString("first_name") );
 					pMiddle.setText( results.getString("middle_initial") );
@@ -972,7 +994,7 @@ public class AddRegistrationPanel {
 					}
 
 					if(steward_id!=null && !steward_id.isEmpty()) {
-						isDependent.doClick();
+						isDependent.setSelected(true);;
 						sql="SELECT * FROM `ris`.`steward` WHERE `id`="+steward_id;
 						results = sentry.executeQuery(sql); results.first();
 						sName.setText( results.getString("name") );
@@ -990,6 +1012,16 @@ public class AddRegistrationPanel {
 				}
 			} catch (SQLException e) { e.printStackTrace();}
 		}
-		
+
 	}/*actionPerformed()*/}//viewPatientListener
+	
+	// Helper Functions
+	private static void clearForm(){
+		for(JTextField t : allTextFields) t.setText(null);
+		for(JComboBox<?> d : allDropDowns ) d.setSelectedIndex(0);
+		isDependent.setSelected(false);
+	}
+	
+	// Shortcut to print to System.out.println()
+		public static void log(Object o) {System.out.println(o);}
 }
