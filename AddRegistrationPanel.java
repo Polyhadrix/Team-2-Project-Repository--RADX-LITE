@@ -991,6 +991,7 @@ public class AddRegistrationPanel {
 						clearForm();
 						results.first();
 						currentPatient = searchID;
+						pSSN.setText( results.getString("ssn") );
 						pFirst.setText( results.getString("first_name") );
 						pMiddle.setText( results.getString("middle_initial") );
 						pLast.setText( results.getString("last_name") );
