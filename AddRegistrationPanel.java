@@ -36,6 +36,9 @@ public class AddRegistrationPanel {
 	/* Panels */
 	private static JPanel pnl_steward;
 	
+	/* Current Patient IDs (and other states) */
+	private static String currentPatient, currentEmployer, currentSteward, lastSearch="";
+	
 	/* WindowBuilder Requires a class constructor to work correctly */
 	public AddRegistrationPanel() {
 		createPnlRegistration(mainContent,conn);}
@@ -100,7 +103,7 @@ public class AddRegistrationPanel {
 		gbl_row1.rowWeights = new double[]{0.0};
 		row1.setLayout(gbl_row1);
 		
-		JLabel lbl_search = new JLabel("To View/ Edit Existing Patient, enter their Patient ID# here and hit 'Enter': ");
+		JLabel lbl_search = new JLabel("To View/Edit Existing Patient, enter their Patient ID# here: ");
 		lbl_search.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GridBagConstraints gbc_lbl_search = new GridBagConstraints();
 		gbc_lbl_search.insets = new Insets(0, 5, 5, 5);
@@ -111,8 +114,10 @@ public class AddRegistrationPanel {
 		search = new JTextField();
 		search.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		search.addActionListener( new viewPatientListener() );
+		search.addFocusListener( new viewPatientListener() );
 		GridBagConstraints gbc_search = new GridBagConstraints();
 		gbc_search.fill = GridBagConstraints.HORIZONTAL;
+		gbc_search.insets = new Insets(0, 0, 5, 5);
 		gbc_search.gridx = 1;
 		gbc_search.gridy = 0;
 		row1.add(search, gbc_search);
@@ -840,12 +845,14 @@ public class AddRegistrationPanel {
 	/* Listeners */
 	private static class addPatientListener implements ActionListener { public void actionPerformed(ActionEvent event) {
 		
-		if (pFirst.getText() == null || pFirst.getText().strip().isEmpty() ) { 
+		String[] var_Array = {pFirst.getText(),pSSN.getText(),pLast.getText(),pBirth.getText(),(String) pSex.getSelectedItem(),pStreet.getText(),pCity.getText(),(String) pState.getSelectedItem(),pZip.getText()};
+
+		if (checkBlank(var_Array) == true){
 		JOptionPane.showMessageDialog(mainContent,
 			    "A required field is empty",
 			    "Warning",
 			    JOptionPane.WARNING_MESSAGE);
-		}else{ 
+		}else{
 			PreparedStatement cli = null;
 			String sql = "INSERT INTO `ris`.`patient`"
 				 + " (`ssn`,`first_name`,`middle_initial`,`last_name`,`birthdate`,`sex`,`home_phone`,`cell_phone`,`work_phone`,`street`,`city`,`state`,`zip`) VALUES"
@@ -933,93 +940,115 @@ public class AddRegistrationPanel {
 					cli.executeUpdate("UPDATE `ris`.`patient` SET `steward_id`="+lastid+" WHERE `steward_id` IS NULL ORDER BY `id` DESC LIMIT 1");
 					
 				} catch (SQLException e) { e.printStackTrace();}
+				
+				//default title and icon
+				JOptionPane.showMessageDialog(mainContent,
+				    "Patient was successfully saved.");
 			}
 			
 		}
 		
 	}/*actionPerformed()*/}//addpatientListener
 	
-	private static class viewPatientListener implements ActionListener { public void actionPerformed(ActionEvent event) {
-		
-		if (search.getText() == null || search.getText().strip().isEmpty() ) { 
-		JOptionPane.showMessageDialog(mainContent,
-			    "The Search Box is Empty",
-			    "Warning",
-			    JOptionPane.WARNING_MESSAGE);
-		}else{
-			PreparedStatement sentry = null;
-			String sql = "SELECT * FROM `ris`.`patient` WHERE `id`=?";
+	private static class viewPatientListener implements ActionListener, FocusListener { 
+		public void focusGained(FocusEvent e) { lastSearch = search.getText(); }
+		public void focusLost(FocusEvent e) { if(!lastSearch.isBlank() || !search.getText().isBlank() ) searchPatient(); }
+		public void actionPerformed(ActionEvent event) { searchPatient(); }
+	}//viewPatientListener
 
-			// Try-Catch for SQLException
-			try {
-				// Notify the database of our intended statement
-				sentry = conn.prepareStatement(sql);
-				// Load up the ?s in the statement
-				
-				String searchID = search.getText().strip().replaceFirst("^0+(?!$)", ""); // Remove whitespace and leading 0's
-				sentry.setString(1, searchID);
-				ResultSet results = sentry.executeQuery();
-				
-				if(! results.isBeforeFirst() ) { // No Results Found
-					JOptionPane.showMessageDialog(mainContent,
-						    "No Patient was found with that ID.",
-						    "Warning",
-						    JOptionPane.WARNING_MESSAGE);
-				}else { // Results found, Load them up!
-					clearForm();
-					results.first();
-					pFirst.setText( results.getString("first_name") );
-					pMiddle.setText( results.getString("middle_initial") );
-					pLast.setText( results.getString("last_name") );
-					pBirth.setText( results.getString("birthdate") );
-					pSex.setSelectedItem( results.getString("sex") );
-					pHome.setText( results.getString("home_phone") );
-					pCell.setText( results.getString("cell_phone") );
-					pWork.setText( results.getString("work_phone") );
-					pStreet.setText( results.getString("street") );
-					pCity.setText( results.getString("city") );
-					pState.setSelectedItem( results.getString("state") );
-					pZip.setText( results.getString("zip") );
-					String employer_id = results.getString("employer_id");
-					String steward_id = results.getString("steward_id");
+
+	private static void searchPatient() {
+		if (search.getText().isBlank() ) { 
+			JOptionPane.showMessageDialog(mainContent,
+				    "The Search Box is Empty",
+				    "Warning",
+				    JOptionPane.WARNING_MESSAGE);
+			clearForm();
+			currentPatient = currentEmployer = currentSteward = null;
+			}else{
+				PreparedStatement sentry = null;
+				String sql = "SELECT * FROM `ris`.`patient` WHERE `id`=?";
+
+				// Try-Catch for SQLException
+				try {
+					// Notify the database of our intended statement
+					sentry = conn.prepareStatement(sql);
+					// Load up the ?s in the statement
 					
-					if(employer_id!=null && !employer_id.isEmpty()) {
-						sql="SELECT * FROM `ris`.`employer` WHERE `id`="+employer_id;
-						results = sentry.executeQuery(sql); results.first();
-						eCompany.setText( results.getString("name") );
-						eStreet.setText( results.getString("street") );
-						eCity.setText( results.getString("city") );
-						eState.setSelectedItem( results.getString("state") );
-						eZip.setText( results.getString("zip") );
+					String searchID = search.getText().strip().replaceFirst("^0+(?!$)", ""); // Remove whitespace and leading 0's
+					sentry.setString(1, searchID);
+					ResultSet results = sentry.executeQuery();
+					
+					if(! results.isBeforeFirst() ) { // No Results Found
+						JOptionPane.showMessageDialog(mainContent,
+							    "No Patient was found with that ID.",
+							    "Warning",
+							    JOptionPane.WARNING_MESSAGE);
+						clearForm();
+						search.setText(null);
+						currentPatient = currentEmployer = currentSteward = null;
+					}else { // Results found, Load them up!
+						clearForm();
+						results.first();
+						currentPatient = searchID;
+						pFirst.setText( results.getString("first_name") );
+						pMiddle.setText( results.getString("middle_initial") );
+						pLast.setText( results.getString("last_name") );
+						pBirth.setText( results.getString("birthdate") );
+						pSex.setSelectedItem( results.getString("sex") );
+						pHome.setText( results.getString("home_phone") );
+						pCell.setText( results.getString("cell_phone") );
+						pWork.setText( results.getString("work_phone") );
+						pStreet.setText( results.getString("street") );
+						pCity.setText( results.getString("city") );
+						pState.setSelectedItem( results.getString("state") );
+						pZip.setText( results.getString("zip") );
+						String employer_id = results.getString("employer_id");
+						String steward_id = results.getString("steward_id");
+						
+						if(employer_id!=null && !employer_id.isEmpty()) {
+							currentEmployer = employer_id;
+							sql="SELECT * FROM `ris`.`employer` WHERE `id`="+employer_id;
+							results = sentry.executeQuery(sql); results.first();
+							eCompany.setText( results.getString("name") );
+							eStreet.setText( results.getString("street") );
+							eCity.setText( results.getString("city") );
+							eState.setSelectedItem( results.getString("state") );
+							eZip.setText( results.getString("zip") );
+						}
+
+						if(steward_id!=null && !steward_id.isEmpty()) {
+							currentSteward = steward_id;
+							isDependent.setSelected(true);;
+							sql="SELECT * FROM `ris`.`steward` WHERE `id`="+steward_id;
+							results = sentry.executeQuery(sql); results.first();
+							sName.setText( results.getString("name") );
+							sSSN.setText( results.getString("ssn") );
+							sRelation.setText( results.getString("relation") );
+							sHome.setText( results.getString("home_phone") );
+							sCell.setText( results.getString("cell_phone") );
+							sWork.setText( results.getString("work_phone") );
+							sStreet.setText( results.getString("street") );
+							sCity.setText( results.getString("city") );
+							sState.setSelectedItem( results.getString("state") );
+							sZip.setText( results.getString("zip") );
+						}
+
 					}
-
-					if(steward_id!=null && !steward_id.isEmpty()) {
-						isDependent.setSelected(true);;
-						sql="SELECT * FROM `ris`.`steward` WHERE `id`="+steward_id;
-						results = sentry.executeQuery(sql); results.first();
-						sName.setText( results.getString("name") );
-						sSSN.setText( results.getString("ssn") );
-						sRelation.setText( results.getString("relation") );
-						sHome.setText( results.getString("home_phone") );
-						sCell.setText( results.getString("cell_phone") );
-						sWork.setText( results.getString("work_phone") );
-						sStreet.setText( results.getString("street") );
-						sCity.setText( results.getString("city") );
-						sState.setSelectedItem( results.getString("state") );
-						sZip.setText( results.getString("zip") );
-					}
-
-				}
-			} catch (SQLException e) { e.printStackTrace();}
-		}
-
-	}/*actionPerformed()*/}//viewPatientListener
+				} catch (SQLException e) { e.printStackTrace();}
+			}
+	}
 	
 	// Helper Functions
 	private static void clearForm(){
 		for(JTextField t : allTextFields) t.setText(null);
 		for(JComboBox<?> d : allDropDowns ) d.setSelectedIndex(0);
 		isDependent.setSelected(false);
+	}
+	
+	public static boolean checkBlank(String[] arr) { //runs through every item in the array and checks if ANY is blank or contains whitespace
+		for(int i = 0; i < arr.length; i++) if(arr[i] == null || arr[i].strip().isBlank()) return true;
+		return false;
 	}
 	
 	// Shortcut to print to System.out.println()
