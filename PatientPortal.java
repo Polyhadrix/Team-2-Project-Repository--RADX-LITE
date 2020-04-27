@@ -3,6 +3,9 @@ package ris; // Double-check this
 import java.awt.*;
 //import java.awt.event.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -10,7 +13,8 @@ import java.awt.event.ActionEvent;
 public class PatientPortal {
 	private static JLayeredPane layeredContentPane;
 	
-	public static JPanel pnl_mainmenu, pnl_registration;
+	public static JPanel pnl_mainmenu, pnl_registration, pnl_technician;
+	public static ArrayList<JPanel> allPanels = new ArrayList<>();
 	
 	/*Open Database Connection (only once)*/
 	private static Connection conn=openConnection();
@@ -50,14 +54,18 @@ public class PatientPortal {
 /**/	
 		pnl_mainmenu = createPnlMainMenu();
 		pnl_registration = AddRegistrationPanel.createPnlRegistration(layeredContentPane,conn);
+		pnl_technician = AddTechnicianPanel.createPnlTechnician(layeredContentPane, conn);
+		
+		// Size up the main frame, and hide the other panels
+		allPanels.addAll( Arrays.asList(pnl_registration,pnl_technician) ); // Note: DON'T include the main menu panel
+		int largestHeight=0, largestWidth=0;
+		for(JPanel pnl : allPanels) {
+			largestHeight = Math.max(largestHeight, pnl.getHeight() );
+			largestWidth = Math.max(largestWidth, pnl.getWidth() );
+			pnl.setVisible(false);
+		}
+		layeredContentPane.setPreferredSize(new Dimension( largestWidth, largestHeight ));
 
-		layeredContentPane.setPreferredSize(new Dimension( 400, pnl_registration.getHeight() ));
-
-
-		layeredContentPane.moveToFront(pnl_mainmenu);
-		layeredContentPane.moveToBack(pnl_registration);
-
-		pnl_registration.setVisible(false);
 
 		//Display the window
 		//appWindow.pack();
@@ -147,6 +155,7 @@ public class PatientPortal {
 		row2.setLayout(gbl_row2);
 		
 		JButton btn_Technician = new JButton("Technician Image Uploader");
+		btn_Technician.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { switchPanel(pnl_mainmenu, pnl_technician); } });
 		btn_Technician.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GridBagConstraints gbc_btn_Technician = new GridBagConstraints();
 		gbc_btn_Technician.insets = new Insets(0, 0, 5, 0);
