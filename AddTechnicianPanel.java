@@ -33,6 +33,7 @@ public class AddTechnicianPanel {
 	private static String[] conditions = {"","Fracture","Hernia","Embolism","Cancer", "Arterial/Vascular Obstruction"};
 	private static String[] pois = {"","head","neck","chest","upper back","lower back","abdomen","arm - right","arm - left","leg - right","leg - right","foot - right","foot - left"};
 	private static String[] modalities = {"","X-Ray","Magnetic Resonance Imaging","Computed Tomography","Ultrasound","Fluoroscopy","Mammography"};
+	private static JTextField preparerName;
 	
 	/* WindowBuilder Requires a class constructor to work correctly */
 	public AddTechnicianPanel() {
@@ -274,6 +275,7 @@ public class AddTechnicianPanel {
 		
 		observations = new JTextArea();
 		GridBagConstraints gbc_observations = new GridBagConstraints();
+		gbc_observations.insets = new Insets(0, 0, 0, 5);
 		gbc_observations.weighty = 1.0;
 		gbc_observations.fill = GridBagConstraints.BOTH;
 		gbc_observations.gridx = 0;
@@ -320,7 +322,7 @@ public class AddTechnicianPanel {
 		modality.setModel( new DefaultComboBoxModel<String>(modalities) );
 		GridBagConstraints gbc_modality = new GridBagConstraints();
 		gbc_modality.fill = GridBagConstraints.HORIZONTAL;
-		gbc_modality.insets = new Insets(0, 0, 5, 5);
+		gbc_modality.insets = new Insets(0, 5, 5, 5);
 		gbc_modality.gridx = 0;
 		gbc_modality.gridy = 1;
 		row4.add(modality, gbc_modality);
@@ -354,17 +356,36 @@ public class AddTechnicianPanel {
 		GridBagLayout gbl_row5 = new GridBagLayout();
 		gbl_row5.columnWidths = new int[] {0};
 		gbl_row5.rowHeights = new int[] {0};
-		gbl_row5.columnWeights = new double[]{0.0, 1.0};
+		gbl_row5.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0};
 		gbl_row5.rowWeights = new double[]{0.0};
 		row5.setLayout(gbl_row5);
 		
 		JButton btn_uploadImage = new JButton("Upload Image");
 		btn_uploadImage.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { confirmUpload(); } });
+		
+		JLabel lbl_techName = new JLabel("Enter your name:");
+		lbl_techName.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GridBagConstraints gbc_lbl_techName = new GridBagConstraints();
+		gbc_lbl_techName.anchor = GridBagConstraints.EAST;
+		gbc_lbl_techName.insets = new Insets(0, 5, 0, 5);
+		gbc_lbl_techName.gridx = 0;
+		gbc_lbl_techName.gridy = 0;
+		row5.add(lbl_techName, gbc_lbl_techName);
+		
+		preparerName = new JTextField();
+		preparerName.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		preparerName.setColumns(10);
+		GridBagConstraints gbc_in_name = new GridBagConstraints();
+		gbc_in_name.insets = new Insets(0, 0, 0, 5);
+		gbc_in_name.fill = GridBagConstraints.HORIZONTAL;
+		gbc_in_name.gridx = 1;
+		gbc_in_name.gridy = 0;
+		row5.add(preparerName, gbc_in_name);
 		btn_uploadImage.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		//btn_submitPatient.addActionListener(new addPatientListener() );
 		GridBagConstraints gbc_btn_uploadImage = new GridBagConstraints();
 		gbc_btn_uploadImage.insets = new Insets(0, 5, 0, 5);
-		gbc_btn_uploadImage.gridx = 0;
+		gbc_btn_uploadImage.gridx = 2;
 		gbc_btn_uploadImage.gridy = 0;
 		row5.add(btn_uploadImage, gbc_btn_uploadImage);
 		
@@ -372,11 +393,24 @@ public class AddTechnicianPanel {
 		btnClearForm.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent clearFormButtonPressed) { search.setText(null); clearForm(); } });
 		btnClearForm.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GridBagConstraints gbc_btnClearForm = new GridBagConstraints();
-		gbc_btnClearForm.anchor = GridBagConstraints.WEST;
-		gbc_btnClearForm.insets = new Insets(0, 50, 0, 5);
-		gbc_btnClearForm.gridx = 1;
+		gbc_btnClearForm.insets = new Insets(0, 0, 0, 5);
+		gbc_btnClearForm.gridx = 3;
 		gbc_btnClearForm.gridy = 0;
 		row5.add(btnClearForm, gbc_btnClearForm);
+		
+		JButton btnReturnToMain = new JButton("Return to Main Menu");
+		btnReturnToMain.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				switchPanel(pnl_technician, PatientPortal.pnl_mainmenu);
+			}
+		});
+		btnReturnToMain.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GridBagConstraints gbc_btnReturnToMain = new GridBagConstraints();
+		gbc_btnReturnToMain.insets = new Insets(0, 0, 0, 5);
+		gbc_btnReturnToMain.gridx = 4;
+		gbc_btnReturnToMain.gridy = 0;
+		row5.add(btnReturnToMain, gbc_btnReturnToMain);
 
 		allLabels.addAll( Arrays.asList(out_tName,out_tSex,out_tBirth,out_tSSN) );
 		allTextAreas.addAll( Arrays.asList(observations) );
@@ -405,7 +439,7 @@ public class AddTechnicianPanel {
 	        }
 
 	        //Show it.
-	        int returnVal = fc.showDialog(mainContent, "Return Image Path");
+	        int returnVal = fc.showDialog(mainContent, "Select Image");
 
 	        //Process the results.
 	        if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -481,19 +515,30 @@ public class AddTechnicianPanel {
 	}
 	
 	private static void confirmUpload() {
-		if(! search.getText().isBlank() ) {
+		if(selectedFile==null) { // Error: No Image Selected
+			JOptionPane.showMessageDialog(mainContent,
+				    "Please choose an image to upload.",
+				    "Error: No Image Selected",
+				    JOptionPane.ERROR_MESSAGE);
+		}else if (search.getText().isBlank()){ // Error: No Patient Selected
+			JOptionPane.showMessageDialog(mainContent,
+					"You must select a patient to apply the image to.",
+					"Error: No Patient Selected",
+					JOptionPane.ERROR_MESSAGE);
+		}else if(preparerName.getText().isBlank() ) { // Error: No Preparer Name
+			JOptionPane.showMessageDialog(mainContent,
+					"Please enter your name at the bottom for our records.",
+					"Error: Missing Preparer Name",
+					JOptionPane.ERROR_MESSAGE);
+		}else{// All checks passed, Popup upload confirmation dialogue
+			
 			int response = JOptionPane.showConfirmDialog(mainContent, // Display pop-up Confirmation to this frame
-				    "You are about to apply this image to Patient:\nPID#"+search.getText()+" : "+out_tName.getText(), // The message
+				    "This image will be applied to Patient:\nPID#"+search.getText()+" : "+out_tName.getText(), // The message
 				    "Confirm Upload", // The Title Bar
 				    JOptionPane.OK_CANCEL_OPTION // Options
 				    );
-			if( response == JOptionPane.YES_OPTION) { uploadImg(); }
-		}else{// They didn't select a patient
-			
-			JOptionPane.showMessageDialog(mainContent,
-			    "You must select a patient to apply the image too.",
-			    "Select a Patient",
-			    JOptionPane.ERROR_MESSAGE);
+			// If(user affirmative) : uploadImg().
+			if( response == JOptionPane.YES_OPTION) uploadImg();
 			
 		}
 	}
@@ -508,7 +553,7 @@ public class AddTechnicianPanel {
 		String datetime = dateFormat.format( new Date() );
 		String insertCmd="";
 
-		
+		// Check if image already in dB
 		String dupeChk = "SELECT * FROM `ris`.`image` WHERE `url`=?";
 		try {
 			cli = conn.prepareStatement(dupeChk);
@@ -577,4 +622,6 @@ public class AddTechnicianPanel {
 	
 	// Shortcut to print to System.out.println()
 		public static void log(Object o) {System.out.println(o);}
+		
+		public static void switchPanel(JPanel prevScreen, JPanel nextScreen) { prevScreen.setVisible(false); nextScreen.setVisible(true); }
 }
