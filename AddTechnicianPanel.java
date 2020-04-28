@@ -476,6 +476,8 @@ public class AddTechnicianPanel {
 		for(JLabel lbl : allLabels) lbl.setText(null);
 		for(JTextArea lbl : allTextAreas) lbl.setText(null);
 		for(JComboBox<?> d : allDropDowns ) d.setSelectedIndex(0);
+		lbl_imgPreview.setIcon(null);
+		lbl_imgPreview.setText("Image Preview");
 	}
 	
 	private static void confirmUpload() {
