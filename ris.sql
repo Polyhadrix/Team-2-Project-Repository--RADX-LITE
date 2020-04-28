@@ -55,8 +55,8 @@ CREATE TABLE IF NOT EXISTS `ris`.`patient` (
   `employer_id` INT NULL,
   `steward_id` INT NULL,
   PRIMARY KEY (`id`),
-  INDEX `FK_Patient_Employer_idx` (`employer_id` ASC) VISIBLE,
-  INDEX `FK_Patient_Steward_idx` (`steward_id` ASC) VISIBLE,
+  INDEX `FK_Patient_Employer_idx` (`employer_id` ASC),
+  INDEX `FK_Patient_Steward_idx` (`steward_id` ASC),
   CONSTRAINT `FK_Patient_Employer`
     FOREIGN KEY (`employer_id`)
     REFERENCES `ris`.`employer` (`id`)
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `ris`.`image` (
   `poi` VARCHAR(45) NULL,
   `condition` VARCHAR(45) NULL,
   PRIMARY KEY (`id`),
-  INDEX `FK_Image_Patient_idx` (`patient_id` ASC) VISIBLE,
+  INDEX `FK_Image_Patient_idx` (`patient_id` ASC),
   CONSTRAINT `FK_Image_Patient`
     FOREIGN KEY (`patient_id`)
     REFERENCES `ris`.`patient` (`id`)
