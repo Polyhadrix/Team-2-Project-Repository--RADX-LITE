@@ -1,0 +1,26 @@
+Once upon a time, the patient broke his leg.
+He goes to his/her referring physician and tells him/her that he broke his leg.
+The referring physician logs into RadX Lite and uploads the new patient's info.
+He/she then orders an imaging appointment to the nearest radiology clinic, and puts in the necessary
+info (area of body, scenario (e.g. compression fracture, simple fracture, et al.)).
+
+When it is time, the patient meets the technician, who subsequently performs the imaging.
+The technician then sends the images to the radiologist.
+
+The radiologist receives the file and, after thorough analysis, compiles a detailed report.
+Once finished, the radiologist sends the report (along with the technician's brief observations and
+appropriate images) to the referring physician.
+
+
+**Requirements: 
+(1) The referring physician shall be able to log in, register a new patient, order an imaging appointment, and be able to edit an
+existing patient's info when necessary.
+
+(2) The referring physician shall be able to receive the radiologist's report that he/she ordered in the first place.
+
+(3) The technician shall be able to send the images (along with any appropriate brief observations) to the radiologist.
+
+(4) The radiologist shall be able to receive the images and shall be able to write an attached report bases on the analyses of
+said images.
+
+(5) The radiologist shall be able to send the report to the referring physician.
