@@ -11,67 +11,54 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class PatientPortal {
-	private static JLayeredPane layeredContentPane;
-	
-	public static JPanel pnl_mainmenu, pnl_registration, pnl_technician;
+	/* Declare Objects Here for Uniform Access*/
+	public static JLayeredPane layeredContentPane;
+	public static JPanel pnl_mainmenu, pnl_registration, pnl_technician, pnl_radiologist;
 	public static ArrayList<JPanel> allPanels = new ArrayList<>();
-	
+
 	/*Open Database Connection (only once)*/
 	private static Connection conn=openConnection();
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		javax.swing.SwingUtilities.invokeLater (new Runnable() { public void run() { initialize(); } });
-	}//End main()
+	/* Launches application */
+	public static void main(String[] args) { javax.swing.SwingUtilities.invokeLater (new Runnable() { public void run() { initialize(); } }); }
 
-	/**
-	 * Create the application.
-	 */
-	public PatientPortal() { initialize(); }
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	/* Initialize the frame and initialize each panel. */
 	private static void initialize() {
+		/* Set Up Primary Frame */
 		JFrame appWindow = new JFrame();
 		appWindow.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
 		appWindow.setTitle("Patient Portal");
-		appWindow.setIconImage(Toolkit.getDefaultToolkit().getImage("src\\ung.gif"));
-		appWindow.setBounds(100, 100, 920, 499);
+		appWindow.setIconImage(Toolkit.getDefaultToolkit().getImage("src\\ung.gif")); // The icon in the Title bar
+		appWindow.setBounds(100, 100, 920, 510);
 		appWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		/* Using a JLayeredPane with gridBagLayout as the primary content pane */
 		layeredContentPane = new JLayeredPane();
-		layeredContentPane.setOpaque(true);
-/**/	GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] {0};
-		gridBagLayout.rowHeights = new int[] {0};
-		gridBagLayout.columnWeights = new double[]{1.0};
-		gridBagLayout.rowWeights = new double[]{1.0};
-		appWindow.setContentPane(layeredContentPane);
+		layeredContentPane.setOpaque(true); // precautionary, some reported problems without
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[] {0}; // single-col, auto-width
+		gridBagLayout.rowHeights = new int[] {0}; // single-row, auto-width
+		gridBagLayout.columnWeights = new double[]{1.0}; // expand col to fill window
+		gridBagLayout.rowWeights = new double[]{1.0}; // expand row to fill window
 		layeredContentPane.setLayout(gridBagLayout);
-/**/	
+		appWindow.setContentPane(layeredContentPane);
+
+		/* Run each Panels initialization process */
 		pnl_mainmenu = createPnlMainMenu();
 		pnl_registration = AddRegistrationPanel.createPnlRegistration(layeredContentPane,conn);
 		pnl_technician = AddTechnicianPanel.createPnlTechnician(layeredContentPane, conn);
+//		pnl_radiologist = AddRadiologistPanel.createPnlRadiologist(layeredContentPane, conn);
 		
-		// Size up the main frame, and hide the other panels
+		// Hide all the other panels except the Main Menu (PatientPortal.java) panel
 		allPanels.addAll( Arrays.asList(pnl_registration,pnl_technician) ); // Note: DON'T include the main menu panel
-		int largestHeight=0, largestWidth=0;
-		for(JPanel pnl : allPanels) {
-			largestHeight = Math.max(largestHeight, pnl.getHeight() );
-			largestWidth = Math.max(largestWidth, pnl.getWidth() );
-			pnl.setVisible(false);
-		}
-		layeredContentPane.setPreferredSize(new Dimension( largestWidth, largestHeight ));
-
+		for(JPanel pnl : allPanels) { pnl.setVisible(false); }
 
 		//Display the window
-		//appWindow.pack();
+		// appWindow.pack(); Don't Pack, because the hidden windows won't be used in calculation
 		appWindow.setVisible(true);
 	}
 
+	/* Initialize and populate Main Menu panel */
 	public static JPanel createPnlMainMenu() {
 		JPanel pnl_mainmenu = new JPanel();
 		GridBagConstraints gbc_pnl_registration = new GridBagConstraints();
@@ -178,6 +165,7 @@ public class PatientPortal {
 		row3.setLayout(gbl_row3);
 		
 		JButton btn_Radiologist = new JButton("Radiologist Report Manager");
+//		btn_Radiologist.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { switchPanel(pnl_mainmenu, pnl_radiologist); } });
 		btn_Radiologist.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GridBagConstraints gbc_btn_Radiologist = new GridBagConstraints();
 		gbc_btn_Radiologist.insets = new Insets(0, 0, 5, 0);
@@ -188,38 +176,27 @@ public class PatientPortal {
 		
 	} // initialize()
 	
+	/* Additional Helper Functions Below */
+	
 	/**Hides the first panel, shows the next panel.
 	 * @param prevScreen The JPanel to hide
 	 * @param nextScreen The JPanel to show
 	 */
 	public static void switchPanel(JPanel prevScreen, JPanel nextScreen) { prevScreen.setVisible(false); nextScreen.setVisible(true); }
 
-	//Database Functions
-	/* Open a comm-link to the database */
-	public static Connection openConnection(){
-		// Note the parameter "allowMultiQueries=true" this allows multiple SQL commands to be .execute()'d
+	
+	/**
+	 * Opens a connection to the database for communications
+	 * 
+	 * Note: The connection parameter "allowMultiQueries=true" allows multiple SQL commands to be .execute()'d
+	 * @return the dB Connection object
+	 */
+	public static Connection openConnection(){ 
 		try { return DriverManager.getConnection("jdbc:mysql://localhost:3306/?allowMultiQueries=true", "root", ""); }
 		catch (SQLException e) { System.out.println("XAMPP is required to be installed and running for this demonstration."); e.printStackTrace(); }
 		return null;
 	}
 
-	/* Creates SQL Server Command Line Object */
-	public static Statement createCLO(Connection conn){
-		try { return conn.createStatement(); } 
-		catch (SQLException e) { System.out.println("Error: Could not create SQL CLI Statement Object."); e.printStackTrace(); }
-		return null;
-	}//End: createCLO(Connection)
-
-	public static ResultSet resultsFor(String sql) {
-		try{
-			Statement s = null;
-			String query= sql;
-			s=conn.createStatement();
-			return s.executeQuery(query);
-		} catch (SQLException e) { System.out.print("Database Error: \n"); e.printStackTrace(); return null;}
-	}
-
-	// Shortcut to print to System.out.println()
+	// Shortcode: "System.out.println()" can be written as "log()"
 	public static void log(Object o) {System.out.println(o);}
-
 }
