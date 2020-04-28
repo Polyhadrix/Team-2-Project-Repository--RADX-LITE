@@ -38,6 +38,7 @@ public class AddRegistrationPanel {
 	
 	/* Current Patient IDs (and other states) */
 	private static String currentPatient, currentEmployer, currentSteward, lastSearch="";
+	private static JTextField preparerName;
 	
 	/* WindowBuilder Requires a class constructor to work correctly */
 	public AddRegistrationPanel() {
@@ -804,24 +805,43 @@ public class AddRegistrationPanel {
 		
 		JPanel row9 = new JPanel();
 		GridBagConstraints gbc_row9 = new GridBagConstraints();
-		gbc_row9.anchor = GridBagConstraints.NORTH;
+		gbc_row9.anchor = GridBagConstraints.SOUTH;
 		gbc_row9.fill = GridBagConstraints.HORIZONTAL;
 		gbc_row9.gridx = 0;
 		gbc_row9.gridy = 9;
 		pnl_registration.add(row9, gbc_row9);
 		GridBagLayout gbl_row9 = new GridBagLayout();
-		gbl_row9.columnWidths = new int[]{0, 0, 0};
-		gbl_row9.rowHeights = new int[]{0, 0};
-		gbl_row9.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_row9.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_row9.columnWidths = new int[] {0};
+		gbl_row9.rowHeights = new int[] {0};
+		gbl_row9.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0};
+		gbl_row9.rowWeights = new double[]{0.0};
 		row9.setLayout(gbl_row9);
 		
 		JButton btn_submitPatient = new JButton("Register Patient");
 		btn_submitPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btn_submitPatient.addActionListener(new addPatientListener() );
+		
+		JLabel lbl_preparerName = new JLabel("Enter your name:");
+		lbl_preparerName.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GridBagConstraints gbc_lbl_preparerName = new GridBagConstraints();
+		gbc_lbl_preparerName.insets = new Insets(0, 5, 0, 5);
+		gbc_lbl_preparerName.anchor = GridBagConstraints.WEST;
+		gbc_lbl_preparerName.gridx = 0;
+		gbc_lbl_preparerName.gridy = 0;
+		row9.add(lbl_preparerName, gbc_lbl_preparerName);
+		
+		preparerName = new JTextField();
+		preparerName.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		preparerName.setColumns(10);
+		GridBagConstraints gbc_in_name = new GridBagConstraints();
+		gbc_in_name.insets = new Insets(0, 0, 0, 5);
+		gbc_in_name.fill = GridBagConstraints.HORIZONTAL;
+		gbc_in_name.gridx = 1;
+		gbc_in_name.gridy = 0;
+		row9.add(preparerName, gbc_in_name);
 		GridBagConstraints gbc_btn_submitPatient = new GridBagConstraints();
 		gbc_btn_submitPatient.insets = new Insets(0, 5, 0, 5);
-		gbc_btn_submitPatient.gridx = 0;
+		gbc_btn_submitPatient.gridx = 2;
 		gbc_btn_submitPatient.gridy = 0;
 		row9.add(btn_submitPatient, gbc_btn_submitPatient);
 		
@@ -830,10 +850,19 @@ public class AddRegistrationPanel {
 		btnClearForm.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GridBagConstraints gbc_btnClearForm = new GridBagConstraints();
 		gbc_btnClearForm.anchor = GridBagConstraints.WEST;
-		gbc_btnClearForm.insets = new Insets(0, 50, 0, 5);
-		gbc_btnClearForm.gridx = 1;
+		gbc_btnClearForm.insets = new Insets(0, 0, 0, 5);
+		gbc_btnClearForm.gridx = 3;
 		gbc_btnClearForm.gridy = 0;
 		row9.add(btnClearForm, gbc_btnClearForm);
+		
+		JButton btnReturnToMain = new JButton("Return to Main Menu");
+		btnReturnToMain.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { switchPanel(pnl_registration, PatientPortal.pnl_mainmenu); } });
+		btnReturnToMain.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GridBagConstraints gbc_btnReturnToMain = new GridBagConstraints();
+		gbc_btnReturnToMain.insets = new Insets(0, 0, 0, 5);
+		gbc_btnReturnToMain.gridx = 4;
+		gbc_btnReturnToMain.gridy = 0;
+		row9.add(btnReturnToMain, gbc_btnReturnToMain);
 
 		allTextFields.addAll( Arrays.asList(pFirst, pMiddle, pLast, pBirth, pHome, pCell, pWork, pSSN, pStreet, pCity, pZip,
 				eCompany, eStreet, eCity, eZip,sName, sRelation, sSSN, sHome, sCell, sWork, sStreet, sCity, sZip) );
@@ -844,7 +873,7 @@ public class AddRegistrationPanel {
 	
 	/* Listeners */
 	private static class addPatientListener implements ActionListener { public void actionPerformed(ActionEvent event) {
-		
+		if (preparerName.getText() != null){
 		String[] var_Array = {pFirst.getText(),pSSN.getText(),pLast.getText(),pBirth.getText(),(String) pSex.getSelectedItem(),pStreet.getText(),pCity.getText(),(String) pState.getSelectedItem(),pZip.getText()};
 
 		if (checkBlank(var_Array) == true){
@@ -852,18 +881,44 @@ public class AddRegistrationPanel {
 			    "A required field is empty",
 			    "Warning",
 			    JOptionPane.WARNING_MESSAGE);
-		}else{
+		}else{ // Required Fields check out, begin patient INSERT/UPDATE
+			// Declare/Init Reusable Variables/Objects of Scope
 			PreparedStatement cli = null;
-			String sql = "INSERT INTO `ris`.`patient`"
-				 + " (`ssn`,`first_name`,`middle_initial`,`last_name`,`birthdate`,`sex`,`home_phone`,`cell_phone`,`work_phone`,`street`,`city`,`state`,`zip`) VALUES"
-				 + " (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			String sql="", employer_id="", steward_id="";
+
+			// Check if this patient was searched/loaded
+			String patientID = search.getText().strip().replaceFirst("^0+(?!$)", "");
+			boolean existingPatient = (! patientID.isBlank() );
+			if(existingPatient) {
+				sql = "SELECT * FROM `ris`.`patient` WHERE `id`=?";
+				try {
+					// Notify the database of our intended statement
+					cli = conn.prepareStatement(sql);
+					cli.setString(1, patientID);
+					ResultSet results = cli.executeQuery();
+					results.first(); // Remember to move to the entry! SOLVES SQLException:'Before start of result set' 
+					employer_id = ""+results.getInt("employer_id");
+					steward_id = ""+results.getInt("steward_id");
+				} catch (SQLException e) { e.printStackTrace(); }
+			}
+			
+			// Set SQL-Statement Accordingly
+			// FOR `patient` TABLE
+			if(existingPatient) {
+				sql="UPDATE `ris`.`patient` SET `ssn`=?, `first_name`=?, `middle_initial`=?, `last_name`=?, `birthdate`=?, `sex`=?,"
+						+ " `home_phone`=?, `cell_phone`=?, `work_phone`=?, `street`=?, `city`=?, `state`=?, `zip`=? WHERE `id`=?";
+			}else{
+				sql = "INSERT INTO `ris`.`patient` "
+			 	 + " (`ssn`,`first_name`,`middle_initial`,`last_name`,`birthdate`,`sex`,`home_phone`,`cell_phone`,`work_phone`,`street`,`city`,`state`,`zip`)"
+				 + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			}
 			int qCount = 1; // Because counting question marks is annoying...
 
 			// Try-Catch for SQLException
 			try {
 				// Notify the database of our intended statement
 				cli = conn.prepareStatement(sql);
-				// Load up the ?s in the statement
+				// Load up the ?s in the statement (NOTE: ORDER IS DEPENDENT ON HE SQL STATEMENTS ABOVE!)
 				cli.setString(qCount++, pSSN.getText());
 				cli.setString(qCount++, pFirst.getText());
 				cli.setString(qCount++, pMiddle.getText());
@@ -877,17 +932,23 @@ public class AddRegistrationPanel {
 				cli.setString(qCount++, pCity.getText());
 				cli.setString(qCount++, pState.getSelectedItem().toString() ); // ComboBoxes work different
 				cli.setString(qCount++, pZip.getText());
-				
+				if(existingPatient) cli.setString(qCount++, patientID);
+
 				cli.executeUpdate(); // commit insert/update
-				
+
 			} catch (SQLException e) { e.printStackTrace();}
-			
+
+			//FOR `employer` TABLE
 			if (eCompany.getText() != null && !( eCompany.getText().strip().isEmpty() ) ) { // If employer info filled
 				
 				cli = null;
-				sql = "INSERT INTO `ris`.`employer`"
+				if(! employer_id.isBlank() ) {
+					sql = "UPDATE `ris`.`employer` SET `name`=?, `street`=?, `city`=?, `state`=?, `zip`=? WHERE `id`=?";
+				}else {
+					sql = "INSERT INTO `ris`.`employer`"
 						+ " (`name`,`street`,`city`,`state`,`zip`) VALUES"
 						 + " (?,?,?,?,?)";
+				}
 				qCount = 1; // Because counting question marks is annoying...
 				
 				// Try-Catch for SQLException
@@ -900,21 +961,32 @@ public class AddRegistrationPanel {
 					cli.setString(qCount++, eCity.getText());
 					cli.setString(qCount++, eState.getSelectedItem().toString() ); // ComboBoxes work different
 					cli.setString(qCount++, eZip.getText());
+					if(! employer_id.isBlank() ) { cli.setString(qCount++, employer_id); }
 					
 					cli.executeUpdate(); // commit insert/update
-					 ResultSet rs = cli.executeQuery("SELECT MAX(id) AS `id` FROM `ris`.`employer`");
-					 rs.first();
-					int lastid = rs.getInt("id");
-					cli.executeUpdate("UPDATE `ris`.`patient` SET `employer_id`="+lastid+" WHERE `employer_id` IS NULL ORDER BY `id` DESC LIMIT 1");
+					
+					// If new employer was added to the `employer` table, capture the id to the `patient`.`employer_id` column
+					if( employer_id.isBlank() ) {
+						 ResultSet rs = cli.executeQuery("SELECT MAX(id) AS `id` FROM `ris`.`employer`");
+						 rs.first();
+						int lastid = rs.getInt("id");
+						cli.executeUpdate("UPDATE `ris`.`patient` SET `employer_id`="+lastid+" WHERE `employer_id` IS NULL ORDER BY `id` DESC LIMIT 1");
+					}
 				} catch (SQLException e) { e.printStackTrace();}
 
 			}
 			
+			// FOR `steward` TABLE
 			if (sName.getText() != null && !( sName.getText().strip().isEmpty() ) ) {
 				cli = null;
-				sql = "INSERT INTO `ris`.`steward`"
-						+ " (`ssn`,`name`,`relation`,`home_phone`,`cell_phone`,`work_phone`,`street`,`city`,`state`,`zip`) VALUES"
-						+ " (?,?,?,?,?,?,?,?,?,?)";
+				if(! steward_id.isBlank() ) {
+					sql = "UPDATE `ris`.`steward` SET `ssn`=?, `name`=?, `relation`=?, `home_phone`=?, "
+							+ "`cell_phone`=?, `work_phone`=?, `street`=?, `city`=?, `state`=?, `zip`=? WHERE `id`=?";
+				}else {
+					sql = "INSERT INTO `ris`.`steward`"
+						+ " (`ssn`,`name`,`relation`,`home_phone`,`cell_phone`,`work_phone`,`street`,`city`,`state`,`zip`)"
+						+ " VALUES (?,?,?,?,?,?,?,?,?,?)";
+				}
 				qCount = 1; // Because counting question marks is annoying...
 				
 				// Try-Catch for SQLException
@@ -932,22 +1004,27 @@ public class AddRegistrationPanel {
 					cli.setString(qCount++, sCity.getText());
 					cli.setString(qCount++, sState.getSelectedItem().toString() ); // ComboBoxes work different
 					cli.setString(qCount++, sZip.getText());
+					if(! steward_id.isBlank() ) { cli.setString(qCount++, steward_id); }
 
 					cli.executeUpdate(); // commit insert/update
-					ResultSet rs = cli.executeQuery("SELECT MAX(id) AS `id` FROM `ris`.`steward`");
-					 rs.first();
-					int lastid = rs.getInt("id");
-					cli.executeUpdate("UPDATE `ris`.`patient` SET `steward_id`="+lastid+" WHERE `steward_id` IS NULL ORDER BY `id` DESC LIMIT 1");
 					
-				} catch (SQLException e) { e.printStackTrace();}
-				
-				//default title and icon
-				JOptionPane.showMessageDialog(mainContent,
-				    "Patient was successfully saved.");
-			}
-			
+					// If new employer was added to the `steward` table, capture the id to the `patient`.`steward_id` column
+					if( steward_id.isBlank() ) {
+						ResultSet rs = cli.executeQuery("SELECT MAX(id) AS `id` FROM `ris`.`steward`");
+						 rs.first();
+						int lastid = rs.getInt("id");
+						cli.executeUpdate("UPDATE `ris`.`patient` SET `steward_id`="+lastid+" WHERE `steward_id` IS NULL ORDER BY `id` DESC LIMIT 1");
+					}				
+				} catch (SQLException e) { e.printStackTrace(); }
+			}// End: if(steward)
+			JOptionPane.showMessageDialog(mainContent, "Patient was successfully saved.");	
 		}
-		
+	}else{
+			JOptionPane.showMessageDialog(mainContent,
+				    "Please enter your name at the bottom for our records.",
+				    "Error: Missing Preparer Name",
+				    JOptionPane.ERROR_MESSAGE);
+		}
 	}/*actionPerformed()*/}//addpatientListener
 	
 	private static class viewPatientListener implements ActionListener, FocusListener { 
@@ -974,11 +1051,11 @@ public class AddRegistrationPanel {
 					// Notify the database of our intended statement
 					cli = conn.prepareStatement(sql);
 					// Load up the ?s in the statement
-					
+
 					String searchID = search.getText().strip().replaceFirst("^0+(?!$)", ""); // Remove whitespace and leading 0's
 					cli.setString(1, searchID);
 					ResultSet results = cli.executeQuery();
-					
+
 					if(! results.isBeforeFirst() ) { // No Results Found
 						JOptionPane.showMessageDialog(mainContent,
 							    "No Patient was found with that ID.",
@@ -1006,7 +1083,7 @@ public class AddRegistrationPanel {
 						pZip.setText( results.getString("zip") );
 						String employer_id = results.getString("employer_id");
 						String steward_id = results.getString("steward_id");
-						
+
 						if(employer_id!=null && !employer_id.isEmpty()) {
 							currentEmployer = employer_id;
 							sql="SELECT * FROM `ris`.`employer` WHERE `id`="+employer_id;
@@ -1036,7 +1113,7 @@ public class AddRegistrationPanel {
 						}
 
 					}
-				} catch (SQLException e) { e.printStackTrace();}
+				} catch (SQLException e) { e.printStackTrace(); }
 			}
 	}
 	
@@ -1046,12 +1123,14 @@ public class AddRegistrationPanel {
 		for(JComboBox<?> d : allDropDowns ) d.setSelectedIndex(0);
 		isDependent.setSelected(false);
 	}
-	
+
 	public static boolean checkBlank(String[] arr) { //runs through every item in the array and checks if ANY is blank or contains whitespace
 		for(int i = 0; i < arr.length; i++) if(arr[i] == null || arr[i].strip().isBlank()) return true;
 		return false;
 	}
-	
-	// Shortcut to print to System.out.println()
-		public static void log(Object o) {System.out.println(o);}
+
+	public static void switchPanel(JPanel prevScreen, JPanel nextScreen) { prevScreen.setVisible(false); nextScreen.setVisible(true); }
+
+	// Shortcode: "System.out.println()" can be written as "log()"
+	public static void log(Object o) {System.out.println(o);}
 }
