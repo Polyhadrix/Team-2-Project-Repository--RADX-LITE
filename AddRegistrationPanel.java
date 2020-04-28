@@ -1,7 +1,9 @@
-package ris;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import javax.swing.*;
 
 public class AddRegistrationPanel {
@@ -17,6 +19,9 @@ public class AddRegistrationPanel {
 	private static JCheckBox isDependent;	
 	/* Drop-Downs */
 	private static JComboBox<String> pSex, pState, eState, sState;
+	/* All Components: Keep updated list at end of createPanel() */
+	private static ArrayList<JTextField> allTextFields = new ArrayList<>();
+	private static ArrayList<JComboBox<String>> allDropDowns = new ArrayList<JComboBox<String>>();
 	/*Drop-Down Values*/
 	private static String[] states = {"","Alabama","Alaska","Arkansas","California","Colorado","Connecticut","Delaware",
 			"Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana",
@@ -29,13 +34,17 @@ public class AddRegistrationPanel {
 	/* Panels */
 	private static JPanel pnl_steward;
 	
-	public AddRegistrationPanel(JFrame param_window, Connection param_conn) {
-		mainContent = param_window.getContentPane();
-		conn = param_conn;
-		createPnlRegistration();
-	}
+	/* Current Patient IDs (and other states) */
+	private static String currentPatient, currentEmployer, currentSteward, lastSearch="";
+	private static JTextField in_name;
 	
-	public static void createPnlRegistration() {
+	/* WindowBuilder Requires a class constructor to work correctly */
+	public AddRegistrationPanel() {
+		createPnlRegistration(mainContent,conn);}
+	
+	public static JPanel createPnlRegistration(Container param_contentPane, Connection param_conn) {
+		mainContent = param_contentPane;
+		conn = param_conn;
 		JPanel pnl_registration = new JPanel();
 		GridBagConstraints gbc_pnl_registration = new GridBagConstraints();
 		gbc_pnl_registration.fill = GridBagConstraints.HORIZONTAL;
@@ -93,7 +102,7 @@ public class AddRegistrationPanel {
 		gbl_row1.rowWeights = new double[]{0.0};
 		row1.setLayout(gbl_row1);
 		
-		JLabel lbl_search = new JLabel("To View/ Edit Existing Patient, enter their Patient ID# here and hit 'Enter': ");
+		JLabel lbl_search = new JLabel("To View/Edit Existing Patient, enter their Patient ID# here: ");
 		lbl_search.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GridBagConstraints gbc_lbl_search = new GridBagConstraints();
 		gbc_lbl_search.insets = new Insets(0, 5, 5, 5);
@@ -104,8 +113,10 @@ public class AddRegistrationPanel {
 		search = new JTextField();
 		search.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		search.addActionListener( new viewPatientListener() );
+		search.addFocusListener( new viewPatientListener() );
 		GridBagConstraints gbc_search = new GridBagConstraints();
 		gbc_search.fill = GridBagConstraints.HORIZONTAL;
+		gbc_search.insets = new Insets(0, 0, 5, 5);
 		gbc_search.gridx = 1;
 		gbc_search.gridy = 0;
 		row1.add(search, gbc_search);
@@ -536,8 +547,8 @@ public class AddRegistrationPanel {
 		row7.setLayout(gbl_row7);
 		
 		isDependent = new JCheckBox("is a dependent");
-		isDependent.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		isDependent.addItemListener(new ItemListener() {
+		      public void itemStateChanged(ItemEvent e) {
 				pnl_steward.setVisible( isDependent.isSelected() );
 			}
 		});
@@ -798,57 +809,82 @@ public class AddRegistrationPanel {
 		gbc_row9.gridy = 9;
 		pnl_registration.add(row9, gbc_row9);
 		GridBagLayout gbl_row9 = new GridBagLayout();
-		gbl_row9.columnWidths = new int[]{0, 0, 0};
+		gbl_row9.columnWidths = new int[]{205, 0, 0, 0, 0, 0};
 		gbl_row9.rowHeights = new int[]{0, 0};
-		gbl_row9.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_row9.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_row9.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		row9.setLayout(gbl_row9);
 		
 		JButton btn_submitPatient = new JButton("Register Patient");
-		btn_submitPatient.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btn_submitPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btn_submitPatient.addActionListener(new addPatientListener() );
+		
+		JLabel lbl_search_1 = new JLabel("Enter your name:");
+		lbl_search_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GridBagConstraints gbc_lbl_search_1 = new GridBagConstraints();
+		gbc_lbl_search_1.insets = new Insets(0, 0, 0, 5);
+		gbc_lbl_search_1.anchor = GridBagConstraints.EAST;
+		gbc_lbl_search_1.gridx = 0;
+		gbc_lbl_search_1.gridy = 0;
+		row9.add(lbl_search_1, gbc_lbl_search_1);
+		
+		in_name = new JTextField();
+		in_name.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		in_name.setColumns(10);
+		GridBagConstraints gbc_in_name = new GridBagConstraints();
+		gbc_in_name.insets = new Insets(0, 0, 0, 5);
+		gbc_in_name.fill = GridBagConstraints.HORIZONTAL;
+		gbc_in_name.gridx = 1;
+		gbc_in_name.gridy = 0;
+		row9.add(in_name, gbc_in_name);
 		GridBagConstraints gbc_btn_submitPatient = new GridBagConstraints();
 		gbc_btn_submitPatient.insets = new Insets(0, 5, 0, 5);
-		gbc_btn_submitPatient.gridx = 0;
+		gbc_btn_submitPatient.gridx = 2;
 		gbc_btn_submitPatient.gridy = 0;
 		row9.add(btn_submitPatient, gbc_btn_submitPatient);
 		
 		JButton btnClearForm = new JButton("Clear Form");
-		btnClearForm.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent clearFormButtonPressed)
-			{
-				search.setText(null);	pFirst.setText(null);	pMiddle.setText(null);	pLast.setText(null);	pBirth.setText(null);
-				pHome.setText(null);	pCell.setText(null);	pWork.setText(null);	pSSN.setText(null);		pStreet.setText(null);
-				pCity.setText(null);	pState.setSelectedIndex(0);		pSex.setSelectedIndex(0);	pZip.setText(null);		eCompany.setText(null);
-				eStreet.setText(null);	eCity.setText(null);	eState.setSelectedIndex(0);		eZip.setText(null);
-				
-				if (isDependent.isSelected())
-				{
-					sName.setText(null);	sRelation.setText(null);	sSSN.setText(null);		sHome.setText(null);	sCell.setText(null);
-					sWork.setText(null);	sStreet.setText(null);		sCity.setText(null);	sState.setSelectedIndex(0);		sZip.setText(null);
-					isDependent.setSelected(false);
-				}
-			}
-		});
-		btnClearForm.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnClearForm.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent clearFormButtonPressed) { clearForm(); } });
+		btnClearForm.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GridBagConstraints gbc_btnClearForm = new GridBagConstraints();
 		gbc_btnClearForm.anchor = GridBagConstraints.WEST;
 		gbc_btnClearForm.insets = new Insets(0, 50, 0, 5);
-		gbc_btnClearForm.gridx = 1;
+		gbc_btnClearForm.gridx = 3;
 		gbc_btnClearForm.gridy = 0;
 		row9.add(btnClearForm, gbc_btnClearForm);
 		
+		JButton btnReturnToMain = new JButton("Return to Main Menu");
+		btnReturnToMain.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				switchPanel(pnl_registration, PatientPortal.pnl_mainmenu);
+			}
+		});
+		btnReturnToMain.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GridBagConstraints gbc_btnReturnToMain = new GridBagConstraints();
+		gbc_btnReturnToMain.gridx = 4;
+		gbc_btnReturnToMain.gridy = 0;
+		row9.add(btnReturnToMain, gbc_btnReturnToMain);
+
+		allTextFields.addAll( Arrays.asList(pFirst, pMiddle, pLast, pBirth, pHome, pCell, pWork, pSSN, pStreet, pCity, pZip,
+				eCompany, eStreet, eCity, eZip,sName, sRelation, sSSN, sHome, sCell, sWork, sStreet, sCity, sZip) );
+		allDropDowns.addAll( Arrays.asList(pSex, pState, eState, sState) );
+		
+		return pnl_registration;
 	} // initialize()
 	
 	/* Listeners */
 	private static class addPatientListener implements ActionListener { public void actionPerformed(ActionEvent event) {
-		
-		if (pFirst.getText() == null || pFirst.getText().strip().isEmpty() ) { 
+		if (in_name.getText() != null)
+		{
+		String[] var_Array = {pFirst.getText(),pSSN.getText(),pLast.getText(),pBirth.getText(),(String) pSex.getSelectedItem(),pStreet.getText(),pCity.getText(),(String) pState.getSelectedItem(),pZip.getText()};
+
+		if (checkBlank(var_Array) == true){
 		JOptionPane.showMessageDialog(mainContent,
 			    "A required field is empty",
 			    "Warning",
 			    JOptionPane.WARNING_MESSAGE);
-		}else{ 
+		}else{
 			PreparedStatement cli = null;
 			String sql = "INSERT INTO `ris`.`patient`"
 				 + " (`ssn`,`first_name`,`middle_initial`,`last_name`,`birthdate`,`sex`,`home_phone`,`cell_phone`,`work_phone`,`street`,`city`,`state`,`zip`) VALUES"
@@ -936,84 +972,128 @@ public class AddRegistrationPanel {
 					cli.executeUpdate("UPDATE `ris`.`patient` SET `steward_id`="+lastid+" WHERE `steward_id` IS NULL ORDER BY `id` DESC LIMIT 1");
 					
 				} catch (SQLException e) { e.printStackTrace();}
+				
+				//default title and icon
+				JOptionPane.showMessageDialog(mainContent,
+				    "Patient was successfully saved.");
 			}
 			
 		}
 		
+	}
+		else
+		{
+			JOptionPane.showMessageDialog(mainContent,
+				    "You must include your name in the image submission.",
+				    "",
+				    JOptionPane.ERROR_MESSAGE);
+		}
 	}/*actionPerformed()*/}//addpatientListener
 	
-	private static class viewPatientListener implements ActionListener { public void actionPerformed(ActionEvent event) {
-		
-		if (search.getText() == null || search.getText().strip().isEmpty() ) { 
-		JOptionPane.showMessageDialog(mainContent,
-			    "The Search Box is Empty",
-			    "Warning",
-			    JOptionPane.WARNING_MESSAGE);
-		}else{
-			PreparedStatement sentry = null;
-			String sql = "SELECT * FROM `ris`.`patient` WHERE `id`=?";
+	private static class viewPatientListener implements ActionListener, FocusListener { 
+		public void focusGained(FocusEvent e) { lastSearch = search.getText(); }
+		public void focusLost(FocusEvent e) { if(!lastSearch.isBlank() || !search.getText().isBlank() ) searchPatient(); }
+		public void actionPerformed(ActionEvent event) { searchPatient(); }
+	}//viewPatientListener
 
-			// Try-Catch for SQLException
-			try {
-				// Notify the database of our intended statement
-				sentry = conn.prepareStatement(sql);
-				// Load up the ?s in the statement
-				
-				String searchID = search.getText().strip().replaceFirst("^0+(?!$)", ""); // Remove whitespace and leading 0's
-				sentry.setString(1, searchID);
-				ResultSet results = sentry.executeQuery();
-				
-				if(! results.isBeforeFirst() ) { // No Results Found
-					JOptionPane.showMessageDialog(mainContent,
-						    "No Patient was found with that ID.",
-						    "Warning",
-						    JOptionPane.WARNING_MESSAGE);
-				}else { // Results found, Load them up!
-					results.first();
-					pFirst.setText( results.getString("first_name") );
-					pMiddle.setText( results.getString("middle_initial") );
-					pLast.setText( results.getString("last_name") );
-					pBirth.setText( results.getString("birthdate") );
-					pSex.setSelectedItem( results.getString("sex") );
-					pHome.setText( results.getString("home_phone") );
-					pCell.setText( results.getString("cell_phone") );
-					pWork.setText( results.getString("work_phone") );
-					pStreet.setText( results.getString("street") );
-					pCity.setText( results.getString("city") );
-					pState.setSelectedItem( results.getString("state") );
-					pZip.setText( results.getString("zip") );
-					String employer_id = results.getString("employer_id");
-					String steward_id = results.getString("steward_id");
+
+	private static void searchPatient() {
+		if (search.getText().isBlank() ) { 
+			JOptionPane.showMessageDialog(mainContent,
+				    "The Search Box is Empty",
+				    "Warning",
+				    JOptionPane.WARNING_MESSAGE);
+			clearForm();
+			currentPatient = currentEmployer = currentSteward = null;
+			}else{
+				PreparedStatement sentry = null;
+				String sql = "SELECT * FROM `ris`.`patient` WHERE `id`=?";
+
+				// Try-Catch for SQLException
+				try {
+					// Notify the database of our intended statement
+					sentry = conn.prepareStatement(sql);
+					// Load up the ?s in the statement
 					
-					if(employer_id!=null && !employer_id.isEmpty()) {
-						sql="SELECT * FROM `ris`.`employer` WHERE `id`="+employer_id;
-						results = sentry.executeQuery(sql); results.first();
-						eCompany.setText( results.getString("name") );
-						eStreet.setText( results.getString("street") );
-						eCity.setText( results.getString("city") );
-						eState.setSelectedItem( results.getString("state") );
-						eZip.setText( results.getString("zip") );
-					}
+					String searchID = search.getText().strip().replaceFirst("^0+(?!$)", ""); // Remove whitespace and leading 0's
+					sentry.setString(1, searchID);
+					ResultSet results = sentry.executeQuery();
+					
+					if(! results.isBeforeFirst() ) { // No Results Found
+						JOptionPane.showMessageDialog(mainContent,
+							    "No Patient was found with that ID.",
+							    "Warning",
+							    JOptionPane.WARNING_MESSAGE);
+						clearForm();
+						search.setText(null);
+						currentPatient = currentEmployer = currentSteward = null;
+					}else { // Results found, Load them up!
+						clearForm();
+						results.first();
+						currentPatient = searchID;
+						pSSN.setText( results.getString("ssn") );
+						pFirst.setText( results.getString("first_name") );
+						pMiddle.setText( results.getString("middle_initial") );
+						pLast.setText( results.getString("last_name") );
+						pBirth.setText( results.getString("birthdate") );
+						pSex.setSelectedItem( results.getString("sex") );
+						pHome.setText( results.getString("home_phone") );
+						pCell.setText( results.getString("cell_phone") );
+						pWork.setText( results.getString("work_phone") );
+						pStreet.setText( results.getString("street") );
+						pCity.setText( results.getString("city") );
+						pState.setSelectedItem( results.getString("state") );
+						pZip.setText( results.getString("zip") );
+						String employer_id = results.getString("employer_id");
+						String steward_id = results.getString("steward_id");
+						
+						if(employer_id!=null && !employer_id.isEmpty()) {
+							currentEmployer = employer_id;
+							sql="SELECT * FROM `ris`.`employer` WHERE `id`="+employer_id;
+							results = sentry.executeQuery(sql); results.first();
+							eCompany.setText( results.getString("name") );
+							eStreet.setText( results.getString("street") );
+							eCity.setText( results.getString("city") );
+							eState.setSelectedItem( results.getString("state") );
+							eZip.setText( results.getString("zip") );
+						}
 
-					if(steward_id!=null && !steward_id.isEmpty()) {
-						isDependent.doClick();
-						sql="SELECT * FROM `ris`.`steward` WHERE `id`="+steward_id;
-						results = sentry.executeQuery(sql); results.first();
-						sName.setText( results.getString("name") );
-						sSSN.setText( results.getString("ssn") );
-						sRelation.setText( results.getString("relation") );
-						sHome.setText( results.getString("home_phone") );
-						sCell.setText( results.getString("cell_phone") );
-						sWork.setText( results.getString("work_phone") );
-						sStreet.setText( results.getString("street") );
-						sCity.setText( results.getString("city") );
-						sState.setSelectedItem( results.getString("state") );
-						sZip.setText( results.getString("zip") );
-					}
+						if(steward_id!=null && !steward_id.isEmpty()) {
+							currentSteward = steward_id;
+							isDependent.setSelected(true);;
+							sql="SELECT * FROM `ris`.`steward` WHERE `id`="+steward_id;
+							results = sentry.executeQuery(sql); results.first();
+							sName.setText( results.getString("name") );
+							sSSN.setText( results.getString("ssn") );
+							sRelation.setText( results.getString("relation") );
+							sHome.setText( results.getString("home_phone") );
+							sCell.setText( results.getString("cell_phone") );
+							sWork.setText( results.getString("work_phone") );
+							sStreet.setText( results.getString("street") );
+							sCity.setText( results.getString("city") );
+							sState.setSelectedItem( results.getString("state") );
+							sZip.setText( results.getString("zip") );
+						}
 
-				}
-			} catch (SQLException e) { e.printStackTrace();}
-		}
+					}
+				} catch (SQLException e) { e.printStackTrace();}
+			}
+	}
+	
+	// Helper Functions
+	private static void clearForm(){
+		for(JTextField t : allTextFields) t.setText(null);
+		for(JComboBox<?> d : allDropDowns ) d.setSelectedIndex(0);
+		isDependent.setSelected(false);
+	}
+	
+	public static boolean checkBlank(String[] arr) { //runs through every item in the array and checks if ANY is blank or contains whitespace
+		for(int i = 0; i < arr.length; i++) if(arr[i] == null || arr[i].strip().isBlank()) return true;
+		return false;
+	}
+	
+	// Shortcut to print to System.out.println()
+		public static void log(Object o) {System.out.println(o);}
 		
-	}/*actionPerformed()*/}//viewPatientListener
+		public static void switchPanel(JPanel prevScreen, JPanel nextScreen) { prevScreen.setVisible(false); nextScreen.setVisible(true); }
 }
