@@ -31,7 +31,7 @@ public class AddRadiologistPanel {
 	private static String[] conditions = {"SELECT","Fracture","Hernia","Embolism","Cancer", "Arterial/Vascular Obstruction"};
 	private static String[] pois = {"SELECT","head","neck","chest","upper back","lower back","abdomen","arm - right","arm - left","leg - right","leg - right","foot - right","foot - left"};
 	private static String[] modalities = {"SELECT","X-Ray","Magnetic Resonance Imaging","Computed Tomography","Ultrasound","Fluoroscopy","Mammography"};
-	private static JTextField textField;
+	private static JTextField in_name;
 	
 	/* WindowBuilder Requires a class constructor to work correctly */
 	public AddRadiologistPanel() {
@@ -394,9 +394,9 @@ public class AddRadiologistPanel {
 		gbc_row5.gridy = 5;
 		pnl_radiologist.add(row5, gbc_row5);
 		GridBagLayout gbl_row5 = new GridBagLayout();
-		gbl_row5.columnWidths = new int[] {0, 0, 0};
+		gbl_row5.columnWidths = new int[] {0, 0, 0, 0, 0};
 		gbl_row5.rowHeights = new int[] {0};
-		gbl_row5.columnWeights = new double[]{1.0, 1.0, 0.0};
+		gbl_row5.columnWeights = new double[]{1.0, 1.0, 0.0, 0.0, 0.0};
 		gbl_row5.rowWeights = new double[]{0.0};
 		row5.setLayout(gbl_row5);
 		
@@ -405,7 +405,7 @@ public class AddRadiologistPanel {
 		//btn_submitPatient.addActionListener(new addPatientListener() );
 		GridBagConstraints gbc_btn_uploadImage = new GridBagConstraints();
 		gbc_btn_uploadImage.insets = new Insets(0, 5, 0, 5);
-		gbc_btn_uploadImage.gridx = 0;
+		gbc_btn_uploadImage.gridx = 2;
 		gbc_btn_uploadImage.gridy = 0;
 		row5.add(btn_uploadImage, gbc_btn_uploadImage);
 		
@@ -415,17 +415,41 @@ public class AddRadiologistPanel {
 		GridBagConstraints gbc_btnClearForm = new GridBagConstraints();
 		gbc_btnClearForm.anchor = GridBagConstraints.WEST;
 		gbc_btnClearForm.insets = new Insets(0, 50, 0, 5);
-		gbc_btnClearForm.gridx = 1;
+		gbc_btnClearForm.gridx = 3;
 		gbc_btnClearForm.gridy = 0;
 		row5.add(btnClearForm, gbc_btnClearForm);
 		
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 2;
-		gbc_textField.gridy = 0;
-		row5.add(textField, gbc_textField);
-		textField.setColumns(10);
+		JButton btnReturnToMain = new JButton("Return to Main Menu");
+		btnReturnToMain.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				switchPanel(pnl_radiologist, PatientPortal.pnl_mainmenu);
+			}
+		});
+		btnReturnToMain.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GridBagConstraints gbc_btnReturnToMain = new GridBagConstraints();
+		gbc_btnReturnToMain.gridx = 4;
+		gbc_btnReturnToMain.gridy = 0;
+		row5.add(btnReturnToMain, gbc_btnReturnToMain);
+		
+		in_name = new JTextField();
+		in_name.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		in_name.setColumns(10);
+		GridBagConstraints gbc_in_name = new GridBagConstraints();
+		gbc_in_name.insets = new Insets(0, 0, 0, 5);
+		gbc_in_name.fill = GridBagConstraints.HORIZONTAL;
+		gbc_in_name.gridx = 1;
+		gbc_in_name.gridy = 0;
+		row5.add(in_name, gbc_in_name);
+		
+		JLabel lbl_search_1 = new JLabel("Enter your name:");
+		lbl_search_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		GridBagConstraints gbc_lbl_search_1 = new GridBagConstraints();
+		gbc_lbl_search_1.anchor = GridBagConstraints.EAST;
+		gbc_lbl_search_1.insets = new Insets(0, 0, 0, 5);
+		gbc_lbl_search_1.gridx = 0;
+		gbc_lbl_search_1.gridy = 0;
+		row5.add(lbl_search_1, gbc_lbl_search_1);
 
 		allLabels.addAll( Arrays.asList(out_rName,out_rSex,out_rBirth,out_rSSN) );
 
@@ -535,4 +559,6 @@ public class AddRadiologistPanel {
 	
 	// Shortcut to print to System.out.println()
 		public static void log(Object o) {System.out.println(o);}
+		
+		public static void switchPanel(JPanel prevScreen, JPanel nextScreen) { prevScreen.setVisible(false); nextScreen.setVisible(true); }
 }
