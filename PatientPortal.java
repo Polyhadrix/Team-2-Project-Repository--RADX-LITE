@@ -47,10 +47,10 @@ public class PatientPortal {
 		pnl_mainmenu = createPnlMainMenu();
 		pnl_registration = AddRegistrationPanel.createPnlRegistration(layeredContentPane,conn);
 		pnl_technician = AddTechnicianPanel.createPnlTechnician(layeredContentPane, conn);
-//		pnl_radiologist = AddRadiologistPanel.createPnlRadiologist(layeredContentPane, conn);
+		pnl_radiologist = AddRadiologistPanel.createPnlRadiologist(layeredContentPane, conn);
 		
 		// Hide all the other panels except the Main Menu (PatientPortal.java) panel
-		allPanels.addAll( Arrays.asList(pnl_registration,pnl_technician) ); // Note: DON'T include the main menu panel
+		allPanels.addAll( Arrays.asList(pnl_registration,pnl_technician,pnl_radiologist) ); // Note: DON'T include the main menu panel
 		for(JPanel pnl : allPanels) { pnl.setVisible(false); }
 
 		//Display the window
@@ -165,7 +165,7 @@ public class PatientPortal {
 		row3.setLayout(gbl_row3);
 		
 		JButton btn_Radiologist = new JButton("Radiologist Report Manager");
-//		btn_Radiologist.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { switchPanel(pnl_mainmenu, pnl_radiologist); } });
+		btn_Radiologist.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { switchPanel(pnl_mainmenu, pnl_radiologist); } });
 		btn_Radiologist.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		GridBagConstraints gbc_btn_Radiologist = new GridBagConstraints();
 		gbc_btn_Radiologist.insets = new Insets(0, 0, 5, 0);
