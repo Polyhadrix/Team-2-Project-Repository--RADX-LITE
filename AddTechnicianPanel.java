@@ -1,9 +1,6 @@
-package ris;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.nio.file.*;
 import java.sql.*;
 import java.text.*;
 import java.util.*;
@@ -473,18 +470,18 @@ public class AddTechnicianPanel {
 				clearForm();
 				search.setText(null);
 		}else{
-			PreparedStatement sentry = null;
+			PreparedStatement cli = null;
 			String sql = "SELECT * FROM `ris`.`patient` WHERE `id`=?";
 
 			// Try-Catch for SQLException
 			try {
 				// Notify the database of our intended statement
-				sentry = conn.prepareStatement(sql);
+				cli = conn.prepareStatement(sql);
 				// Load up the ?s in the statement
 				
-				String searchID = search.getText().strip().replaceFirst("^0+(?!$)", ""); // Remove whitespace and leading 0's
-				sentry.setString(1, searchID);
-				ResultSet results = sentry.executeQuery();
+				String patientID = search.getText().strip().replaceFirst("^0+(?!$)", ""); // Remove whitespace and leading 0's
+				cli.setString(1, patientID);
+				ResultSet results = cli.executeQuery();
 				
 				if(! results.isBeforeFirst() ) { // No Results Found
 					JOptionPane.showMessageDialog(mainContent,
@@ -543,6 +540,7 @@ public class AddTechnicianPanel {
 		}
 	}
 	
+	@SuppressWarnings("resource")
 	private static void uploadImg() {
 		// String imgPath = copyImg().toString; // Copies file to a local project folder
 		String imgPath = selectedFile.toPath().toString(); // For interest of time, we'll just point to the native image folder
@@ -613,12 +611,14 @@ public class AddTechnicianPanel {
 		} catch (SQLException e1) {e1.printStackTrace();}
 
 	}// uploadImage()
-	
+
+/*  Removed in the interest of time
 	private static Path copyImg() {
 		Path src = selectedFile.toPath(); Path dst = Paths.get("src/img/");
 	    try{ return Files.copy(src, dst.resolve(selectedFile.getName()), StandardCopyOption.REPLACE_EXISTING); }
 	    catch(IOException e){ log("Unexpected Upload Error"); e.printStackTrace(); } return null;
 	}
+*/
 	
 	// Shortcut to print to System.out.println()
 		public static void log(Object o) {System.out.println(o);}
