@@ -4,9 +4,9 @@
 3. Probably make up some additional "Design Documents" to turn in.
 
 ## POTENTIAL ENDING CREDITS
-Application Planning and Design: Garron and Cody
-Database Structure and Development: Erick and Hieu
-Technical Guidance and Final Editing: Erik
+Application Planning and Design: Garron and Cody  
+Database Structure and Development: Erick and Hieu  
+Technical Guidance and Final Editing: Erik  
 Beta Testing and Supplemental Media: David
 
 ## How to Run
