@@ -1,5 +1,3 @@
-package ris; // Double-check this
-
 import java.awt.*;
 //import java.awt.event.*;
 import java.sql.*;
