@@ -1,12 +1,13 @@
 # Remaining Tasks
-1. Create a "Main Menu" or "Back/Cancel" Button for each screen to return. 
-2. Finish image upload functions (probably the only complex part remaining)
-3. Update `ris.sql` to account for the necessary fields in the Radiologist panel I missed earlier.
-4. Create the Radiologist Panel (not difficult, just tedious)
-5. Create "Design Documents" for the project... *we probably should have started with those, oh well.*
-6. Review the rubric for additional requirements.
+1. SOMEHOW get this whole kit-and-kaboodle into a runnable program without the need for Eclipse and XAMPP. Any ideas?
+2. Review the rubric for additional requirements.
+3. Probably make up some additional "Design Documents" to turn in.
 
-UPDATE: NOW WindowBuilder COMPATIBLE! =D 
+## POTENTIAL ENDING CREDITS
+Application Planning and Design: Garron and Cody
+Database Structure and Development: Erick and Hieu
+Technical Guidance and Final Editing: Erik
+Beta Testing and Supplemental Media: David
 
 ## How to Run
 
