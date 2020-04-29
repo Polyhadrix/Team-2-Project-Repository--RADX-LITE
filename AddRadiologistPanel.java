@@ -1,5 +1,3 @@
-package ris;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -23,16 +21,17 @@ public class AddRadiologistPanel {
 	private static JComboBox<String> cb_image;
 	private static DefaultComboBoxModel<String> cb_image_options = new DefaultComboBoxModel<String>();
 	/* Dynamic Labels */
-	private static JLabel lbl_imgPreview, out_tName, out_tSex, out_tBirth, out_tSSN;
+	private static JLabel out_tName, out_tSex, out_tBirth, out_tSSN; // `lbl_imgPreview` removed in favor of pop-out image preview
 	private static JTextArea out_observations;
 	/* All Components: Keep updated list at end of createPanel() This is used to clearForm()*/
 	private static ArrayList<JLabel> allLabels = new ArrayList<>();
 	private static ArrayList<JTextArea> allTextAreas = new ArrayList<>();
 	private static ArrayList<JComboBox<String>> allDropDowns = new ArrayList<JComboBox<String>>();
 	/*Drop-Down Values: myCBox.setModel(new DefaultComboBoxModel<String>(myArr));*/
-	private static ArrayList<Path> imageList = new ArrayList<>();
+	private static ArrayList<Path> urlList = new ArrayList<>();
 	/* Holder for Technician Notes */
-	private static ArrayList<String> observationList = new ArrayList<>(),modalityList = new ArrayList<>(),poiList = new ArrayList<>(),conditionList = new ArrayList<>(),imgDateList = new ArrayList<>();
+	private static ArrayList<String> imgIDList = new ArrayList<>(), observationList = new ArrayList<>(),modalityList = new ArrayList<>(),
+			poiList = new ArrayList<>(),conditionList = new ArrayList<>(),imgDateList = new ArrayList<>(), diagList = new ArrayList<>();
 	
 	
 	private static JTextField preparerName;
@@ -337,7 +336,7 @@ public class AddRadiologistPanel {
 		row5.setLayout(gbl_row5);
 		
 		JButton btn_saveDiagnosis = new JButton("Save Diagnosis");
-		btn_saveDiagnosis.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { /* saveDiagnosis() */ } });
+		btn_saveDiagnosis.addActionListener(new saveDiagnosisListener() );
 		
 		JLabel lbl_techName = new JLabel("Enter your name:");
 		lbl_techName.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -454,18 +453,20 @@ public class AddRadiologistPanel {
 						cb_image_options.removeAllElements();
 						cb_image_options.addElement("Select Image");
 						cb_image.setToolTipText("Select an image to view");
-						imageList.clear();
-						imageList.clear();
+						urlList.clear();
+						urlList.clear();
 						while( results.next() ) { // For each image this patient has
-							imageList.add( Paths.get(results.getString("url")) ); // Save the absolute paths
+							urlList.add( Paths.get(results.getString("url")) ); // Save the absolute paths
+							imgIDList.add( (results.getString("id").isBlank()) ? "" : results.getString("observations") );
 /**/						observationList.add( (results.getString("observations").isBlank()) ? "" : results.getString("observations") );
 							modalityList.add( (results.getString("modality").isBlank()) ? "" : results.getString("modality") );
 							poiList.add( (results.getString("poi").isBlank()) ? "" : results.getString("poi") );
 							conditionList.add( (results.getString("condition").isBlank()) ? "" : results.getString("condition") );
 							imgDateList.add( (results.getString("last_modified").isBlank()) ? "" : results.getString("last_modified") );
+							diagList.add( (results.getString("observations").isBlank()) ? "" : results.getString("diagnosis") );
 /**/
 						}
-						for(Path filename : imageList) cb_image_options.addElement( filename.getFileName().toString() ); // post just the filenames
+						for(Path filename : urlList) cb_image_options.addElement( filename.getFileName().toString() ); // post just the filenames
 						cb_image.setModel( cb_image_options );
 						cb_image.setEnabled(true);
 						
@@ -498,7 +499,7 @@ public class AddRadiologistPanel {
 	    			lbl_imgPreview.setIcon(null);
 	    			lbl_imgPreview.setText("Image Preview");
 	    	   }else {// else an image was selected, load it up
-	    		   lbl_imgPreview.setIcon(new ImageIcon(new ImageIcon( imageList.get(cb_image.getSelectedIndex()-1).toString() ).getImage().getScaledInstance(250, -1, Image.SCALE_DEFAULT)));
+	    		   lbl_imgPreview.setIcon(new ImageIcon(new ImageIcon( urlList.get(cb_image.getSelectedIndex()-1).toString() ).getImage().getScaledInstance(250, -1, Image.SCALE_DEFAULT)));
 	    		   lbl_imgPreview.setText(cb_image.getSelectedItem().toString());
 	    	   }
 	    	   
@@ -511,9 +512,17 @@ public class AddRadiologistPanel {
 		public void actionPerformed(ActionEvent e) {
 			BufferedImage image;
 			try {
-				image = ImageIO.read(new File(imageList.get(cb_image.getSelectedIndex()-1).toString()));
-				JLabel picLabel = new JLabel(new ImageIcon(image));
-				JOptionPane.showMessageDialog(null, picLabel, cb_image.getSelectedItem().toString(), JOptionPane.PLAIN_MESSAGE, null);
+				int imgIdx = cb_image.getSelectedIndex()-1;
+				if(imgIdx>-1) {
+					image = ImageIO.read(new File(urlList.get( imgIdx ).toString()));
+					JLabel picLabel = new JLabel(new ImageIcon(image));
+					JOptionPane.showMessageDialog(null, picLabel, cb_image.getSelectedItem().toString(), JOptionPane.PLAIN_MESSAGE, null);
+				}else {
+					JOptionPane.showMessageDialog(mainContent,
+						    "Please choose a patient to view their images.",
+						    "Error: No Patient Selected",
+						    JOptionPane.ERROR_MESSAGE);
+				}
 			} catch (IOException e1) {e1.printStackTrace();}
 		}
 	}
@@ -521,9 +530,8 @@ public class AddRadiologistPanel {
 	public static class loadTechNotes implements ItemListener{
 		@Override
 	    public void itemStateChanged(ItemEvent event) {
-
 	       if (event.getStateChange() == ItemEvent.SELECTED) {
-	    	   if(cb_image.getSelectedIndex()==0) {// if first value (null) selected 
+	    	   if(cb_image.getSelectedIndex()<1) {// if first value (null) selected 
 	    			out_observations.setText("-");
 	    	   }else {// else an image was selected, load it up
 	    		   int usrSelection = cb_image.getSelectedIndex()-1;
@@ -534,6 +542,7 @@ public class AddRadiologistPanel {
 	    				   + "Technician's Observation:\n"+observationList.get(usrSelection);
 	    		  // lbl_imgPreview.setText(cb_image.getSelectedItem().toString());
 	    		   out_observations.setText(output);
+	    		   diagnosis.setText(diagList.get(usrSelection));
 	    	   }
 	    	   
 	       }
@@ -543,8 +552,26 @@ public class AddRadiologistPanel {
 	public static class saveDiagnosisListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+			int imgID= cb_image.getSelectedIndex();
 			
+			if(imgID>0) {
+				PreparedStatement cli = null;
+				String sql ="UPDATE `ris`.`image` SET `diagnosis`=? WHERE `id`=?";
+				int qCount=1;
+				
+				try {
+					log(sql+" "+diagnosis.getText()+" at "+imgID);
+					cli = conn.prepareStatement(sql);
+					cli.setString(qCount++, diagnosis.getText() );
+					cli.setString(qCount++, ""+imgID);
+					cli.executeUpdate(); // commit insert/update
+				} catch (SQLException e1) { e1.printStackTrace(); }
+			}else {
+				JOptionPane.showMessageDialog(mainContent,
+					    "Please choose an image to diagnose.",
+					    "Error: No Image Selected",
+					    JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		
 	}
