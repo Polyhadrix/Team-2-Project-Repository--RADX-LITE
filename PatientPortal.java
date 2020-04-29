@@ -22,6 +22,10 @@ public class PatientPortal {
 
 	/* Initialize the frame and initialize each panel. */
 	private static void initialize() {
+		if(!verifyDatabase()) {//if database does NOT yet exist
+			initDatabase(); // initialize it
+		}
+		
 		/* Set Up Primary Frame */
 		JFrame appWindow = new JFrame();
 		appWindow.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -197,4 +201,111 @@ public class PatientPortal {
 
 	// Shortcode: "System.out.println()" can be written as "log()"
 	public static void log(Object o) {System.out.println(o);}
+	
+	/* Polls the server to see if the `gamenight` database exists */
+	public static boolean verifyDatabase(){
+		try{			
+			DatabaseMetaData dbmd = conn.getMetaData();
+			ResultSet rs = dbmd.getCatalogs();//capture String array of Database names
+
+			//Scan database array for matching database name
+			while(rs.next()) {
+				if( rs.getString(1).contentEquals("ris") ) {
+					rs.close();
+					return true;
+				}
+			}
+			rs.close();
+			return false;
+		} catch (Exception e) {	log("Error: verifyDatabase() function failed."); e.printStackTrace(); }//End try-catch
+		return false;
+	}//End: hasDB(Connection,String)
+	
+	// Server Initializatioin //
+	public static boolean initDatabase() {
+		log("Initializing `ris` Database...");
+		String sql = "CREATE DATABASE IF NOT EXISTS `ris` DEFAULT CHARACTER SET utf8mb4 ;" + 
+			"USE `ris` ;" + 
+			"" + 
+			"CREATE TABLE IF NOT EXISTS `ris`.`employer` (" + 
+			"  `id` INT NOT NULL AUTO_INCREMENT," + 
+			"  `name` VARCHAR(45) NOT NULL," + 
+			"  `street` VARCHAR(45) NULL," + 
+			"  `city` VARCHAR(45) NULL," + 
+			"  `state` VARCHAR(45) NULL," + 
+			"  `zip` VARCHAR(45) NULL," + 
+			"  PRIMARY KEY (`id`))" + 
+			"ENGINE = InnoDB;" + 
+			"CREATE TABLE IF NOT EXISTS `ris`.`steward` (" + 
+			"  `id` INT NOT NULL AUTO_INCREMENT," + 
+			"  `ssn` VARCHAR(45) NULL," + 
+			"  `name` VARCHAR(45) NULL," + 
+			"  `relation` VARCHAR(45) NULL," + 
+			"  `home_phone` VARCHAR(45) NULL," + 
+			"  `cell_phone` VARCHAR(45) NULL," + 
+			"  `work_phone` VARCHAR(45) NULL," + 
+			"  `street` VARCHAR(45) NULL," + 
+			"  `city` VARCHAR(45) NULL," + 
+			"  `state` VARCHAR(45) NULL," + 
+			"  `zip` VARCHAR(45) NULL," + 
+			"  PRIMARY KEY (`id`))" + 
+			"ENGINE = InnoDB;" + 
+			"CREATE TABLE IF NOT EXISTS `ris`.`patient` (" + 
+			"  `id` INT NOT NULL AUTO_INCREMENT," + 
+			"  `ssn` VARCHAR(20) NOT NULL," + 
+			"  `first_name` VARCHAR(45) NOT NULL," + 
+			"  `middle_initial` VARCHAR(45) NULL," + 
+			"  `last_name` VARCHAR(45) NOT NULL," + 
+			"  `birthdate` VARCHAR(45) NOT NULL," + 
+			"  `sex` VARCHAR(45) NOT NULL," + 
+			"  `home_phone` VARCHAR(45) NULL," + 
+			"  `cell_phone` VARCHAR(45) NULL," + 
+			"  `work_phone` VARCHAR(45) NULL," + 
+			"  `street` VARCHAR(100) NOT NULL," + 
+			"  `city` VARCHAR(45) NOT NULL," + 
+			"  `state` VARCHAR(45) NOT NULL," + 
+			"  `zip` VARCHAR(20) NOT NULL," + 
+			"  `employer_id` INT NULL," + 
+			"  `steward_id` INT NULL," + 
+			"  PRIMARY KEY (`id`)," + 
+			"  INDEX `FK_Patient_Employer_idx` (`employer_id` ASC)," + 
+			"  INDEX `FK_Patient_Steward_idx` (`steward_id` ASC)," + 
+			"  CONSTRAINT `FK_Patient_Employer`" + 
+			"    FOREIGN KEY (`employer_id`)" + 
+			"    REFERENCES `ris`.`employer` (`id`)" + 
+			"    ON DELETE NO ACTION" + 
+			"    ON UPDATE CASCADE," + 
+			"  CONSTRAINT `FK_Patient_Steward`" + 
+			"    FOREIGN KEY (`steward_id`)" + 
+			"    REFERENCES `ris`.`steward` (`id`)" + 
+			"    ON DELETE NO ACTION" + 
+			"    ON UPDATE CASCADE)" + 
+			"ENGINE = InnoDB;" + 
+			"CREATE TABLE IF NOT EXISTS `ris`.`image` (" + 
+			"  `id` INT NOT NULL AUTO_INCREMENT," + 
+			"  `patient_id` INT NOT NULL," + 
+			"  `last_modified` VARCHAR(45) NULL," + 
+			"  `poi` VARCHAR(45) NULL," + 
+			"  `condition` VARCHAR(45) NULL," + 
+			"  `modal` VARCHAR(45) NULL," + 
+			"  `observations` VARCHAR(1000) NULL," + 
+			"  `diagnosis` VARCHAR(1000) NULL," + 
+			"  `url` VARCHAR(255) NOT NULL," + 
+			"  PRIMARY KEY (`id`)," + 
+			"  INDEX `FK_Image_Patient_idx` (`patient_id` ASC)," + 
+			"  CONSTRAINT `FK_Image_Patient`" + 
+			"    FOREIGN KEY (`patient_id`)" + 
+			"    REFERENCES `ris`.`patient` (`id`)" + 
+			"    ON DELETE NO ACTION" + 
+			"    ON UPDATE CASCADE)" + 
+			"ENGINE = InnoDB;";
+
+		try { 
+			PreparedStatement cli = conn.prepareStatement(sql);
+			cli.executeUpdate(sql); log("Database Initiliazation: Successful."); 
+			return true;
+		}catch(SQLException e){log("Error: Creating Database and Tables"); e.printStackTrace();}
+		return false;
+	}
+	
 }
