@@ -1,5 +1,3 @@
-package ris;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
@@ -37,6 +35,7 @@ public class AddRegistrationPanel {
 	private static JPanel pnl_steward;
 	
 	/* Current Patient IDs (and other states) */
+	@SuppressWarnings("unused")
 	private static String currentPatient, currentEmployer, currentSteward, lastSearch="";
 	private static JTextField preparerName;
 	
@@ -1052,8 +1051,8 @@ public class AddRegistrationPanel {
 					cli = conn.prepareStatement(sql);
 					// Load up the ?s in the statement
 
-					String searchID = search.getText().strip().replaceFirst("^0+(?!$)", ""); // Remove whitespace and leading 0's
-					cli.setString(1, searchID);
+					String patientID = search.getText().strip().replaceFirst("^0+(?!$)", ""); // Remove whitespace and leading 0's
+					cli.setString(1, patientID);
 					ResultSet results = cli.executeQuery();
 
 					if(! results.isBeforeFirst() ) { // No Results Found
@@ -1067,7 +1066,7 @@ public class AddRegistrationPanel {
 					}else { // Results found, Load them up!
 						clearForm();
 						results.first();
-						currentPatient = searchID;
+						currentPatient = patientID;
 						pSSN.setText( results.getString("ssn") );
 						pFirst.setText( results.getString("first_name") );
 						pMiddle.setText( results.getString("middle_initial") );
