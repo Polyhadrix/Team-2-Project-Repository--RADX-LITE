@@ -528,9 +528,9 @@ public class AddRadiologistPanel {
 	    	   }else {// else an image was selected, load it up
 	    		   int usrSelection = cb_image.getSelectedIndex()-1;
 	    		   String output = "Focus: "+poiList.get(usrSelection)+"\r\n"
-	    				   + "Image Date: "+imgDateList.get(usrSelection)+"\\r\n"
-	    				   + "Modality: "+modalityList.get(usrSelection)+"\\r\n"
-	    				   + "Condition: "+conditionList.get(usrSelection)+"\\r\n"
+	    				   + "Image Date: "+imgDateList.get(usrSelection)+"\r\n"
+	    				   + "Modality: "+modalityList.get(usrSelection)+"\r\n"
+	    				   + "Condition: "+conditionList.get(usrSelection)+"\r\n"
 	    				   + "Technician's Observation:\n"+observationList.get(usrSelection);
 	    		  // lbl_imgPreview.setText(cb_image.getSelectedItem().toString());
 	    		   out_observations.setText(output);
