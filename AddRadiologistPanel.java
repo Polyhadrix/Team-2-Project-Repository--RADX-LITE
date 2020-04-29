@@ -32,7 +32,7 @@ public class AddRadiologistPanel {
 	/* Holder for Technician Notes */
 	private static ArrayList<String> imgIDList = new ArrayList<>(), observationList = new ArrayList<>(),modalityList = new ArrayList<>(),
 			poiList = new ArrayList<>(),conditionList = new ArrayList<>(),imgDateList = new ArrayList<>(), diagList = new ArrayList<>();
-	
+	private static ArrayList<ArrayList<String>> allData = new ArrayList<>();
 	
 	private static JTextField preparerName;
 	
@@ -389,6 +389,7 @@ public class AddRadiologistPanel {
 
 		allLabels.addAll( Arrays.asList(out_tName,out_tSex,out_tBirth,out_tSSN) );
 		allTextAreas.addAll( Arrays.asList(diagnosis, out_observations) );
+		allData.addAll( Arrays.asList(imgIDList,observationList,modalityList,poiList,conditionList,conditionList,imgDateList,diagList) );
 
 		return pnl_technician;
 	} // initialize()
@@ -453,11 +454,11 @@ public class AddRadiologistPanel {
 						cb_image_options.removeAllElements();
 						cb_image_options.addElement("Select Image");
 						cb_image.setToolTipText("Select an image to view");
-						urlList.clear();
+						for(ArrayList<String> dataList : allData) dataList.clear();
 						urlList.clear();
 						while( results.next() ) { // For each image this patient has
 							urlList.add( Paths.get(results.getString("url")) ); // Save the absolute paths
-							imgIDList.add( (results.getString("id").isBlank()) ? "" : results.getString("observations") );
+							imgIDList.add( (results.getString("id").isBlank()) ? "" : results.getString("id") );
 /**/						observationList.add( (results.getString("observations").isBlank()) ? "" : results.getString("observations") );
 							modalityList.add( (results.getString("modality").isBlank()) ? "" : results.getString("modality") );
 							poiList.add( (results.getString("poi").isBlank()) ? "" : results.getString("poi") );
@@ -552,19 +553,22 @@ public class AddRadiologistPanel {
 	public static class saveDiagnosisListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int imgID= cb_image.getSelectedIndex();
+			int selectedIdx= cb_image.getSelectedIndex();
 			
-			if(imgID>0) {
+			if(selectedIdx>0) {
 				PreparedStatement cli = null;
 				String sql ="UPDATE `ris`.`image` SET `diagnosis`=? WHERE `id`=?";
 				int qCount=1;
 				
 				try {
-					log(sql+" "+diagnosis.getText()+" at "+imgID);
 					cli = conn.prepareStatement(sql);
 					cli.setString(qCount++, diagnosis.getText() );
-					cli.setString(qCount++, ""+imgID);
+					cli.setString(qCount++, ""+ imgIDList.get(selectedIdx-1) );
 					cli.executeUpdate(); // commit insert/update
+					
+					JOptionPane.showMessageDialog(mainContent, "Diagnosis successfully updated.");
+					searchPatient(); // Refreshes the cached image data
+					diagnosis.setText(""); // Clear old diagnosis data out
 				} catch (SQLException e1) { e1.printStackTrace(); }
 			}else {
 				JOptionPane.showMessageDialog(mainContent,
