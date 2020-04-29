@@ -521,14 +521,11 @@ public class AddRadiologistPanel {
 	public static class loadTechNotes implements ItemListener{
 		@Override
 	    public void itemStateChanged(ItemEvent event) {
-			log("loadTechNotes()");
-			
+
 	       if (event.getStateChange() == ItemEvent.SELECTED) {
 	    	   if(cb_image.getSelectedIndex()==0) {// if first value (null) selected 
 	    			out_observations.setText("-");
-	    			log("loadTechNotes() No Selection");
 	    	   }else {// else an image was selected, load it up
-	    		   log("loadTechNotes() Loading Notes");
 	    		   int usrSelection = cb_image.getSelectedIndex()-1;
 	    		   String output = "Focus: "+poiList.get(usrSelection)+"\r\n"
 	    				   + "Image Date: "+imgDateList.get(usrSelection)+"\\r\n"
