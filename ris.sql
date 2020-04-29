@@ -1,3 +1,6 @@
+-- -----------------------------------------------------
+-- Schema ris
+-- -----------------------------------------------------
 CREATE DATABASE IF NOT EXISTS `ris` DEFAULT CHARACTER SET utf8mb4 ;
 USE `ris` ;
 
@@ -77,11 +80,12 @@ CREATE TABLE IF NOT EXISTS `ris`.`image` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `patient_id` INT NOT NULL,
   `last_modified` VARCHAR(45) NULL,
-  `modal` VARCHAR(45) NULL,
-  `url` VARCHAR(255) NOT NULL,
-  `observations` VARCHAR(1000) NULL,
   `poi` VARCHAR(45) NULL,
   `condition` VARCHAR(45) NULL,
+  `modal` VARCHAR(45) NULL,
+  `observations` VARCHAR(1000) NULL,
+  `diagnosis` VARCHAR(1000) NULL,
+  `url` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `FK_Image_Patient_idx` (`patient_id` ASC),
   CONSTRAINT `FK_Image_Patient`
