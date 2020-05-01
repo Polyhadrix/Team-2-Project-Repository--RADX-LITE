@@ -287,7 +287,7 @@ public class PatientPortal {
 			"  `last_modified` VARCHAR(45) NULL," + 
 			"  `poi` VARCHAR(45) NULL," + 
 			"  `condition` VARCHAR(45) NULL," + 
-			"  `modal` VARCHAR(45) NULL," + 
+			"  `modality` VARCHAR(45) NULL," + 
 			"  `observations` VARCHAR(1000) NULL," + 
 			"  `diagnosis` VARCHAR(1000) NULL," + 
 			"  `url` VARCHAR(255) NOT NULL," + 
